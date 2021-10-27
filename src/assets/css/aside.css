@@ -235,7 +235,7 @@ aside .img-menu img.active{
 
    aside.active{
       width: 100%;
-      height: 640px;
+      height: 100%;
    }
    
    aside .project-logo{
@@ -408,7 +408,4 @@ aside .img-menu img.active{
    aside .img-menu img.active{
       display: none;
    }
-
-   
-   
 }
