@@ -1,0 +1,245 @@
+nav{
+   background: #FFFFFF;
+   width: 100%;
+   height: 136px;
+   display: block;
+   min-height: 136px;
+}
+
+nav .website-redesign {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   padding: 40px 30px 20.5px 30px;
+}
+
+nav .website-redesign .left-part{
+   display: flex;
+   align-items: center;
+   min-width: 450px;
+}
+
+nav .website-redesign .left-part img{
+   margin-right: 15px;
+   min-width: 40px;
+   width: 40px;
+   height: 40px;
+   background-color: #FFC200;
+   border-radius: 20%;
+}
+
+nav .website-redesign span{
+   font: 32px Helvetica;
+   color: #131313;
+}
+
+nav .website-redesign .circle{
+   display: flex;
+   min-width: 30px;
+   width: 30px;
+   height: 30px;
+   background: #EAEAEA;
+   border-radius: 15px;
+   align-items: center;
+   margin-left: 11px;
+}
+
+nav .website-redesign .circle span{
+   background-color:#D8D8D8;
+   border-radius: 50%;
+   min-width: 4px;
+   height: 4px;
+   width: 4px;
+   margin-left: 2px;
+}
+
+nav .website-redesign .circle span:first-child{
+   margin-left: 7px;
+}
+
+nav .website-redesign .right-part{
+   display: flex;
+   align-items: center;
+}
+
+nav .website-redesign .right-part img{
+   background-color: none;
+   width: 30px;
+   height: 30px;
+   min-width: 30px;
+   border-radius: 50%;
+   padding-left: 5px;
+}
+
+nav .website-redesign .right-part .share{
+   display: flex;
+   background: #EAEAEA;
+   border-radius: 15px;
+   width: 67px;
+   min-width: 67px;
+   height: 30px;
+   align-items: center;
+   margin-left: 15px;
+}
+
+nav .website-redesign .right-part .share span{
+   font: 14px Helvetica;
+   padding-left: 15px;
+   color: #131313;
+}
+
+nav .website-redesign .right-part .chat{
+   display: flex;
+   width: 81px;
+   min-width: 81px;
+   height: 30px;
+   background: #FFF8DD;
+   border-radius: 15px;
+   align-items: center;
+   margin: 0 30px 0 15px;
+}
+
+nav .website-redesign .right-part .chat img{
+   min-width: 16px;
+   padding-left: 15px;
+   height: 16px;
+   width: 16px;
+}
+nav .website-redesign .right-part .chat span{
+   padding-left: 5px;
+   font: 14px Helvetica;
+   color: #FFC200;
+}
+
+nav .navigation{
+   display: flex;
+   padding-left: 30px;
+}
+
+nav .navigation ul{
+   display: flex;
+}
+
+nav .navigation ul li a{
+   text-decoration: none;
+   opacity: 0.7;
+   font: 16px Helvetica;
+   color: #131313;
+}
+
+nav .navigation ul li{
+   padding-left: 30px;
+}
+
+nav .navigation ul li:first-child{
+   padding-left: 0;
+}
+
+nav .marker{
+   display: flex;
+   padding-top: 14px;
+   padding-left: 25px;
+}
+
+nav .marker span{
+   display: none;
+   margin-left: 75px;
+   background: #FFC200;
+   width: 55px;
+   height: 2px;
+}
+
+nav .marker span:first-child{
+   margin-left: 0;
+}
+
+nav .marker .third-marker  {
+   margin-left: 160px;
+   background: #FFC200;
+   width: 55px;
+   height: 2px;
+}
+
+nav .marker .fourth-marker{
+   margin-left: 245px;
+   background: #FFC200;
+   width: 55px;
+   height: 2px;
+}
+
+nav .marker span:last-child{
+   margin-left: 325px;
+   background: #FFC200;
+   width: 55px;
+   height: 2px;
+}
+
+@media only screen and (max-width: 600px){
+   nav{
+      background: #FFFFFF;
+      width: 100%;
+      height: 100px;
+      min-height: 0px;
+      display: block;
+   }
+
+   nav .website-redesign {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 25px 30px 20.5px 20px;
+   }
+   
+
+   nav .website-redesign .right-part{
+      display: none;
+   }
+
+   nav .website-redesign .left-part{
+      display: flex;
+      align-items: center;
+      min-width: 120px;
+   }
+   
+   nav .website-redesign .left-part img{
+      margin-right: 15px;
+      min-width: 35px;
+      width: 35px;
+      height: 35px;
+      background-color: #FFC200;
+      border-radius: 20%;
+   }
+   
+   nav .website-redesign span{
+      font: 20px Helvetica;
+      color: #131313;
+   }
+   
+   nav .website-redesign .circle{
+      display: none;
+      min-width: 30px;
+      width: 30px;
+      height: 30px;
+      background: #EAEAEA;
+      border-radius: 15px;
+      align-items: center;
+      margin-left: 11px;
+   }
+   
+   nav .website-redesign .circle span{
+      background-color:#D8D8D8;
+      border-radius: 50%;
+      min-width: 4px;
+      height: 4px;
+      width: 4px;
+      margin-left: 2px;
+   }
+
+   nav .navigation{
+      display: none;
+      padding-left: 30px;
+   }
+   nav .marker{
+      display:none;
+   }
+}

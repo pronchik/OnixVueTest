@@ -1,0 +1,366 @@
+section{
+   display: flex;
+   align-items: center;
+}
+section .content{
+   display: block;
+   margin-top: 30px;
+   background: #FFFFFF;
+   border-radius: 8px;
+   width: 730px;
+   min-width: 730px;
+   height: 540px;
+   margin-left: auto;
+   margin-right: auto;
+}
+
+section .content .activity{
+   display: none;
+   padding-top: 35px;
+}
+
+section .content .activity.active1{
+   display: block;
+}
+
+section .content .activity span{
+   opacity: 0.5;
+   font-family: Helvetica;
+   font-size: 14px;
+   color: #131313;
+   padding-left: 30px;
+}
+
+section .content .activity .message{
+   justify-content: space-between;
+   align-items: center;
+   display: flex;
+   padding: 30px 30px 20px 30px;
+}
+
+section .content .activity .message:first-child{
+   justify-content: space-between;
+   align-items: center;
+   display: flex;
+   padding: 30px 30px 30px 30px;
+}
+
+section .content .activity .message span{
+   background: #CEF9C6;
+   min-width: 40px;
+   width: 40px;
+   height: 40px;
+   border-radius: 50%;
+   display: flex;
+   align-items: center;
+   padding-left: 0;
+}
+
+section .content .activity .message span img{
+   padding-left: 15px;
+   color: #000;
+}
+
+section .content .activity .message .text{
+   padding-left: 20px;
+   display: flex;
+   align-items: center;
+}
+
+section .content .activity .message .text p{
+   max-width: 461px;
+   font: 16px/20px Helvetica;
+   color: #131313;
+}
+
+section .content .activity .message p:last-child{
+   opacity: 0.7;
+   font-size: 14px/20px Helvetica;
+   color: #131313;
+   text-align: right;
+   padding-left: 80px;
+}
+
+section .content .activity .tip{
+   display: flex;
+   align-items: center;
+}
+
+section .content .activity .tip span{
+   margin-left: 90px;
+   display: flex;
+   min-width: 551px;
+   width: 551px;
+   height: 88px;
+   background: #F7F6F3;
+   border-radius: 10px;
+   align-items: center;
+   font: 15px/20px Helvetica;
+   color: #131313;
+}
+
+section .content .activity .pictures{
+   display: flex;
+   padding-top: 0px;
+}
+
+section .content .activity .pictures img{
+   height: 100px;
+   width: 100px;
+   min-width: 100px;
+   border-radius: 8px;
+   margin-left: 10px;
+}
+
+section .content .activity .pictures img:first-child{
+   margin-left: 90px;
+}
+
+.kanban{
+   display: none;
+}
+
+.kanban.active1{
+   display: block;
+}
+
+.calendar{
+   display: none;
+}
+
+.calendar.active1{
+   display: block;
+}
+
+.files{
+   display: none;
+}
+
+.files.active1{
+   display: block;
+}
+
+select{
+   display: none;
+}
+
+section .content .tasks span{
+   opacity: 0.5;
+   font-family: Helvetica;
+   font-size: 14px;
+   color: #131313;
+   padding-left: 30px;
+}
+
+section .content .tasks{
+   display: none;
+   padding-top: 35px;
+}
+
+section .content .tasks.active1{
+   display: block;
+}
+
+section .content .tasks .task{
+   font: 16px/20px Helvetica;
+   color: #000;
+   padding-top: 15px;
+   padding-left: 30px;
+   display: flex;
+}
+
+section .content .tasks .task .name{
+   padding-right: 10px;
+   width: 90px;
+   min-width: 60px;
+}
+section .content .tasks .task .description{
+   padding-right: 8px;
+   width: 490px;
+   min-width: 60px;
+}
+
+section .content .tasks .task .time{
+   width: 40px;
+   min-width: 40px;
+   font-size: 14px;
+}
+
+section .content .tasks .nadesti{
+   padding-top: 20px;
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   padding-right: 50px;
+}
+
+section .content .tasks .nadesti span{
+   font: 16px/20px Helvetica;
+   color: black;
+   opacity: 0.5;
+}
+
+section .content .tasks .nadesti .nades span:last-child{
+   padding-left: 54px;
+
+}
+
+@media only screen and (max-width: 600px){
+   section{
+      display: block;
+      width: 100%;
+      height: 100%;
+   }
+
+   section .content{
+      display: block;
+      width: 100%;
+      height: 100%;
+      min-width: 280px;
+   }
+
+   section .content .activity.active1{
+      min-width: 280px;
+   }
+
+   section .content .tasks.active1{
+      min-width: 280px;
+   }
+
+   section .content .calendar.active1{
+      min-width: 280px;
+   }
+
+   section .content .files.active1{
+      min-width: 280px;
+   }
+
+   section .content .activity.active1{
+      min-width: 280px;
+   }
+   
+   section .content .activity .message .text{
+      padding-left: 20px;
+      display: flex;
+      align-items: center;
+   }
+   
+   section .content .activity .message .text p{
+      max-width: 461px;
+      font: 16px/20px Helvetica;
+      color: #131313;
+   }
+   
+   section .content .activity .message p:last-child{
+      opacity: 0.7;
+      font-size: 14px/20px Helvetica;
+      color: #131313;
+      text-align: right;
+      padding-left: 30px;
+   }
+   
+   section .content .activity .tip{
+      padding-top: 50px;
+      display: flex;
+      align-items: center;
+   }
+   
+   section .content .activity .tip span{
+      margin-left: 90px;
+      display: flex;
+      min-width: 100px;
+      width: 250px;
+      height: 200px;
+      background: #F7F6F3;
+      border-radius: 10px;
+      align-items: center;
+      font: 15px/20px Helvetica;
+      color: #131313;
+   }
+   
+   section .content .activity .pictures{
+      display: block;
+      padding-bottom: 100px;
+      margin-left: auto;
+      margin-right: auto;
+      width: 100px;
+   }
+   
+   section .content .activity .pictures img{
+      height: 100px;
+      width: 100px;
+      min-width: 100px;
+      border-radius: 8px;
+      margin-left: 0px;
+   }
+   
+   section .content .activity .pictures img:first-child{
+      margin-left: 0px;
+   }
+
+   select{
+      display: block;
+   }
+
+   section .content .tasks span{
+      opacity: 0.5;
+      font-family: Helvetica;
+      font-size: 14px;
+      color: #131313;
+      padding-left: 30px;
+   }
+   
+   section .content .tasks{
+      display: none;
+      padding-top: 35px;
+   }
+   
+   section .content .tasks.active1{
+      display: block;
+   }
+   
+   section .content .tasks .task{
+      font: 12px/20px Helvetica;
+      color: #000;
+      padding-top: 15px;
+      padding-left: 30px;
+      display: flex;
+   }
+   
+   section .content .tasks .task .name{
+      padding-right: 5px;
+      width: 90px;
+      min-width: 60px;
+   }
+   section .content .tasks .task .description{
+      padding-right: 5px;
+      width: 100px;
+      min-width: 40px;
+   }
+   
+   section .content .tasks .task .time{
+      width: 40px;
+      min-width: 40px;
+   }
+   
+   section .content .tasks .nadesti{
+      padding-top: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-right: 50px;
+   }
+   
+   section .content .tasks .nadesti span{
+      font: 16px/20px Helvetica;
+      color: black;
+      opacity: 0.5;
+   }
+   
+   section .content .tasks .nadesti .nades span:last-child{
+      padding-left: 54px;
+   }
+   
+}
+
+
