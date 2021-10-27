@@ -167,20 +167,26 @@ section .content .tasks .task{
    padding-top: 15px;
    padding-left: 30px;
    display: flex;
+   
 }
 
 section .content .tasks .task .name{
+   padding-top: 10px;
    padding-right: 10px;
    width: 90px;
    min-width: 60px;
 }
 section .content .tasks .task .description{
-   padding-right: 8px;
-   width: 490px;
+   padding: 10px 8px;
+   width: 470px;
    min-width: 60px;
+   background-color: #CEF9C6;
+   border-radius: 15px ;
 }
 
 section .content .tasks .task .time{
+   padding-left: 10px;
+   padding-top: 10px;
    width: 40px;
    min-width: 40px;
    font-size: 14px;
