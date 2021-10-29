@@ -32,17 +32,14 @@ section .content .activity span{
 }
 
 section .content .activity .message{
-   justify-content: space-between;
-   align-items: center;
-   display: flex;
-   padding: 30px 30px 20px 30px;
+   display: block;
+   padding: 30px 30px 00px 30px;
 }
 
-section .content .activity .message:first-child{
+.message1{
    justify-content: space-between;
    align-items: center;
    display: flex;
-   padding: 30px 30px 30px 30px;
 }
 
 section .content .activity .message span{
@@ -87,7 +84,9 @@ section .content .activity .tip{
 }
 
 section .content .activity .tip span{
+   margin-top: 10px;
    margin-left: 90px;
+   padding-left: 10px;
    display: flex;
    min-width: 551px;
    width: 551px;
@@ -101,10 +100,10 @@ section .content .activity .tip span{
 
 section .content .activity .pictures{
    display: flex;
-   padding-top: 0px;
+   margin-top: 15px;
 }
 
-section .content .activity .pictures img{
+section .content .activity .pictures .picture img{
    height: 100px;
    width: 100px;
    min-width: 100px;
@@ -112,8 +111,8 @@ section .content .activity .pictures img{
    margin-left: 10px;
 }
 
-section .content .activity .pictures img:first-child{
-   margin-left: 90px;
+section .content .activity .pictures .picture:first-child{
+   padding-left: 90px;
 }
 
 .kanban{
@@ -290,6 +289,10 @@ section .content .tasks .nadesti .nades span:last-child{
       margin-left: auto;
       margin-right: auto;
       width: 100px;
+   }
+
+   section .content .activity .pictures .picture:first-child{
+      padding-left: 0;
    }
    
    section .content .activity .pictures img{

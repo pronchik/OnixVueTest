@@ -11,9 +11,9 @@
                 </div>
             </div>
             <div class="right-part">
-                <img src="../assets/me.png"  alt="user-img">
-                <img src="../assets/me.png"  alt="user-img">
-                <img src="../assets/me.png"  alt="user-img">
+              <div class="users-online" v-for="user in users" :key="user" >
+                <img :src="require(`../assets/${user.img}`)"  alt="user-img">
+              </div>
                 <div class="share">
                     <span>Share</span>
                 </div>
@@ -59,6 +59,16 @@ function selectActivity () : void {
   markerActivity[0].style.display = 'block'
 }
 
+function deleteEmptyTip () :void{
+  const tip = document.querySelectorAll<HTMLElement>('.tip')
+
+  for (let i = 0; i < tip.length; i++) {
+    if (tip[i].innerText === '') {
+      tip[i].style.display = 'none'
+    }
+  }
+}
+
 function hello () : void {
   const markers = document.querySelectorAll<HTMLElement>('.marker span')
   const tabs = document.querySelectorAll<HTMLElement>('.content>div')
@@ -75,7 +85,7 @@ function hello () : void {
 }
 
 function img () {
-  const pictures = document.querySelectorAll<HTMLElement>('.pictures img')
+  const pictures = document.querySelectorAll<HTMLElement>('.pictures .picture')
   const log = document.querySelectorAll<HTMLElement>('.notifications span')[0]
 
   pictures.forEach((picture, index) => {
@@ -89,6 +99,17 @@ export default {
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   data () {
     return {
+      users: [
+        {
+          img: 'me.png'
+        },
+        {
+          img: 'me.png'
+        },
+        {
+          img: 'me.png'
+        }
+      ]
     }
   },
   methods: {
@@ -98,6 +119,7 @@ export default {
     selectActivity.call(this)
     hello.call(this)
     img.call(this)
+    deleteEmptyTip.call(this)
   }
 }
 

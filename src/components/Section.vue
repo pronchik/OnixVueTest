@@ -24,19 +24,28 @@
                     </div>
                 </div>
                 <div class="kanban"><span>Kanban</span></div>
-                <div class="activity">
+                <div class="activity" >
                     <h2><span>Today</span></h2>
-                    <Message message = 'Darika Samak mark as done Listing on Product Hunt so that we can reach as many potential users' time = '8:40 PM'/>
-                    <Message message = 'Emilee Simchenko commented on Account for teams and personal in bottom style' time = '7:32 PM'/>
-                    <div class="tip">
-                        <span>During a project build, it is necessary to evaluate the product design and development against project requirements and outcomes</span>
+                    <div class="message" v-for="item1 in items1" :key="item1">
+                      <div class="message1" style="display: flex">
+                        <span>
+                            <img :src="require(`../assets/${item1.img}`)" alt="checkmark">
+                        </span>
+                        <div class="text">
+                            <p>{{item1.message}}</p>
+                            <p>{{item1.time}}</p>
+                        </div>
+                      </div>
+                        <div class="tip">
+                          <span>{{item1.tip}}</span>
+                        </div>
                     </div>
-                    <Message message = 'Darika Samak uploaded 4 files on An option to search in current projects or in all projects' time = '6:02 PM'/>
+
                     <div class="pictures">
-                        <img src="../assets/1-1.jpg" alt="">
-                        <img src="../assets/1-1.jpg" alt="">
-                        <img src="../assets/1-1.jpg" alt="">
-                        <img src="../assets/1-1.jpg" alt="">
+                      <div class="picture" v-for="picture in pictures" :key="picture">
+                        <img :src="require(`../assets/${picture.img}`)" alt="">
+                      </div>
+
                     </div>
                 </div>
                 <div class="calendar"><span>Calendar</span></div>
@@ -67,8 +76,44 @@ export default class Home extends Vue {
           name: 'Fix bugs',
           description: 'Fix all bugs',
           time: '02.12.2021'
+        },
+        {
+          name: 'Создать проект с помощью Vue CLI.',
+          description: 'Перенести сверстанную страницу в компонент Vue. Выделить потенциально динамический контент на странице (имена, даты, тексты) и перенести его в переменные. На вкладке Tasks создать список задач с названием задачи, описанием и планируемой датой завершения задачи. Данные записать в массив объектов.',
+          time: '29.10.2021'
         }
-
+      ],
+      items1: [
+        {
+          message: 'Darika Samak mark as done Listing on Product Hunt so that we can reach as many potential users',
+          time: '8:40 PM',
+          img: 'Icon@3x.svg'
+        },
+        {
+          message: 'Emilee Simchenko commented on Account for teams and personal in bottom style',
+          time: '7:32 PM',
+          img: 'Icon@3x.svg',
+          tip: 'During a project build, it is necessary to evaluate the product design and development against project requirements and outcomes'
+        },
+        {
+          message: 'Darika Samak uploaded 4 files on An option to search in current ',
+          time: '6:02 PM',
+          img: 'Icon@3x.svg'
+        }
+      ],
+      pictures: [
+        {
+          img: '1-1.jpg'
+        },
+        {
+          img: '1-1.jpg'
+        },
+        {
+          img: '1-1.jpg'
+        },
+        {
+          img: '1-1.jpg'
+        }
       ]
     }
   }

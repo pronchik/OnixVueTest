@@ -19,7 +19,7 @@
 
                 <div class="introduction">
                     <div class="profile-info">
-                        <img src="../assets/me.png" class = "user-img" alt="user-img" >
+                        <img :src="require(`../assets/${img}`)" class = "user-img" alt="user-img" >
                         <div class="name-position">
                             <p>
                                 {{fullName}}
@@ -81,7 +81,8 @@ export default {
       position: 'Devepoler',
       numberOfOpenTasks: 1,
       numberOfCompletedTasks: 256,
-      notifications: 3
+      notifications: 3,
+      img: 'me.png'
     }
   },
   methods: {
