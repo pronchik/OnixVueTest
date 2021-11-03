@@ -1,22 +1,21 @@
-<template>
-<div class="asd">
-    <Nav/>
-    <Section/>
-</div>
+<template lang="pug">
+.asd(:class='{ active: showMobileMenu }')
+    Nav
+    Section
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component'
 import Nav from '@/components/Nav.vue' // @ is an alias to /src
 import Section from '@/components/Section.vue' // @ is an alias to /src
-@Options({
+import { defineComponent } from 'vue'
+export default defineComponent({
   components: {
     Nav,
     Section
-  }
+  },
+  props: ['showMobileMenu']
 })
 
-export default class Home extends Vue {}
 </script>
 
 <style lang="scss">

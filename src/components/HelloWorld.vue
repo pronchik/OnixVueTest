@@ -1,5 +1,5 @@
-<template>
-  <p>{{asd}}</p>
+<template lang="pug">
+  p {{asd}}
 </template>
 
 <script lang="ts">

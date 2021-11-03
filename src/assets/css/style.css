@@ -172,7 +172,7 @@ table {
 
   .asd{
     display: block;
-    width: 100%;
+    width: calc(100% - 80px);
   }
 
   .asd.active{

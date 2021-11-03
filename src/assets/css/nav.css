@@ -177,7 +177,8 @@ nav .marker span:last-child{
 @media only screen and (max-width: 600px){
    nav{
       background: #FFFFFF;
-      width: 100%;
+      min-width: 280px;
+      width: (100% - 80px);
       height: 100px;
       min-height: 0px;
       display: block;
@@ -211,6 +212,7 @@ nav .marker span:last-child{
    }
    
    nav .website-redesign span{
+      max-width: 100px;
       font: 20px Helvetica;
       color: #131313;
    }

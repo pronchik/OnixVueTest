@@ -1,22 +1,24 @@
-<template>
-<div class="wrapper">
-    <Aside/>
-    <Asd/>
-</div>
+<template lang="pug">
+.wrapper
+    Aside(:showMobileMenu = "showMobileMenu" @update:showMobileMenu="showMobileMenu = $event")
+    Asd(:showMobileMenu = "showMobileMenu")
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component'
 import Aside from '@/components/Aside.vue' // @ is an alias to /src
 import Asd from '@/components/Asd.vue' // @ is an alias to /src
-@Options({
+import { defineComponent } from 'vue'
+export default defineComponent({
   components: {
     Aside,
     Asd
+  },
+  data () {
+    return {
+      showMobileMenu: false
+    }
   }
 })
-
-export default class Home extends Vue {}
 
 </script>
 

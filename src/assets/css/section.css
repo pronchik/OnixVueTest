@@ -226,22 +226,27 @@ section .content .tasks .nadesti .nades span:last-child{
 
    section .content .activity.active1{
       min-width: 280px;
+      width: calc(100% - 80px);
    }
 
    section .content .tasks.active1{
       min-width: 280px;
+      width: calc(100% - 80px);
    }
 
    section .content .calendar.active1{
       min-width: 280px;
+      width: calc(100% - 80px);
    }
 
    section .content .files.active1{
       min-width: 280px;
+      width: calc(100% - 80px);
    }
 
    section .content .activity.active1{
       min-width: 280px;
+      width: calc(100% - 80px);
    }
    
    section .content .activity .message .text{
@@ -320,16 +325,11 @@ section .content .tasks .nadesti .nades span:last-child{
    }
    
    section .content .tasks{
-      display: none;
       padding-top: 35px;
    }
    
-   section .content .tasks.active1{
-      display: block;
-   }
-   
    section .content .tasks .task{
-      font: 12px/20px Helvetica;
+      font: 14px/20px Helvetica;
       color: #000;
       padding-top: 15px;
       padding-left: 30px;
@@ -338,17 +338,17 @@ section .content .tasks .nadesti .nades span:last-child{
    
    section .content .tasks .task .name{
       padding-right: 5px;
-      width: 90px;
+      width: 50px;
       min-width: 60px;
    }
    section .content .tasks .task .description{
-      padding-right: 5px;
-      width: 100px;
+      width: 85px;
       min-width: 40px;
    }
    
    section .content .tasks .task .time{
-      width: 40px;
+      padding-left: 10px;
+      width: 20px;
       min-width: 40px;
    }
    
@@ -367,7 +367,7 @@ section .content .tasks .nadesti .nades span:last-child{
    }
    
    section .content .tasks .nadesti .nades span:last-child{
-      padding-left: 54px;
+      padding-left: 20px;
    }
    
 }
