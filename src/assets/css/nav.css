@@ -141,37 +141,44 @@ nav .marker{
    padding-left: 25px;
 }
 
-nav .marker span{
-   display: none;
+nav .marker .selectkanban span{
+   display: block;
    margin-left: 75px;
    background: #FFC200;
    width: 55px;
    height: 2px;
 }
 
-nav .marker span:first-child{
+nav .marker .selecttasks span{
    margin-left: 0;
+   background: #FFC200;
+   width: 55px;
+   height: 2px;
+   display: block;
 }
 
-nav .marker .third-marker  {
+nav .marker .selectactivity .third-marker  {
    margin-left: 160px;
    background: #FFC200;
    width: 55px;
    height: 2px;
+   display: block;
 }
 
-nav .marker .fourth-marker{
+nav .marker .selectcalendar .fourth-marker{
    margin-left: 245px;
    background: #FFC200;
    width: 55px;
    height: 2px;
+   display: block;
 }
 
-nav .marker span:last-child{
+nav .marker .selectfiles span{
    margin-left: 325px;
    background: #FFC200;
    width: 55px;
    height: 2px;
+   display: block;
 }
 
 @media only screen and (max-width: 600px){

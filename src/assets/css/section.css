@@ -15,12 +15,8 @@ section .content{
 }
 
 section .content .activity{
-   display: none;
-   padding-top: 35px;
-}
-
-section .content .activity.active1{
    display: block;
+   padding-top: 35px;
 }
 
 section .content .activity span{
@@ -116,26 +112,14 @@ section .content .activity .pictures .picture:first-child{
 }
 
 .kanban{
-   display: none;
-}
-
-.kanban.active1{
    display: block;
 }
 
 .calendar{
-   display: none;
-}
-
-.calendar.active1{
    display: block;
 }
 
 .files{
-   display: none;
-}
-
-.files.active1{
    display: block;
 }
 
@@ -152,12 +136,8 @@ section .content .tasks span{
 }
 
 section .content .tasks{
-   display: none;
-   padding-top: 35px;
-}
-
-section .content .tasks.active1{
    display: block;
+   padding-top: 35px;
 }
 
 section .content .tasks .task{

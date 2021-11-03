@@ -1,7 +1,7 @@
 <template lang="pug">
 section
   .content
-    .tasks(:style='{ display: selectTasks }')
+    .tasks(v-if="changeTab === 'tasks'")
       h2
         span Tasks
       .nadesti
@@ -16,9 +16,9 @@ section
           | {{task.description1}}
         .time
           | {{task.time}}
-    .kanban(:style='{ display: selectKanban }')
+    .kanban(v-if="changeTab === 'kanban'")
       span Kanban
-    .activity(:style='{ display: selectActivity }')
+    .activity(v-if="changeTab === 'activity'")
       h2
         span Today
       .message(v-for='item1 in items1' :key='item1')
@@ -33,9 +33,9 @@ section
         .pictures(v-if='item1.pictures')
           .picture(v-for='(picture,index) in item1.pictures' :key='index' @click="selectImg(index)")
             img(:src='require(`../assets/${picture.img}`)' alt='')
-    .calendar(:style='{ display: selectCalendar }')
+    .calendar(v-if="changeTab === 'calendar'")
       span Calendar
-    .files(:style='{ display: selectFiles }')
+    .files(v-if="changeTab === 'files'")
       span Files
 
 </template>
@@ -60,11 +60,7 @@ export default defineComponent({
     ]
     return {
       tasks,
-      selectTasks: 'none',
-      selectActivity: 'block',
-      selectKanban: 'none',
-      selectCalendar: 'none',
-      selectFiles: 'none',
+      changeTab: 'activity',
       items1: [
         {
           message: 'Darika Samak mark as done Listing on Product Hunt so that we can reach as many potential users',
@@ -106,40 +102,8 @@ export default defineComponent({
     }
   },
   mounted () {
-    emitter.on('selectTasks', selectTasks => {
-      this.selectTasks = selectTasks as string
-      this.selectActivity = 'none'
-      this.selectFiles = 'none'
-      this.selectKanban = 'none'
-      this.selectCalendar = 'none'
-    })
-    emitter.on('selectActivity', selectActivity => {
-      this.selectActivity = selectActivity as string
-      this.selectTasks = 'none'
-      this.selectFiles = 'none'
-      this.selectKanban = 'none'
-      this.selectCalendar = 'none'
-    })
-    emitter.on('selectFiles', selectFiles => {
-      this.selectFiles = selectFiles as string
-      this.selectTasks = 'none'
-      this.selectActivity = 'none'
-      this.selectKanban = 'none'
-      this.selectCalendar = 'none'
-    })
-    emitter.on('selectKanban', selectKanban => {
-      this.selectKanban = selectKanban as string
-      this.selectTasks = 'none'
-      this.selectFiles = 'none'
-      this.selectActivity = 'none'
-      this.selectCalendar = 'none'
-    })
-    emitter.on('selectCalendar', selectCalendar => {
-      this.selectCalendar = selectCalendar as string
-      this.selectTasks = 'none'
-      this.selectFiles = 'none'
-      this.selectKanban = 'none'
-      this.selectActivity = 'none'
+    emitter.on('changeTab', changeTab => {
+      this.changeTab = changeTab as string
     })
   }
 })
