@@ -38,7 +38,7 @@ nav
     .selectcalendar(v-if="currentTab === 'calendar'" )
       span.fourth-marker( )
     .selectfiles(v-if="currentTab === 'files'")
-      span()
+      span
   select#select(name='Select page' onchange='selectContentSelector()')
     option Activity
     option Tasks
@@ -52,6 +52,7 @@ nav
 import { emitter } from '../main'
 import { defineComponent } from 'vue'
 export default defineComponent({
+  name: 'app-header',
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   data () {
     return {

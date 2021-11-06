@@ -61,7 +61,7 @@ table {
    background: #F7F6F3;
 }
 
-.asd{
+.header-section{
   display: block;
   width: 100%;
 }
@@ -170,12 +170,12 @@ table {
     background: #F7F6F3;
   }
 
-  .asd{
+  .header-section{
     display: block;
     width: calc(100% - 80px);
   }
 
-  .asd.active{
+  .header-section.active{
     display: none;
   }
 

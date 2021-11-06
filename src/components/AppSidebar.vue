@@ -1,28 +1,16 @@
 <template lang="pug">
 aside(ref='aside' :class='{ active: showMobileMenu }')
-  .modal(:style="{display: display}")
-    .modal-content
-      p Are you sure you want to change the number of tasks?
-      .buttons
-        button.yes(@click='btnYes()') Yes
-        button.no(@click='btnNo()') No
+  app-modal(:display = 'display'
+    :numberOfOpenTasks = 'numberOfOpenTasks'
+    :numberOfCompletedTasks = 'numberOfCompletedTasks'
+    @incr-tasks="numberOfCompletedTasks += $event; numberOfOpenTasks -= $event"
+    @close-modal="display = $event")
   .project-logo
     a(href='#' @click="$emit('update:showMobileMenu', !this.showMobileMenu)")
       img#project-logo(src='../assets/Logo@3x.svg' alt='logo' :class='{ active: showMobileMenu }')
       span(:class='{ active: showMobileMenu }') {{msg}}
     img#search(src='../assets/Search@3x.svg' alt='search' :class='{ active: showMobileMenu }')
-  .introduction(:class='{ active: showMobileMenu }')
-    .profile-info
-      img.user-img(:src='require(`../assets/${img}`)' alt='user-img')
-      .name-position
-        p(:class='{ active: showMobileMenu }')
-          | {{fullName}}
-        span(:class='{ active: showMobileMenu }')
-          | {{position}}
-    .circle(:class='{ active: showMobileMenu }')
-      span
-      span
-      span
+  Profile(:showMobileMenu = "showMobileMenu")
   .statistic(:class='{ active: showMobileMenu }')
     .completed-tasks(@click='showModal()')
       p {{numberOfCompletedTasks}}
@@ -51,15 +39,19 @@ aside(ref='aside' :class='{ active: showMobileMenu }')
 
 import { defineComponent } from 'vue'
 import { emitter } from '../main'
+import Profile from '@/components/Profile.vue'
+import AppModal from '@/components/AppModal.vue'
 export default defineComponent({
+  name: 'app-sidebar',
+  components: {
+    Profile,
+    AppModal
+  },
   data () {
     return {
       msg: 'PROJECTUS',
-      fullName: 'Maksym Pron',
-      position: 'Devepoler',
       numberOfOpenTasks: 1,
       numberOfCompletedTasks: 256,
-      img: 'me.png',
       display: 'none',
       notifications: 3 as number
     }
@@ -67,24 +59,14 @@ export default defineComponent({
   props: ['showMobileMenu'],
   methods: {
     click () {
-      console.log('a')
       this.$emit('update:showMobileMenu', !this.showMobileMenu)
     },
     showModal () {
-      this.display = 'block'
-    },
-    btnYes () {
       if (this.numberOfOpenTasks > 0) {
-        this.numberOfOpenTasks--
-        this.numberOfCompletedTasks++
-        this.display = 'none'
+        this.display = 'block'
       } else {
         alert('Error!')
-        this.display = 'none'
       }
-    },
-    btnNo () {
-      this.display = 'none'
     }
   },
   mounted () {

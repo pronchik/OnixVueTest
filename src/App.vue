@@ -1,17 +1,17 @@
 <template lang="pug">
 .wrapper
-    Aside(:showMobileMenu = "showMobileMenu" @update:showMobileMenu="showMobileMenu = $event")
-    Asd(:showMobileMenu = "showMobileMenu")
+    app-sidebar(:showMobileMenu = "showMobileMenu" @update:showMobileMenu="showMobileMenu = $event")
+    app-header-section(:showMobileMenu = "showMobileMenu")
 </template>
 
 <script lang="ts">
-import Aside from '@/components/Aside.vue' // @ is an alias to /src
-import Asd from '@/components/Asd.vue' // @ is an alias to /src
+import AppSidebar from '@/components/AppSidebar.vue' // @ is an alias to /src
+import AppHeaderSection from '@/components/AppHeaderSection.vue' // @ is an alias to /src
 import { defineComponent } from 'vue'
 export default defineComponent({
   components: {
-    Aside,
-    Asd
+    AppSidebar,
+    AppHeaderSection
   },
   data () {
     return {
