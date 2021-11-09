@@ -65,7 +65,7 @@ export default defineComponent({
       if (this.numberOfOpenTasks > 0) {
         this.display = 'block'
       } else {
-        alert('Error!')
+        alert('You haven`t open tasks!')
       }
     }
   },

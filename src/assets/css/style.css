@@ -102,9 +102,10 @@ table {
 }
 
 .modal .modal-content .no{
+  margin-left: 10px;
   text-decoration:none; 
   text-align:center; 
-  padding:11px 32px; 
+  padding:11px 20px; 
   border-radius: 15px; 
   border:0px;
   font:18px Helvetica; 

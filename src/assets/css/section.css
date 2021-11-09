@@ -29,6 +29,8 @@ section .content .activity span{
 
 section .content .activity .message{
    display: block;
+   width: calc(100% - 80px);
+   min-width:220px;
    padding: 30px 30px 00px 30px;
 }
 
@@ -204,27 +206,31 @@ section .content .tasks .nadesti .nades span:last-child{
       min-width: 280px;
    }
 
-   section .content .activity.active1{
+   section .content .activity{
+      display: block;
       min-width: 280px;
       width: calc(100% - 80px);
    }
 
-   section .content .tasks.active1{
+   section .content .tasks{
+      display: block;
       min-width: 280px;
       width: calc(100% - 80px);
    }
 
-   section .content .calendar.active1{
+   section .content .calendar{
+      display: block;
       min-width: 280px;
       width: calc(100% - 80px);
    }
 
-   section .content .files.active1{
+   section .content .files{
+      display: block;
       min-width: 280px;
       width: calc(100% - 80px);
    }
 
-   section .content .activity.active1{
+   section .content .kanban{
       min-width: 280px;
       width: calc(100% - 80px);
    }

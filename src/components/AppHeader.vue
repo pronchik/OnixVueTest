@@ -39,13 +39,12 @@ nav
       span.fourth-marker( )
     .selectfiles(v-if="currentTab === 'files'")
       span
-  select#select(name='Select page' onchange='selectContentSelector()')
+  select(name='Select page' :v-model="currentTab" @change="changeTab(currentTab)")
     option Activity
     option Tasks
     option Kanban
     option Calendar
     option Files
-
 </template>
 
 <script lang="ts">
@@ -72,8 +71,8 @@ export default defineComponent({
   },
   methods: {
     changeTab (tab :string) {
-      emitter.emit('changeTab', tab)
-      this.currentTab = tab
+      emitter.emit('changeTab', tab.toLowerCase())
+      this.currentTab = tab.toLowerCase()
     }
   }
 })
