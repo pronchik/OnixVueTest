@@ -55,7 +55,7 @@ export default defineComponent({
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   data () {
     return {
-      currentTab: 'activity',
+      currentTab: 'tasks',
       users: [
         {
           img: 'me.png'

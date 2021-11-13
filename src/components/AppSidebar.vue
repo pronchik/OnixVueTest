@@ -50,7 +50,7 @@ export default defineComponent({
   data () {
     return {
       msg: 'PROJECTUS',
-      numberOfOpenTasks: 1,
+      numberOfOpenTasks: 2,
       numberOfCompletedTasks: 256,
       display: 'none',
       notifications: 3 as number
