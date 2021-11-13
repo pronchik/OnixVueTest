@@ -19,15 +19,15 @@ nav
   .navigation
     ul
       li
-        a(href='#' @click="changeTab('tasks')") Tasks
+        a(href='#' @click="$router.push('/tasks'); changeTab('tasks')" ) Tasks
       li
-        a(href='#'  @click="changeTab('kanban')") Kanban
+        a(href='#'  @click="$router.push('/kanban') ; changeTab('kanban')") Kanban
       li
-        a(href='#'  @click="changeTab('activity')") Activity
+        a(href='#'  @click="$router.push('/activity'); changeTab('activity')") Activity
       li
-        a(href='#'   @click="changeTab('calendar')") Calendar
+        a(href='#'   @click="$router.push('/calendar'); changeTab('calendar')") Calendar
       li
-        a(href='#' @click="changeTab('files')") Files
+        a(href='#' @click="$router.push('/files'); changeTab('files')") Files
   .marker
     .selecttasks(v-if="currentTab === 'tasks'")
       span
@@ -39,7 +39,7 @@ nav
       span.fourth-marker( )
     .selectfiles(v-if="currentTab === 'files'")
       span
-  select(name='Select page' :v-model="currentTab" @change="changeTab(currentTab)")
+  select(name='Select page' @change="changeRoute($event)")
     option Activity
     option Tasks
     option Kanban
@@ -48,8 +48,8 @@ nav
 </template>
 
 <script lang="ts">
-import { emitter } from '../main'
 import { defineComponent } from 'vue'
+import { emitter } from '../main'
 export default defineComponent({
   name: 'app-header',
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
@@ -71,9 +71,17 @@ export default defineComponent({
   },
   methods: {
     changeTab (tab :string) {
-      emitter.emit('changeTab', tab.toLowerCase())
       this.currentTab = tab.toLowerCase()
+    },
+    changeRoute (event) {
+      const path = event.target.value
+      this.$router.push({ path: `/${path}` })
     }
+  },
+  mounted () {
+    emitter.on('changeAsideTab', currentTab => {
+      this.currentTab = currentTab as string
+    })
   }
 })
 </script>

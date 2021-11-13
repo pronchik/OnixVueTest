@@ -15,24 +15,24 @@ aside(ref='aside' :class='{ active: showMobileMenu }')
     .completed-tasks(@click='showModal()')
       p {{numberOfCompletedTasks}}
       span Completed tasks
-    .open-tasks
+    .open-tasks(@click="goToTasks()")
       p {{numberOfOpenTasks}}
       span Open tasks
   .menu(:class='{ active: showMobileMenu }')
     span(:class='{ active: showMobileMenu }') MENU
     ul(:class='{ active: showMobileMenu }')
-      li
+      li(@click="goToHome();changeAsideTab('activity')")
         | Home
-      li
+      li(@click="goToTasks();")
         | My Tasks
-      li
+      li(@click="coomingSoon()")
         | Notifications
         .notifications
           span {{notifications}}
   .img-menu
-    img(src='../assets//home.png' alt='' :class='{ active: showMobileMenu }')
-    img(src='../assets//list.png' alt='' :class='{ active: showMobileMenu }')
-    img(src='../assets//notif.png' alt='' :class='{ active: showMobileMenu }')
+    img(src='../assets//home.png' alt='' :class='{ active: showMobileMenu }' @click="goToHome();changeAsideTab('activity')")
+    img(src='../assets//list.png' alt='' :class='{ active: showMobileMenu }' @click="goToTasks();")
+    img(src='../assets//notif.png' alt='' :class='{ active: showMobileMenu }' @click="coomingSoon()")
 </template>
 
 <script lang="ts">
@@ -58,6 +58,18 @@ export default defineComponent({
   },
   props: ['showMobileMenu'],
   methods: {
+    goToTasks () {
+      if (this.numberOfOpenTasks !== 0) {
+        this.$router.push('/tasks')
+        emitter.emit('changeAsideTab', 'tasks')
+      } else alert('Everuthing complete')
+    },
+    coomingSoon () {
+      this.$router.push('/Notification')
+    },
+    goToHome () {
+      this.$router.push('/activity')
+    },
     click () {
       this.$emit('update:showMobileMenu', !this.showMobileMenu)
     },
@@ -67,6 +79,9 @@ export default defineComponent({
       } else {
         alert('You haven`t open tasks!')
       }
+    },
+    changeAsideTab (tab) {
+      emitter.emit('changeAsideTab', tab.toLowerCase())
     }
   },
   mounted () {

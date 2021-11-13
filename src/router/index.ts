@@ -1,20 +1,47 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import Home from '../views/Home.vue'
+import Activity from '../views/Activity.vue'
+import Tasks from '../views/Tasks.vue'
+import PageNotFound from '../views/PageNotFound.vue'
+import ComingSoon from '../views/ComingSoon.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: '/',
-    name: 'Home',
-    component: Home
+    path: '/files',
+    name: 'files',
+    component: ComingSoon
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: '/activity',
+    component: Activity
+  },
+  {
+    path: '/',
+    redirect: '/activity'
+  },
+  {
+    path: '/tasks',
+    name: 'tasks',
+    component: Tasks
+  },
+  {
+    path: '/kanban',
+    name: 'kanban',
+    component: ComingSoon
+  },
+  {
+    path: '/calendar',
+    name: 'calendar',
+    component: ComingSoon
+  },
+  {
+    path: '/:PageNotFound(.*)*',
+    component: PageNotFound
+  },
+  {
+    path: '/notification',
+    component: ComingSoon
   }
+
 ]
 
 const router = createRouter({

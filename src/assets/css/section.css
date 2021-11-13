@@ -109,6 +109,30 @@ section .content .activity .pictures .picture img{
    margin-left: 10px;
 }
 
+.go-home{
+   margin-left: 100px;
+   margin-top: 15px;
+   display: block;
+   cursor: pointer;
+   font: 14px Helvetica;
+   text-decoration:none;
+   padding:10px 20px;
+   color:#0d283b;
+   background:#EAEAEA;
+   border-radius:14px;
+   border:2px solid #64faf0;
+}
+
+section .content .error h1{
+   display: block;
+   padding-top: 100px;
+   padding-left: 100px;
+   margin-right: auto;
+   font: 35px Helvetica;
+   color: #131313;
+   opacity: 0.7;
+}
+
 section .content .activity .pictures .picture:first-child{
    padding-left: 90px;
 }
@@ -127,6 +151,10 @@ section .content .activity .pictures .picture:first-child{
 
 select{
    display: none;
+}
+
+.page404{
+   display: block;
 }
 
 section .content .tasks span{
