@@ -23,7 +23,7 @@ aside(ref='aside' :class='{ active: showMobileMenu }')
     ul(:class='{ active: showMobileMenu }')
       li(@click="changeAsideTab('activity')")
         router-link(:to="{path: '/activity'}" exact='' tag='li')
-          a Homer
+          a Home
       li(@click="goToTasks();")
         a My Tasks
       li
@@ -31,9 +31,11 @@ aside(ref='aside' :class='{ active: showMobileMenu }')
         .notifications
           span {{notifications}}
   .img-menu
-    img(src='../assets//home.png' alt='' :class='{ active: showMobileMenu }' @click="goToHome();changeAsideTab('activity')")
+    router-link(:to="{path: '/activity'}")
+      img(src='../assets//home.png' alt='' :class='{ active: showMobileMenu }' @click="changeAsideTab('activity')")
     img(src='../assets//list.png' alt='' :class='{ active: showMobileMenu }' @click="goToTasks();")
-    img(src='../assets//notif.png' alt='' :class='{ active: showMobileMenu }' @click="coomingSoon()")
+    router-link(:to="{ name: 'cooming-soon'}")
+      img(src='../assets//notif.png' alt='' :class='{ active: showMobileMenu }')
 </template>
 
 <script lang="ts">
@@ -64,12 +66,6 @@ export default defineComponent({
         this.$router.push('/tasks')
         emitter.emit('changeAsideTab', 'tasks')
       } else alert('Everuthing complete')
-    },
-    coomingSoon () {
-      this.$router.push('/Notification')
-    },
-    goToHome () {
-      this.$router.push('/activity')
     },
     click () {
       this.$emit('update:showMobileMenu', !this.showMobileMenu)
