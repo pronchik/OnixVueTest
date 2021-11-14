@@ -19,15 +19,15 @@ nav
   .navigation
     ul
       li
-        a(href='#' @click="$router.push('/tasks'); changeTab('tasks')" ) Tasks
+        router-link(:to="{ name: 'tasks'}" @click="changeTab('tasks')") Tasks
       li
-        a(href='#'  @click="$router.push('/kanban') ; changeTab('kanban')") Kanban
+        router-link(:to="{ name: 'kanban'}" @click="changeTab('kanban')") Kanban
       li
-        a(href='#'  @click="$router.push('/activity'); changeTab('activity')") Activity
+        router-link(:to="{ name: 'activity'}" @click="changeTab('activity')") Activity
       li
-        a(href='#'   @click="$router.push('/calendar'); changeTab('calendar')") Calendar
+        router-link(:to="{ name: 'calendar'}" @click="changeTab('calendar')") Calendar
       li
-        a(href='#' @click="$router.push('/files'); changeTab('files')") Files
+        router-link(:to="{ name: 'files'}" @click="changeTab('files')") Files
   .marker
     .selecttasks(v-if="currentTab === 'tasks'")
       span

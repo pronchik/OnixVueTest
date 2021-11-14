@@ -21,12 +21,13 @@ aside(ref='aside' :class='{ active: showMobileMenu }')
   .menu(:class='{ active: showMobileMenu }')
     span(:class='{ active: showMobileMenu }') MENU
     ul(:class='{ active: showMobileMenu }')
-      li(@click="goToHome();changeAsideTab('activity')")
-        | Home
+      li(@click="changeAsideTab('activity')")
+        router-link(:to="{path: '/activity'}" exact='' tag='li')
+          a Homer
       li(@click="goToTasks();")
-        | My Tasks
-      li(@click="coomingSoon()")
-        | Notifications
+        a My Tasks
+      li
+        router-link(:to="{ name: 'cooming-soon'}") Notification
         .notifications
           span {{notifications}}
   .img-menu

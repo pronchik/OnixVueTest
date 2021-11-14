@@ -177,12 +177,15 @@ aside .menu span{
    line-height: 18px
 }
 
-aside .menu  li{
+aside .menu  li a{
    cursor: pointer;
-   padding-top: 16px;
    color: #FFF;
    text-decoration: none;
    font: 14px/22px Helvetica;
+}
+
+aside .menu  li {
+   padding-top: 16px;
 }
 
 aside .menu li:first-child{

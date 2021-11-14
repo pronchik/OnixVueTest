@@ -12,6 +12,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/activity',
+    name: 'activity',
     component: Activity
   },
   {
@@ -39,6 +40,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/notification',
+    name: 'cooming-soon',
     component: ComingSoon
   }
 
