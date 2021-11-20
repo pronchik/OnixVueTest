@@ -138,45 +138,50 @@ nav .navigation ul li:first-child{
 nav .marker{
    display: flex;
    padding-top: 14px;
-   padding-left: 25px;
+   padding-left: 0px;
 }
 
-nav .marker .selectkanban span{
+nav .selectkanban span{
+   margin-top: 14px;
    display: block;
-   margin-left: 75px;
-   background: #FFC200;
-   width: 55px;
-   height: 2px;
-}
-
-nav .marker .selecttasks span{
    margin-left: 0;
    background: #FFC200;
    width: 55px;
    height: 2px;
+}
+
+nav .selecttasks span{
+   margin-top: 14px;
+   margin-left: 3px;
+   background: #FFC200;
+   width: 38px;
+   height: 2px;
    display: block;
 }
 
-nav .marker .selectactivity .third-marker  {
-   margin-left: 160px;
+nav .selectactivity .third-marker  {
+   margin-top: 14px;
+   margin-left: 0px;
+   background: #FFC200;
+   width: 50px;
+   height: 2px;
+   display: block;
+}
+
+nav .selectcalendar .fourth-marker{
+   margin-top: 14px;
+   margin-left: 7px;
    background: #FFC200;
    width: 55px;
    height: 2px;
    display: block;
 }
 
-nav .marker .selectcalendar .fourth-marker{
-   margin-left: 245px;
+nav .selectfiles span{
+   margin-top: 14px;
+   margin-left: 0px;
    background: #FFC200;
-   width: 55px;
-   height: 2px;
-   display: block;
-}
-
-nav .marker .selectfiles span{
-   margin-left: 325px;
-   background: #FFC200;
-   width: 55px;
+   width: 40px;
    height: 2px;
    display: block;
 }

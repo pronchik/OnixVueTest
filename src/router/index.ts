@@ -35,15 +35,14 @@ const routes: Array<RouteRecordRaw> = [
     component: ComingSoon
   },
   {
-    path: '/:PageNotFound(.*)*',
-    component: PageNotFound
-  },
-  {
     path: '/notification',
     name: 'cooming-soon',
     component: ComingSoon
+  },
+  {
+    path: '/:PageNotFound(.*)*',
+    component: PageNotFound
   }
-
 ]
 
 const router = createRouter({

@@ -15,25 +15,28 @@ aside(ref='aside' :class='{ active: showMobileMenu }')
     .completed-tasks(@click='showModal()')
       p {{numberOfCompletedTasks}}
       span Completed tasks
-    .open-tasks(@click="goToTasks()")
-      p {{numberOfOpenTasks}}
-      span Open tasks
+    router-link(style="text-decoration: none;" :to="{ name: 'tasks'} ")
+      .open-tasks
+        p {{numberOfOpenTasks}}
+        span Open tasks
   .menu(:class='{ active: showMobileMenu }')
     span(:class='{ active: showMobileMenu }') MENU
     ul(:class='{ active: showMobileMenu }')
-      li(@click="changeAsideTab('activity')")
+      li
         router-link(:to="{path: '/activity'}" exact='' tag='li')
           a Home
-      li(@click="goToTasks();")
-        a My Tasks
+      li
+        router-link(:to="{path: '/tasks'}" exact='' tag='li')
+          a My Tasks
       li
         router-link(:to="{ name: 'cooming-soon'}") Notification
         .notifications
           span {{notifications}}
   .img-menu
     router-link(:to="{path: '/activity'}")
-      img(src='../assets//home.png' alt='' :class='{ active: showMobileMenu }' @click="changeAsideTab('activity')")
-    img(src='../assets//list.png' alt='' :class='{ active: showMobileMenu }' @click="goToTasks();")
+      img(src='../assets//home.png' alt='' :class='{ active: showMobileMenu }')
+    router-link(:to="{path: '/tasks'}")
+      img(src='../assets//list.png' alt='' :class='{ active: showMobileMenu }')
     router-link(:to="{ name: 'cooming-soon'}")
       img(src='../assets//notif.png' alt='' :class='{ active: showMobileMenu }')
 </template>
@@ -61,12 +64,6 @@ export default defineComponent({
   },
   props: ['showMobileMenu'],
   methods: {
-    goToTasks () {
-      if (this.numberOfOpenTasks !== 0) {
-        this.$router.push('/tasks')
-        emitter.emit('changeAsideTab', 'tasks')
-      } else alert('Everuthing complete')
-    },
     click () {
       this.$emit('update:showMobileMenu', !this.showMobileMenu)
     },
@@ -76,9 +73,6 @@ export default defineComponent({
       } else {
         alert('You haven`t open tasks!')
       }
-    },
-    changeAsideTab (tab) {
-      emitter.emit('changeAsideTab', tab.toLowerCase())
     }
   },
   mounted () {

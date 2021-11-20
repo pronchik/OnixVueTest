@@ -19,26 +19,20 @@ nav
   .navigation
     ul
       li
-        router-link(:to="{ name: 'tasks'}" @click="changeTab('tasks')") Tasks
+        router-link(:to="{ name: 'tasks'}" active-class="selecttasks") Tasks
+          span
       li
-        router-link(:to="{ name: 'kanban'}" @click="changeTab('kanban')") Kanban
+        router-link(:to="{ name: 'kanban'}" active-class="selectkanban") Kanban
+          span
       li
-        router-link(:to="{ name: 'activity'}" @click="changeTab('activity')") Activity
+        router-link(:to="{ name: 'activity'}" active-class="selectactivity") Activity
+          span.third-marker( )
       li
-        router-link(:to="{ name: 'calendar'}" @click="changeTab('calendar')") Calendar
+        router-link(:to="{ name: 'calendar'}" active-class="selectcalendar") Calendar
+          span.fourth-marker( )
       li
-        router-link(:to="{ name: 'files'}" @click="changeTab('files')") Files
-  .marker
-    .selecttasks(v-if="currentTab === 'tasks'")
-      span
-    .selectkanban(v-if="currentTab === 'kanban'" )
-      span
-    .selectactivity(v-if="currentTab === 'activity'")
-      span.third-marker( )
-    .selectcalendar(v-if="currentTab === 'calendar'" )
-      span.fourth-marker( )
-    .selectfiles(v-if="currentTab === 'files'")
-      span
+        router-link(:to="{ name: 'files'}" active-class="selectfiles") Files
+          span
   select(name='Select page' @change="changeRoute($event)")
     option Activity
     option Tasks
@@ -49,7 +43,6 @@ nav
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { emitter } from '../main'
 export default defineComponent({
   name: 'app-header',
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
@@ -70,18 +63,10 @@ export default defineComponent({
     }
   },
   methods: {
-    changeTab (tab :string) {
-      this.currentTab = tab.toLowerCase()
-    },
     changeRoute (event) {
       const path = event.target.value
       this.$router.push({ path: `/${path}` })
     }
-  },
-  mounted () {
-    emitter.on('changeAsideTab', currentTab => {
-      this.currentTab = currentTab as string
-    })
   }
 })
 </script>
