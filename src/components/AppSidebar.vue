@@ -4,7 +4,8 @@ aside(ref='aside' :class='{ active: showMobileMenu }')
     :numberOfOpenTasks = 'numberOfOpenTasks'
     :numberOfCompletedTasks = 'numberOfCompletedTasks'
     @incr-tasks="numberOfCompletedTasks += $event; numberOfOpenTasks -= $event"
-    @close-modal="display = $event")
+    @close-modal="display = $event"
+    @click="someFunc()")
   .project-logo
     a(href='#' @click="$emit('update:showMobileMenu', !this.showMobileMenu)")
       img#project-logo(src='../assets/Logo@3x.svg' alt='logo' :class='{ active: showMobileMenu }')
@@ -66,6 +67,9 @@ export default defineComponent({
   methods: {
     click () {
       this.$emit('update:showMobileMenu', !this.showMobileMenu)
+    },
+    someFunc () {
+      emitter.emit('changeArr', 1)
     },
     showModal () {
       if (this.numberOfOpenTasks > 0) {

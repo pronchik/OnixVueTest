@@ -48,7 +48,6 @@ export default defineComponent({
       task_name: '',
       task_deadline: '',
       task_description: ''
-
     }
   },
   validations: {
@@ -77,6 +76,11 @@ export default defineComponent({
         alert('Not submited')
       }
     }
+  },
+  mounted () {
+    emitter.on('changeArr', () => {
+      this.tasks = this.tasks.splice(1)
+    })
   }
 })
 </script>
