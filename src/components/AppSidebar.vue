@@ -4,7 +4,8 @@ aside(ref='aside' :class='{ active: showMobileMenu }')
     :numberOfOpenTasks = 'numberOfOpenTasks'
     :numberOfCompletedTasks = 'numberOfCompletedTasks'
     @incr-tasks="numberOfCompletedTasks += $event; numberOfOpenTasks -= $event"
-    @close-modal="display = $event")
+    @close-modal="display = $event"
+    @click="someFunc()")
   .project-logo
     a(href='#' @click="$emit('update:showMobileMenu', !this.showMobileMenu)")
       img#project-logo(src='../assets/Logo@3x.svg' alt='logo' :class='{ active: showMobileMenu }')
@@ -25,7 +26,7 @@ aside(ref='aside' :class='{ active: showMobileMenu }')
       li
         router-link(:to="{path: '/activity'}" exact='' tag='li')
           a Home
-      li
+      li(v-if='numberOfOpenTasks > 0')
         router-link(:to="{path: '/tasks'}" exact='' tag='li')
           a My Tasks
       li
@@ -35,7 +36,7 @@ aside(ref='aside' :class='{ active: showMobileMenu }')
   .img-menu
     router-link(:to="{path: '/activity'}")
       img(src='../assets//home.png' alt='' :class='{ active: showMobileMenu }')
-    router-link(:to="{path: '/tasks'}")
+    router-link(:to="{path: '/tasks'}" v-if='numberOfOpenTasks > 0')
       img(src='../assets//list.png' alt='' :class='{ active: showMobileMenu }')
     router-link(:to="{ name: 'cooming-soon'}")
       img(src='../assets//notif.png' alt='' :class='{ active: showMobileMenu }')
@@ -67,6 +68,9 @@ export default defineComponent({
     click () {
       this.$emit('update:showMobileMenu', !this.showMobileMenu)
     },
+    someFunc () {
+      emitter.emit('changeArr', 1)
+    },
     showModal () {
       if (this.numberOfOpenTasks > 0) {
         this.display = 'block'
@@ -78,6 +82,9 @@ export default defineComponent({
   mounted () {
     emitter.on('change', notifications => {
       this.notifications = notifications as number
+    })
+    emitter.on('changeNumber', numberOfOpenTasks => {
+      this.numberOfOpenTasks = numberOfOpenTasks as number
     })
   }
 })
