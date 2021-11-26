@@ -12,14 +12,14 @@
             span Name
             span Description
           span Deadline
-        .task(v-for='task in tasks' :key='task')
+        .task(v-for='(task, index) in tasks' :key='task')
           .name
             | {{task.name}}
           .description
             | {{task.description1}}
           .time
             | {{task.time}}
-          button(class='delete-task' @click="deleteCart(task)") -
+          button(class='delete-task' @click="deleteCart(index)") -
 </template>
 
 <script lang="ts">
@@ -57,7 +57,7 @@ export default defineComponent({
   },
   methods: {
     deleteCart (task) {
-      this.tasks.splice(this.tasks.indexOf(task), 1)
+      this.tasks.splice(task, 1)
       emitter.emit('changeNumber', this.tasks.length)
     },
     submitForm (taskName, taskDescription, taskDeadline) {
