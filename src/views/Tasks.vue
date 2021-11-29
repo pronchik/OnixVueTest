@@ -2,25 +2,25 @@
 .tasks
   h2
       span Tasks
-      .add-form
-        input(v-model="task_name" class='input-name' placeholder="Name:")
-        input(v-model="task_description" class='input-name' placeholder="Description:")
-        input(v-model="task_deadline" class='input-name' placeholder="Deadline:")
-        button(class='add-task' @click="submitForm(task_name,task_description,task_deadline)") +
-      .nadesti
-        .nades
-          span Name
-          span Description
-        span Deadline
-      //transition-group(name='tasks' mode='out-in')
-      .task(v-for='(task, index) in tasks' :key='task.index' :ref="`task${index}`" class="list-item")
-        .name
-          | {{task.name}}
-        .description
-          | {{task.description1}}
-        .time
-          | {{task.time}}
-        button(class='delete-task' @click="deleteCart(index)") -
+        .add-form
+          input(v-model="task_name" class='input-name' placeholder="Name:")
+          input(v-model="task_description" class='input-name' placeholder="Description:")
+          input(v-model="task_deadline" class='input-name' placeholder="Deadline:")
+          button(class='add-task' @click="submitForm(task_name,task_description,task_deadline)") +
+        .nadesti
+          .nades
+            span Name
+            span Description
+          span Deadline
+        //transition-group(name='tasks' mode='out-in')
+        .task(v-for='(task, index) in tasks' :key='task.index' :ref="`task${index}`" class="list-item")
+          .name
+            | {{task.name}}
+          .description
+            | {{task.description1}}
+          .time
+            | {{task.time}}
+          button(class='delete-task' @click="deleteCart(index)") -
 </template>
 
 <script lang="ts">

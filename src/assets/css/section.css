@@ -228,7 +228,7 @@ section .content .tasks span{
    animation-name: blink;
    animation-iteration-count: 4;
    animation-timing-function: cubic-bezier(1.0,0,0,1.0);
-   animation-duration: 2s;
+   animation-duration: 1s;
 
  }
   
