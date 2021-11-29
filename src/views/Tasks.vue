@@ -12,7 +12,6 @@
             span Name
             span Description
           span Deadline
-        //transition-group(name='tasks' mode='out-in')
         .task(v-for='(task, index) in tasks' :key='task.index' :ref="`task${index}`" class="list-item")
           .name
             | {{task.name}}
@@ -57,14 +56,11 @@ export default defineComponent({
     task_description: { required }
   },
   methods: {
-    setDelay (currentIndex) {
-      setTimeout(() => {
-        Object.values(this.$refs as unknown as HTMLElement)[currentIndex].classList.add('increase')
-      }, 2000 * currentIndex)
-    },
     blink () {
       for (let i = 0; i < Object.values(this.$refs).length; i++) {
-        this.setDelay(i)
+        setTimeout(() => {
+          Object.values(this.$refs as unknown as HTMLElement)[i].classList.add('increase')
+        }, 2000 * i)
         setTimeout(() => {
           Object.values(this.$refs as unknown as HTMLElement)[i].classList.remove('increase')
         }, 2000 * Object.values(this.$refs).length)
