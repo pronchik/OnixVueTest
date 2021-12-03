@@ -12,7 +12,7 @@
             span Name
             span Description
           span Deadline
-        .task(v-for='(task, index) in tasks' :key='task')
+        .task(v-for='(task, index) in tasks' :key='task.index' :ref="`task${index}`" class="list-item")
           .name
             | {{task.name}}
           .description
@@ -56,6 +56,16 @@ export default defineComponent({
     task_description: { required }
   },
   methods: {
+    blink () {
+      for (let i = 0; i < Object.values(this.$refs).length; i++) {
+        setTimeout(() => {
+          Object.values(this.$refs as unknown as HTMLElement)[i].classList.add('increase')
+        }, 2000 * i)
+        setTimeout(() => {
+          Object.values(this.$refs as unknown as HTMLElement)[i].classList.remove('increase')
+        }, 2000 * Object.values(this.$refs).length)
+      }
+    },
     deleteCart (task) {
       this.tasks.splice(task, 1)
       emitter.emit('changeNumber', this.tasks.length)
@@ -72,12 +82,19 @@ export default defineComponent({
         this.task_deadline = ''
         this.task_description = ''
         emitter.emit('changeNumber', this.tasks.length)
+        this.$nextTick(() => {
+          Object.values(this.$refs as unknown as HTMLElement)[Object.values(this.$refs).length - 1].classList.add('blink')
+          setTimeout(() => {
+            Object.values(this.$refs as unknown as HTMLElement)[Object.values(this.$refs).length - 1].classList.remove('blink')
+          }, 4000)
+        })
       } else {
         alert('Not submited')
       }
     }
   },
   mounted () {
+    this.blink()
     emitter.on('changeArr', () => {
       this.tasks = this.tasks.splice(1)
     })
