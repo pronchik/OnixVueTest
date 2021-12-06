@@ -36,13 +36,19 @@ export default defineComponent({
         name: 'Create app',
         description1: 'Use smth ',
         time: '02.12.2021',
-        status: STATUS.INPROGRESS
+        status: STATUS.TODO
       },
       {
         name: 'Fix bugs',
         description1: 'Fix all bugs',
         time: '02.12.2021',
         status: STATUS.INPROGRESS
+      },
+      {
+        name: 'Fix bugs',
+        description1: 'Fix all bugs',
+        time: '02.12.2021',
+        status: STATUS.DONE
       }
     ]
     return {
@@ -52,7 +58,7 @@ export default defineComponent({
       task_deadline: '',
       task_description: '',
       task_status: '',
-      STATUS // I had to add this
+      STATUS
     }
   },
   validations: {
