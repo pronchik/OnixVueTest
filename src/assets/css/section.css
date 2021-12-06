@@ -187,7 +187,48 @@ section .content .activity .pictures .picture:first-child{
 .kanban{
    display: block;
 }
+.statuses{
+   padding-top: 15px;
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   padding-right: 50px;
+   height: 100%;
+}
+.statuses:first-child{
+   padding-left: 25px;
+}
+.statuses span{
+   font: 16px/20px Helvetica;
+   color: black;
+}
+.statuses .todo{
+   height: 500px;
+   width: 200px;
+}
+.statuses .inprogress{
+   height: 500px;
+   width: 200px;
+}
+.statuses .done{
+   height: 500px;
+   width: 200px;
+}
 
+.card{
+   margin-top: 15px;
+   background-color: #CEF9C6;
+   border-radius: 15px;
+   height: 60px;
+}
+.card .name{
+   padding-left: 10px;
+   padding-top: 5px;
+}
+.card .deadline{
+   padding-left: 10px;
+   padding-top: 5px;
+}
 .calendar{
    display: block;
 }

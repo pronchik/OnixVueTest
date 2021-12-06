@@ -1,7 +1,7 @@
 <template lang="pug">
 section
-  .content
-    router-view
+  .content()
+    router-view(:tasks='tasks')
 
 </template>
 
@@ -14,6 +14,7 @@ import Calendar from '../views/Calendar.vue'
 import Files from '../views/Files.vue'
 import PageNotFound from '../views/PageNotFound.vue'
 import ComingSoon from '../views/ComingSoon.vue'
+import { emitter } from '../main'
 
 export default defineComponent({
   name: 'app-section',
@@ -25,6 +26,16 @@ export default defineComponent({
     Files,
     PageNotFound,
     ComingSoon
+  },
+  data () {
+    return {
+      tasks: []
+    }
+  },
+  mounted () {
+    emitter.on('giveTasks', tasks => {
+      this.tasks = tasks as []
+    })
   }
 })
 </script>

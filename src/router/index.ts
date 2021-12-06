@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import Activity from '../views/Activity.vue'
 import Tasks from '../views/Tasks.vue'
+import Kanban from '../views/Kanban.vue'
 import PageNotFound from '../views/PageNotFound.vue'
 import ComingSoon from '../views/ComingSoon.vue'
 
@@ -27,7 +28,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/kanban',
     name: 'kanban',
-    component: ComingSoon
+    component: Kanban
   },
   {
     path: '/calendar',
