@@ -28,18 +28,27 @@ import { TaskInterface } from '@/types/task.interface'
 import useValidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
 import { emitter } from '../main'
+import STATUS from './../enums/TaskStatusEnum'
 export default defineComponent({
   data () {
     const tasks: TaskInterface[] = [
       {
         name: 'Create app',
         description1: 'Use smth ',
-        time: '02.12.2021'
+        time: '02.12.2021',
+        status: STATUS.TODO
       },
       {
         name: 'Fix bugs',
         description1: 'Fix all bugs',
-        time: '02.12.2021'
+        time: '02.12.2021',
+        status: STATUS.INPROGRESS
+      },
+      {
+        name: 'Fix bugs',
+        description1: 'Fix all bugs',
+        time: '02.12.2021',
+        status: STATUS.DONE
       }
     ]
     return {
@@ -47,15 +56,25 @@ export default defineComponent({
       tasks,
       task_name: '',
       task_deadline: '',
-      task_description: ''
+      task_description: '',
+      task_status: '',
+      STATUS
     }
   },
   validations: {
     task_name: { required },
-    task_deadline: { required },
+    task_deadline: {
+      required,
+      minValue (val) {
+        return new Date(val) > new Date()
+      }
+    },
     task_description: { required }
   },
   methods: {
+    giveTasks () {
+      emitter.emit('giveTasks', this.tasks)
+    },
     blink () {
       for (let i = 0; i < Object.values(this.$refs).length; i++) {
         setTimeout(() => {
@@ -76,7 +95,8 @@ export default defineComponent({
         this.tasks.push({
           name: taskName,
           description1: taskDescription,
-          time: taskDeadline
+          time: taskDeadline,
+          status: STATUS.TODO
         })
         this.task_name = ''
         this.task_deadline = ''
@@ -94,6 +114,7 @@ export default defineComponent({
     }
   },
   mounted () {
+    this.giveTasks()
     this.blink()
     emitter.on('changeArr', () => {
       this.tasks = this.tasks.splice(1)
