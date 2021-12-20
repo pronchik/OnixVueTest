@@ -7,34 +7,21 @@ section
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import Tasks from '../views/Tasks.vue'
-import Kanban from '../views/Kanban.vue'
-import Activity from '../views/Activity.vue'
-import Calendar from '../views/Calendar.vue'
-import Files from '../views/Files.vue'
-import PageNotFound from '../views/PageNotFound.vue'
-import ComingSoon from '../views/ComingSoon.vue'
 import { emitter } from '../main'
+import { TaskInterface } from '@/types/task.interface'
 
 export default defineComponent({
   name: 'app-section',
-  components: {
-    Tasks,
-    Kanban,
-    Activity,
-    Calendar,
-    Files,
-    PageNotFound,
-    ComingSoon
-  },
+
   data () {
+    const tasks: TaskInterface[] = []
     return {
-      tasks: []
+      tasks
     }
   },
   mounted () {
     emitter.on('giveTasks', tasks => {
-      this.tasks = tasks as []
+      this.tasks = tasks as TaskInterface[]
     })
   }
 })

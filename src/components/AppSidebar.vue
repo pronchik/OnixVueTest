@@ -69,7 +69,7 @@ export default defineComponent({
       this.$emit('update:showMobileMenu', !this.showMobileMenu)
     },
     someFunc () {
-      emitter.emit('changeArr', 1)
+      emitter.emit('removeLastElementFromTaskArray')
     },
     showModal () {
       if (this.numberOfOpenTasks > 0) {

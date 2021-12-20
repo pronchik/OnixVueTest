@@ -1,18 +1,18 @@
 <template lang="pug">
 .tasks
+  .asd(v-if="Object.keys(this.task).length !== 0")
+    task-details-modal(:showDetailsModal = 'showDetailsModal' :task = 'task')
+  task-modal(:showModal = 'showModal' :tasks = 'tasks'
+  @close-modal="showModal = $event")
   h2
       span Tasks
-        .add-form
-          input(v-model="task_name" class='input-name' placeholder="Name:")
-          input(v-model="task_description" class='input-name' placeholder="Description:")
-          input(v-model="task_deadline" class='input-name' placeholder="Deadline:")
-          button(class='add-task' @click="submitForm(task_name,task_description,task_deadline)") +
+        button(class='add-task' @click="openModal()") +
         .nadesti
           .nades
             span Name
             span Description
           span Deadline
-        .task(v-for='(task, index) in tasks' :key='task.index' :ref="`task${index}`" class="list-item")
+        .task(v-for='(task, index) in tasks' :key='task.index' :ref="`task${index}`" class="list-item" @click="taskModal(index)")
           .name
             | {{task.name}}
           .description
@@ -28,27 +28,34 @@ import { TaskInterface } from '@/types/task.interface'
 import useValidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
 import { emitter } from '../main'
-import STATUS from './../enums/TaskStatusEnum'
+import { TaskStatusEnum } from './../enums/TaskStatusEnum'
+import TaskModal from '@/components/TaskModal.vue'
 export default defineComponent({
+  components: {
+    TaskModal
+  },
   data () {
     const tasks: TaskInterface[] = [
       {
+        id: 0,
         name: 'Create app',
-        description1: 'Use smth ',
+        description1: 'Use smth',
         time: '02.12.2021',
-        status: STATUS.TODO
+        status: TaskStatusEnum.TODO
       },
       {
+        id: 1,
         name: 'Fix bugs',
         description1: 'Fix all bugs',
         time: '02.12.2021',
-        status: STATUS.INPROGRESS
+        status: TaskStatusEnum.INPROGRESS
       },
       {
-        name: 'Fix bugs',
+        id: 2,
+        name: 'Fixx bugs',
         description1: 'Fix all bugs',
         time: '02.12.2021',
-        status: STATUS.DONE
+        status: TaskStatusEnum.DONE
       }
     ]
     return {
@@ -58,7 +65,10 @@ export default defineComponent({
       task_deadline: '',
       task_description: '',
       task_status: '',
-      STATUS
+      TaskStatusEnum,
+      showModal: 'none',
+      showDetailsModal: 'none',
+      task: ''
     }
   },
   validations: {
@@ -72,6 +82,13 @@ export default defineComponent({
     task_description: { required }
   },
   methods: {
+    taskModal (index) {
+      this.showDetailsModal = 'block'
+      this.task = this.tasks[index] as unknown as string
+    },
+    openModal () {
+      this.showModal = 'block'
+    },
     giveTasks () {
       emitter.emit('giveTasks', this.tasks)
     },
@@ -89,18 +106,16 @@ export default defineComponent({
       this.tasks.splice(task, 1)
       emitter.emit('changeNumber', this.tasks.length)
     },
-    submitForm (taskName, taskDescription, taskDeadline) {
-      this.v$.$validate()
-      if (!this.v$.$error) {
+    takeTask () {
+      emitter.on('task', task => {
         this.tasks.push({
-          name: taskName,
-          description1: taskDescription,
-          time: taskDeadline,
-          status: STATUS.TODO
+          id: this.tasks.length,
+          name: Object.values(task as string)[0] as string,
+          description1: Object.values(task as string)[1] as string,
+          time: Object.values(task as string)[2] as string,
+          status: TaskStatusEnum.TODO
         })
-        this.task_name = ''
-        this.task_deadline = ''
-        this.task_description = ''
+        this.showModal = 'none'
         emitter.emit('changeNumber', this.tasks.length)
         this.$nextTick(() => {
           Object.values(this.$refs as unknown as HTMLElement)[Object.values(this.$refs).length - 1].classList.add('blink')
@@ -108,17 +123,16 @@ export default defineComponent({
             Object.values(this.$refs as unknown as HTMLElement)[Object.values(this.$refs).length - 1].classList.remove('blink')
           }, 4000)
         })
-      } else {
-        alert('Not submited')
-      }
+      })
     }
   },
   mounted () {
     this.giveTasks()
     this.blink()
-    emitter.on('changeArr', () => {
+    emitter.on('removeLastElementFromTaskArray', () => {
       this.tasks = this.tasks.splice(1)
     })
+    this.takeTask()
   }
 })
 </script>
