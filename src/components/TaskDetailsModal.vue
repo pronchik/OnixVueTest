@@ -4,22 +4,22 @@
         .task
             button(class='close' v-on:click="close()") x
             .name(v-if="show")
-                |Name: {{updatedTask.name}}
+                |Name: {{task.name}}
             .text(v-if="!show" @change="handleChange")
                 textarea(v-model='updatedTask.name')
             .status(v-if="show")
-                |Status: {{updatedTask.status}}
+                |Status: {{task.status}}
             .text(v-if="!show" @change="handleChange")
                 select(v-model='updatedTask.status')
                     option {{TaskStatusEnum.TODO}}
                     option {{TaskStatusEnum.DONE}}
                     option {{TaskStatusEnum.INPROGRESS}}
             .deadline
-                |Deadline: {{updatedTask.time}}
+                |Deadline: {{task.time}}
             .text(v-if="!show" @change="handleChange")
                 input(type='date' v-model='updatedTask.time')
             .description(v-if="show" @change="handleChange")
-                |Description: {{updatedTask.description1}}
+                |Description: {{task.description1}}
             .text(v-if="!show" @change="handleChange")
                 textarea(v-model='updatedTask.description1')
         button(class='add-task' v-on:click="show=!show" v-if="show") Edit

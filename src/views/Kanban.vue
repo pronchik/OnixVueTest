@@ -41,9 +41,9 @@ export default defineComponent({
       TaskStatusEnum,
       showDetailsModal: false,
       task: '',
-      taskTodo: [] as any,
-      taskInprog: [] as any,
-      taskDone: [] as any
+      taskTodo: [] as TaskInterface[],
+      taskInprog: [] as TaskInterface[],
+      taskDone: [] as TaskInterface[]
     }
   },
   methods: {
