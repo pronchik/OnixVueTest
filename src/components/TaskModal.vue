@@ -4,8 +4,8 @@
     .modal-content
       input(v-model="task_name" class='input-name' placeholder="Name:")
       input(v-model="task_description" class='input-name' placeholder="Description:")
-      input(v-model="task_deadline" class='input-name' placeholder="Deadline:")
-      button(class='add-task' @click="submitForm(task_name,task_description,task_deadline)") +
+      input( type='date' v-model="task_deadline" class='input-name' placeholder="Deadline:")
+      button(class='add-task' @click="submitForm()") +
 </template>
 
 <script lang="ts">
@@ -36,10 +36,14 @@ export default defineComponent({
     task_description: { required }
   },
   methods: {
-    submitForm (taskName, taskDescription, taskDeadline) {
+    submitForm () {
       this.v$.$validate()
       if (!this.v$.$error) {
-        emitter.emit('task', { taskName, taskDescription, taskDeadline })
+        emitter.emit('task', {
+          name: this.task_name,
+          description1: this.task_description,
+          time: this.task_deadline
+        })
       } else {
         alert('Not submited')
       }

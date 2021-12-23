@@ -113,6 +113,55 @@ table {
   background: #F7F6F3;   
 }
 
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+.modal-task {
+  display: block; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.modal-task-details {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 500px; /* Could be more or less, depending on screen size */
+}
+.tasks .modal-task .modal-task-details .task{
+  display: block;
+}
+.tasks .modal-task .modal-task-details .task .description{
+  background-color: #fff;
+  padding: 0;
+}
+.tasks .modal-task .modal-task-details .task .name{
+  width: 150px;
+}
+.task select{
+  display: block;
+}
+.close {
+  display: block;
+  right: 32px;
+  top: 32px;
+  width: 32px;
+  height: 32px;
+  opacity: 0.3;
+}
+
 @media only screen and (max-width: 600px) {
   html, body, div, span, applet, object, iframe,
   h1, h2, h3, h4, h5, h6, p, blockquote, pre,

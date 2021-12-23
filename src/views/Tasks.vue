@@ -1,7 +1,7 @@
 <template lang="pug">
 .tasks
   .asd(v-if="Object.keys(this.task).length !== 0")
-    task-details-modal(:showDetailsModal = 'showDetailsModal' :task = 'task')
+    task-details-modal(:showDetailsModal = 'showDetailsModal' :task = 'task' v-if="showDetailsModal === true")
   task-modal(:showModal = 'showModal' :tasks = 'tasks'
   @close-modal="showModal = $event")
   h2
@@ -23,51 +23,37 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { computed, defineComponent } from 'vue'
 import { TaskInterface } from '@/types/task.interface'
 import useValidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
 import { emitter } from '../main'
 import { TaskStatusEnum } from './../enums/TaskStatusEnum'
 import TaskModal from '@/components/TaskModal.vue'
+import TaskDetailsModal from '@/components/TaskDetailsModal.vue'
+import { useStore } from 'vuex'
 export default defineComponent({
+  setup () {
+    const store = useStore()
+    const tasks = computed(() => store.state.tasks)
+    return {
+      tasks
+    }
+  },
   components: {
-    TaskModal
+    TaskModal,
+    TaskDetailsModal
   },
   data () {
-    const tasks: TaskInterface[] = [
-      {
-        id: 0,
-        name: 'Create app',
-        description1: 'Use smth',
-        time: '02.12.2021',
-        status: TaskStatusEnum.TODO
-      },
-      {
-        id: 1,
-        name: 'Fix bugs',
-        description1: 'Fix all bugs',
-        time: '02.12.2021',
-        status: TaskStatusEnum.INPROGRESS
-      },
-      {
-        id: 2,
-        name: 'Fixx bugs',
-        description1: 'Fix all bugs',
-        time: '02.12.2021',
-        status: TaskStatusEnum.DONE
-      }
-    ]
     return {
       v$: useValidate(),
-      tasks,
       task_name: '',
       task_deadline: '',
       task_description: '',
       task_status: '',
       TaskStatusEnum,
       showModal: 'none',
-      showDetailsModal: 'none',
+      showDetailsModal: false,
       task: ''
     }
   },
@@ -83,14 +69,11 @@ export default defineComponent({
   },
   methods: {
     taskModal (index) {
-      this.showDetailsModal = 'block'
-      this.task = this.tasks[index] as unknown as string
+      this.task = this.tasks[index]
+      this.showDetailsModal = true
     },
     openModal () {
       this.showModal = 'block'
-    },
-    giveTasks () {
-      emitter.emit('giveTasks', this.tasks)
     },
     blink () {
       for (let i = 0; i < Object.values(this.$refs).length; i++) {
@@ -127,12 +110,22 @@ export default defineComponent({
     }
   },
   mounted () {
-    this.giveTasks()
     this.blink()
     emitter.on('removeLastElementFromTaskArray', () => {
       this.tasks = this.tasks.splice(1)
     })
     this.takeTask()
+    emitter.on('save', task => {
+      const index = task as TaskInterface
+      this.tasks[index.id].name = index.name
+      this.tasks[index.id].description1 = index.description1
+      this.tasks[index.id].time = index.time
+      this.tasks[index.id].status = index.status
+      this.showDetailsModal = false
+    })
+    emitter.on('close', () => {
+      this.showDetailsModal = false
+    })
   }
 })
 </script>

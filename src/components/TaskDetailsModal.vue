@@ -1,30 +1,36 @@
 <template lang="pug">
-.modal-task(:style="{display: showDetailsModal}")
+.modal-task(v-if="showDetailsModal === true")
     .modal-task-details
         .task
-            | {{task.id}}
-            .name(v-show="show")
-                |Name: {{task.name}}
-            .text(v-show="!show")
-                textarea(v-model='task.name')
-            .status
-                |Status: {{task.status}}
-            .text(v-show="!show")
-              textarea(v-model='task.status')
+            button(class='close' v-on:click="close()") x
+            .name(v-if="show")
+                |Name: {{updatedTask.name}}
+            .text(v-if="!show" @change="handleChange")
+                textarea(v-model='updatedTask.name')
+            .status(v-if="show")
+                |Status: {{updatedTask.status}}
+            .text(v-if="!show" @change="handleChange")
+                select(v-model='updatedTask.status')
+                    option {{TaskStatusEnum.TODO}}
+                    option {{TaskStatusEnum.DONE}}
+                    option {{TaskStatusEnum.INPROGRESS}}
             .deadline
-                |Deadline: {{task.time}}
-            .description(v-show="show")
-              |description: {{task.description1}}
-            .text(v-show="!show" @change="handleChange")
-                textarea(v-model='task.description1')
-        button(class='add-task' v-on:click="show=!show" v-show="show") Edit
-        button(class='add-task' v-on:click="show=!show" v-show="!show" @click="closeForm()") Close
-        button(class='add-task' v-show="showSaveButton" @click="saveTask(task)") Save
+                |Deadline: {{updatedTask.time}}
+            .text(v-if="!show" @change="handleChange")
+                input(type='date' v-model='updatedTask.time')
+            .description(v-if="show" @change="handleChange")
+                |Description: {{updatedTask.description1}}
+            .text(v-if="!show" @change="handleChange")
+                textarea(v-model='updatedTask.description1')
+        button(class='add-task' v-on:click="show=!show" v-if="show") Edit
+        button(class='add-task' v-if="!show" @click="cancleForm()") Cancle
+        button(class='add-task' v-if="showSaveButton" @click="saveTask(task)") Save
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { emitter } from '../main'
+import { TaskStatusEnum } from './../enums/TaskStatusEnum'
 
 export default defineComponent({
   name: 'task-details-modal',
@@ -32,22 +38,30 @@ export default defineComponent({
   data () {
     return {
       show: true,
-      showSaveButton: true,
+      showSaveButton: false,
       updatedTask: {
         name: '',
         description1: '',
         time: '',
         status: ''
-      }
+      },
+      TaskStatusEnum
     }
   },
   methods: {
-    closeForm () {
-      emitter.emit('close', this.updatedTask)
-      console.log(this.updatedTask)
+    cancleForm () {
+      this.show = true
+    },
+    close () {
+      emitter.emit('close')
     },
     saveTask () {
-      emitter.emit('save', this.updatedTask)
+      if (new Date(this.updatedTask.time) > new Date()) {
+        emitter.emit('save', this.updatedTask)
+      }
+      if (new Date(this.updatedTask.time) < new Date()) {
+        alert('Wrong date')
+      }
     },
     handleChange () {
       this.showSaveButton = true
@@ -55,6 +69,7 @@ export default defineComponent({
   },
   created () {
     this.updatedTask = JSON.parse(JSON.stringify(this.task))
+    // console.log(this.updatedTask)
   }
 })
 </script>

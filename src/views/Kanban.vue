@@ -19,20 +19,27 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { computed, defineComponent } from 'vue'
 import { TaskStatusEnum } from './../enums/TaskStatusEnum'
 import TasksOrderByStatus from '@/components/TasksOrderByStatus.vue'
+import { useStore } from 'vuex'
 import { emitter } from '../main'
-
+import { TaskInterface } from '@/types/task.interface'
 export default defineComponent({
+  setup () {
+    const store = useStore()
+    const tasks = computed(() => store.state.tasks)
+    return {
+      tasks
+    }
+  },
   components: {
     TasksOrderByStatus
   },
-  props: ['tasks'],
   data () {
     return {
       TaskStatusEnum,
-      showDetailsModal: 'none',
+      showDetailsModal: false,
       task: '',
       taskTodo: [] as any,
       taskInprog: [] as any,
@@ -40,16 +47,12 @@ export default defineComponent({
     }
   },
   methods: {
-    func (index) {
-      this.showDetailsModal = 'block'
-      this.task = this.tasks[index]
-    },
     onDrop (event, list) {
       const itemName = event.dataTransfer.getData('itemName')
       const itemStatus = event.dataTransfer.getData('itemStatus')
       for (let i = 0; i < this.tasks.length; i++) {
-        if (!(this.tasks[i].status === 'done' && list === 'todo')) {
-          if (this.tasks[i].name === itemName && list === 'inprogress') {
+        if (!(this.tasks[i].status === TaskStatusEnum.DONE && list === TaskStatusEnum.TODO)) {
+          if (this.tasks[i].name === itemName && list === TaskStatusEnum.INPROGRESS) {
             if (itemStatus === TaskStatusEnum.TODO) {
               const index = this.taskTodo.indexOf(this.tasks[i])
               this.taskTodo.splice(index, 1)
@@ -63,10 +66,9 @@ export default defineComponent({
               this.taskInprog.splice(index, 1)
             }
             this.taskInprog.push(this.tasks[i])
-            // eslint-disable-next-line vue/no-mutating-props
             this.tasks[i].status = TaskStatusEnum.INPROGRESS
           }
-          if (this.tasks[i].name === itemName && list === 'done') {
+          if (this.tasks[i].name === itemName && list === TaskStatusEnum.DONE) {
             if (itemStatus === TaskStatusEnum.TODO) {
               const index = this.taskTodo.indexOf(this.tasks[i])
               this.taskTodo.splice(index, 1)
@@ -80,10 +82,9 @@ export default defineComponent({
               this.taskDone.splice(index, 1)
             }
             this.taskDone.push(this.tasks[i])
-            // eslint-disable-next-line vue/no-mutating-props
             this.tasks[i].status = TaskStatusEnum.DONE
           }
-          if (this.tasks[i].name === itemName && list === 'todo') {
+          if (this.tasks[i].name === itemName && list === TaskStatusEnum.TODO) {
             if (itemStatus === TaskStatusEnum.INPROGRESS) {
               const index = this.taskInprog.indexOf(this.tasks[i])
               this.taskInprog.splice(index, 1)
@@ -93,7 +94,6 @@ export default defineComponent({
               this.taskTodo.splice(index, 1)
             }
             this.taskTodo.push(this.tasks[i])
-            // eslint-disable-next-line vue/no-mutating-props
             this.tasks[i].status = TaskStatusEnum.TODO
           }
         }
@@ -118,6 +118,14 @@ export default defineComponent({
   },
   mounted () {
     this.setArrayByStatuses()
+    emitter.on('save', task => {
+      const index = task as TaskInterface
+      this.tasks[index.id].name = index.name
+      this.tasks[index.id].description1 = index.description1
+      this.tasks[index.id].time = index.time
+      this.tasks[index.id].status = index.status
+      this.showDetailsModal = false
+    })
   }
 })
 </script>

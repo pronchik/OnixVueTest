@@ -1,6 +1,6 @@
 <template lang="pug">
-.asd(v-if="Object.keys(this.task).length !== 0" :v-if="showDetailsModal === 'block'")
-  task-details-modal(:showDetailsModal = 'showDetailsModal' :task = 'task')
+.asd(v-if="Object.keys(this.task).length !== 0" :v-if="showDetailsModal === true")
+  task-details-modal(:showDetailsModal = 'showDetailsModal' :task = 'task' v-if="showDetailsModal === true")
 .task(v-for='(task, index) in tasks' :key='task.index'  class="list-item" draggable="true" @dragstart="startDrag($event, task)" @click="openModal(index)")
       .card()
         .name()
@@ -18,19 +18,20 @@ import { emitter } from '../main'
 export default defineComponent({
   name: 'tasks-order-by-status',
   props: ['tasks'],
+
   components: {
     TaskDetailsModal
   },
   data () {
     return {
       TaskStatusEnum,
-      showDetailsModal: 'none',
+      showDetailsModal: false,
       task: {}
     }
   },
   methods: {
     openModal (index) {
-      this.showDetailsModal = 'block'
+      this.showDetailsModal = true
       this.task = this.tasks[index]
     },
     startDrag (event, item) {
@@ -41,16 +42,11 @@ export default defineComponent({
     }
   },
   mounted () {
-    emitter.on('close', task => {
-      this.showDetailsModal = 'none'
-      // eslint-disable-next-line vue/no-mutating-props
-      // this.task = task as TaskInterface
+    emitter.on('close', () => {
+      this.showDetailsModal = false
     })
-    emitter.on('save', task => {
-      // eslint-disable-next-line vue/no-mutating-props
-      this.task = task as string
-      this.showDetailsModal = 'none'
-      console.log(this.tasks[0])
+    emitter.on('save', () => {
+      this.showDetailsModal = false
     })
   }
 
