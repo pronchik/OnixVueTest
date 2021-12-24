@@ -51,6 +51,7 @@ export default defineComponent({
   methods: {
     cancleForm () {
       this.show = true
+      this.showSaveButton = false
     },
     close () {
       emitter.emit('close')
