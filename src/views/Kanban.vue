@@ -48,11 +48,11 @@ export default defineComponent({
   },
   methods: {
     onDrop (event, list) {
-      const itemName = event.dataTransfer.getData('itemName')
+      const itemId = +event.dataTransfer.getData('itemId')
       const itemStatus = event.dataTransfer.getData('itemStatus')
       for (let i = 0; i < this.tasks.length; i++) {
         if (!(this.tasks[i].status === TaskStatusEnum.DONE && list === TaskStatusEnum.TODO)) {
-          if (this.tasks[i].name === itemName && list === TaskStatusEnum.INPROGRESS) {
+          if (this.tasks[i].id === itemId && list === TaskStatusEnum.INPROGRESS) {
             if (itemStatus === TaskStatusEnum.TODO) {
               const index = this.taskTodo.indexOf(this.tasks[i])
               this.taskTodo.splice(index, 1)
@@ -68,7 +68,7 @@ export default defineComponent({
             this.taskInprog.push(this.tasks[i])
             this.tasks[i].status = TaskStatusEnum.INPROGRESS
           }
-          if (this.tasks[i].name === itemName && list === TaskStatusEnum.DONE) {
+          if (this.tasks[i].id === itemId && list === TaskStatusEnum.DONE) {
             if (itemStatus === TaskStatusEnum.TODO) {
               const index = this.taskTodo.indexOf(this.tasks[i])
               this.taskTodo.splice(index, 1)
@@ -84,7 +84,7 @@ export default defineComponent({
             this.taskDone.push(this.tasks[i])
             this.tasks[i].status = TaskStatusEnum.DONE
           }
-          if (this.tasks[i].name === itemName && list === TaskStatusEnum.TODO) {
+          if (this.tasks[i].id === itemId && list === TaskStatusEnum.TODO) {
             if (itemStatus === TaskStatusEnum.INPROGRESS) {
               const index = this.taskInprog.indexOf(this.tasks[i])
               this.taskInprog.splice(index, 1)

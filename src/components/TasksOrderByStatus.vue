@@ -14,6 +14,7 @@ import { defineComponent } from 'vue'
 import { TaskStatusEnum } from './../enums/TaskStatusEnum'
 import TaskDetailsModal from '@/components/TaskDetailsModal.vue'
 import { emitter } from '../main'
+import { TaskInterface } from '@/types/task.interface'
 
 export default defineComponent({
   name: 'tasks-order-by-status',
@@ -26,7 +27,7 @@ export default defineComponent({
     return {
       TaskStatusEnum,
       showDetailsModal: false,
-      task: {}
+      task: {} as TaskInterface
     }
   },
   methods: {
@@ -37,7 +38,7 @@ export default defineComponent({
     startDrag (event, item) {
       event.dataTransfer.dropEffect = 'move'
       event.dataTransfer.effectAllowed = 'move'
-      event.dataTransfer.setData('itemName', item.name)
+      event.dataTransfer.setData('itemId', item.id)
       event.dataTransfer.setData('itemStatus', item.status)
     }
   },

@@ -44,6 +44,9 @@ export default defineComponent({
           description1: this.task_description,
           time: this.task_deadline
         })
+        this.task_name = ''
+        this.task_deadline = ''
+        this.task_description = ''
       } else {
         alert('Not submited')
       }

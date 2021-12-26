@@ -217,7 +217,6 @@ section .content .activity .pictures .picture:first-child{
 
 .card{
    margin-top: 15px;
-   background-color: #CEF9C6;
    border-radius: 15px;
    height: 60px;
 }
