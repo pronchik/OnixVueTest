@@ -38,8 +38,12 @@ export default defineComponent({
   },
   methods: {
     openModal (index) {
-      this.showDetailsModal = true
       this.task = this.tasks[index]
+      if (this.task.status !== TaskStatusEnum.DONE) {
+        this.showDetailsModal = true
+      } else {
+        alert('You can`t edit this task')
+      }
     },
     startDrag (event, item) {
       event.dataTransfer.dropEffect = 'move'
