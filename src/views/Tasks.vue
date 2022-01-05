@@ -104,10 +104,13 @@ export default defineComponent({
         })
         this.showModal = 'none'
         emitter.emit('changeNumber', this.tasks.length)
+        const element = Object.values(this.$refs as unknown as HTMLElement)[Object.values(this.$refs).length - 1]
         this.$nextTick(() => {
-          Object.values(this.$refs as unknown as HTMLElement)[Object.values(this.$refs).length - 1].classList.add('blink')
+          element.classList.add('blink')
           setTimeout(() => {
-            Object.values(this.$refs as unknown as HTMLElement)[Object.values(this.$refs).length - 1].classList.remove('blink')
+            if (element) {
+              element.classList.remove('blink')
+            }
           }, 4000)
         })
       })
