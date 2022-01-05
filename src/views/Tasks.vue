@@ -12,12 +12,12 @@
             span Name
             span Description
           span Deadline
-        .task(v-for='(task, index) in tasks' :key='task.index' :ref="`task${index}`" class="list-item" @click="taskModal(index)")
-          .name
+        .task(v-for='(task, index) in tasks' :key='task.index' :ref="`task${index}`" class="list-item" )
+          .name(@click="taskModal(index)")
             | {{task.name}}
-          .description
+          .description(@click="taskModal(index)")
             | {{task.description1}}
-          .time
+          .time(@click="taskModal(index)")
             | {{task.time}}
           button(class='delete-task' @click="deleteCart(index)") -
 </template>
@@ -78,10 +78,14 @@ export default defineComponent({
     blink () {
       for (let i = 0; i < Object.values(this.$refs).length; i++) {
         setTimeout(() => {
-          Object.values(this.$refs as unknown as HTMLElement)[i].classList.add('increase')
+          if (Object.values(this.$refs as unknown as HTMLElement)[i]) {
+            Object.values(this.$refs as unknown as HTMLElement)[i].classList.add('increase')
+          }
         }, 2000 * i)
         setTimeout(() => {
-          Object.values(this.$refs as unknown as HTMLElement)[i].classList.remove('increase')
+          if (Object.values(this.$refs as unknown as HTMLElement)[i]) {
+            Object.values(this.$refs as unknown as HTMLElement)[i].classList.remove('increase')
+          }
         }, 2000 * Object.values(this.$refs).length)
       }
     },

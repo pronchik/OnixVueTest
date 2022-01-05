@@ -5,11 +5,19 @@
         | {{task.name}}
     .deadline
         | {{time}}
+        .imgStatus(v-if="isStatusInprogress")
+           img( src='../assets//statusInprog.png' width='15' height='15' alt='statusInprog')
+        .imgStatus(v-if="isStatusTodo")
+           img( src='../assets//statusTodo.png' width='15' height='15'  alt='statusTodo')
+        .imgStatus(v-if="isStatusDone" )
+         img(src='../assets//statusDone.png' width='15' height='15' alt='statusDone')
+
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 import moment from 'moment'
+import { TaskStatusEnum } from './../enums/TaskStatusEnum'
 export default defineComponent({
   name: 'TaskCard',
   props: ['task'],
@@ -35,10 +43,25 @@ export default defineComponent({
       var minutes = seconds / 60
       var hours = minutes / 60
       var days = hours / 24
-      return days <= 1 && days > 0
+      return days <= 1
     },
     isFuture () {
       return moment(this.task.time).isAfter(moment())
+    },
+    isStatusInprogress () {
+      if (this.task.status === TaskStatusEnum.INPROGRESS) {
+        return true
+      } else { return false }
+    },
+    isStatusDone () {
+      if (this.task.status === TaskStatusEnum.DONE) {
+        return true
+      } else { return false }
+    },
+    isStatusTodo () {
+      if (this.task.status === TaskStatusEnum.TODO) {
+        return true
+      } else { return false }
     }
   }
 })

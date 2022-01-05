@@ -54,22 +54,22 @@ export default defineComponent({
     taskTodo () {
       return useStore().state.tasks.filter(task => {
         return task.name.toLowerCase().includes(this.search.toLowerCase()) && task.status.includes(TaskStatusEnum.TODO) &&
-         (+moment(task.time) - +moment(this.timefirst) > 0 || isNaN(+moment(task.time) - +moment(this.timefirst))) &&
-          (+moment(task.time) - +moment(this.timesecond) < 0 || isNaN(+moment(task.time) - +moment(this.timesecond)))
+         (+moment(task.time) - +moment(this.timefirst) >= 0 || isNaN(+moment(task.time) - +moment(this.timefirst))) &&
+          (+moment(task.time) - +moment(this.timesecond) <= 0 || isNaN(+moment(task.time) - +moment(this.timesecond)))
       })
     },
     taskDone () {
       return useStore().state.tasks.filter(task => {
         return task.name.toLowerCase().includes(this.search.toLowerCase()) && task.status.includes(TaskStatusEnum.DONE) &&
-         (+moment(task.time) - +moment(this.timefirst) > 0 || isNaN(+moment(task.time) - +moment(this.timefirst))) &&
-         (+moment(task.time) - +moment(this.timesecond) < 0 || isNaN(+moment(task.time) - +moment(this.timesecond)))
+         (+moment(task.time) - +moment(this.timefirst) >= 0 || isNaN(+moment(task.time) - +moment(this.timefirst))) &&
+         (+moment(task.time) - +moment(this.timesecond) <= 0 || isNaN(+moment(task.time) - +moment(this.timesecond)))
       })
     },
     taskInprog () {
       return useStore().state.tasks.filter(task => {
         return task.name.toLowerCase().includes(this.search.toLowerCase()) && task.status.includes(TaskStatusEnum.INPROGRESS) &&
-         (+moment(task.time) - +moment(this.timefirst) > 0 || isNaN(+moment(task.time) - +moment(this.timefirst))) &&
-          (+moment(task.time) - +moment(this.timesecond) < 0 || isNaN(+moment(task.time) - +moment(this.timesecond)))
+         (+moment(task.time) - +moment(this.timefirst) >= 0 || isNaN(+moment(task.time) - +moment(this.timefirst))) &&
+          (+moment(task.time) - +moment(this.timesecond) <= 0 || isNaN(+moment(task.time) - +moment(this.timesecond)))
       })
     }
   },
