@@ -1,29 +1,15 @@
 <template lang="pug">
 section
   .content()
-    router-view(:tasks='tasks')
+    router-view
 
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { emitter } from '../main'
-import { TaskInterface } from '@/types/task.interface'
 
 export default defineComponent({
-  name: 'app-section',
-
-  data () {
-    const tasks: TaskInterface[] = []
-    return {
-      tasks
-    }
-  },
-  mounted () {
-    emitter.on('giveTasks', tasks => {
-      this.tasks = tasks as TaskInterface[]
-    })
-  }
+  name: 'app-section'
 })
 </script>
 

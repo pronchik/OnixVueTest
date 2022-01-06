@@ -1,5 +1,8 @@
 <template lang="pug">
 .kanban
+  input(type='text' v-model='search' placeholder='Search name..')
+  input( type='date' v-model="timefirst" class='input-name')
+  input( type='date' v-model="timesecond" class='input-name')
   .statuses
     .todo(@drop="onDrop($event,'todo')"
     @dragenter.prevent
@@ -19,105 +22,103 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { computed, defineComponent } from 'vue'
 import { TaskStatusEnum } from './../enums/TaskStatusEnum'
 import TasksOrderByStatus from '@/components/TasksOrderByStatus.vue'
+import { useStore } from 'vuex'
 import { emitter } from '../main'
-
+import { TaskInterface } from '@/types/task.interface'
 export default defineComponent({
+  setup () {
+    const store = useStore()
+    const tasks = computed(() => store.state.tasks)
+    return {
+      tasks
+    }
+  },
   components: {
     TasksOrderByStatus
   },
-  props: ['tasks'],
   data () {
     return {
       TaskStatusEnum,
-      showDetailsModal: 'none',
+      showDetailsModal: false,
       task: '',
-      taskTodo: [] as any,
-      taskInprog: [] as any,
-      taskDone: [] as any
+      search: '',
+      timefirst: '',
+      timesecond: ''
+    }
+  },
+  computed: {
+    taskTodo () {
+      return useStore().state.tasks.filter(task => {
+        return this.filterByStatus(task, TaskStatusEnum.TODO)
+      })
+    },
+    taskDone () {
+      return useStore().state.tasks.filter(task => {
+        return this.filterByStatus(task, TaskStatusEnum.DONE)
+      })
+    },
+    taskInprog () {
+      return useStore().state.tasks.filter(task => {
+        return this.filterByStatus(task, TaskStatusEnum.INPROGRESS)
+      })
     }
   },
   methods: {
-    func (index) {
-      this.showDetailsModal = 'block'
-      this.task = this.tasks[index]
+    filterByStatus (task:TaskInterface, status) {
+      return task.name.toLowerCase().includes(this.search.toLowerCase()) && task.status.includes(status) &&
+         (+new Date(task.time) - +new Date(this.timefirst) >= 0 || isNaN(+new Date(task.time) - +new Date(this.timefirst))) &&
+          (+new Date(task.time) - +new Date(this.timesecond) <= 0 || isNaN(+new Date(task.time) - +new Date(this.timesecond)))
     },
-    onDrop (event, list) {
-      const itemName = event.dataTransfer.getData('itemName')
-      const itemStatus = event.dataTransfer.getData('itemStatus')
-      for (let i = 0; i < this.tasks.length; i++) {
-        if (!(this.tasks[i].status === 'done' && list === 'todo')) {
-          if (this.tasks[i].name === itemName && list === 'inprogress') {
-            if (itemStatus === TaskStatusEnum.TODO) {
-              const index = this.taskTodo.indexOf(this.tasks[i])
-              this.taskTodo.splice(index, 1)
-            }
-            if (itemStatus === TaskStatusEnum.DONE) {
-              const index = this.taskDone.indexOf(this.tasks[i])
-              this.taskDone.splice(index, 1)
-            }
-            if (itemStatus === TaskStatusEnum.INPROGRESS) {
-              const index = this.taskInprog.indexOf(this.tasks[i])
-              this.taskInprog.splice(index, 1)
-            }
-            this.taskInprog.push(this.tasks[i])
-            // eslint-disable-next-line vue/no-mutating-props
-            this.tasks[i].status = TaskStatusEnum.INPROGRESS
-          }
-          if (this.tasks[i].name === itemName && list === 'done') {
-            if (itemStatus === TaskStatusEnum.TODO) {
-              const index = this.taskTodo.indexOf(this.tasks[i])
-              this.taskTodo.splice(index, 1)
-            }
-            if (itemStatus === TaskStatusEnum.INPROGRESS) {
-              const index = this.taskInprog.indexOf(this.tasks[i])
-              this.taskInprog.splice(index, 1)
-            }
-            if (itemStatus === TaskStatusEnum.DONE) {
-              const index = this.taskDone.indexOf(this.tasks[i])
-              this.taskDone.splice(index, 1)
-            }
-            this.taskDone.push(this.tasks[i])
-            // eslint-disable-next-line vue/no-mutating-props
-            this.tasks[i].status = TaskStatusEnum.DONE
-          }
-          if (this.tasks[i].name === itemName && list === 'todo') {
-            if (itemStatus === TaskStatusEnum.INPROGRESS) {
-              const index = this.taskInprog.indexOf(this.tasks[i])
-              this.taskInprog.splice(index, 1)
-            }
-            if (itemStatus === TaskStatusEnum.TODO) {
-              const index = this.taskTodo.indexOf(this.tasks[i])
-              this.taskTodo.splice(index, 1)
-            }
-            this.taskTodo.push(this.tasks[i])
-            // eslint-disable-next-line vue/no-mutating-props
-            this.tasks[i].status = TaskStatusEnum.TODO
-          }
-        }
+    checkStatus (i:number, itemStatus:TaskStatusEnum) {
+      if (itemStatus === TaskStatusEnum.TODO) {
+        const index = this.taskTodo.indexOf(this.tasks[i])
+        this.taskTodo.splice(index, 1)
+      }
+      if (itemStatus === TaskStatusEnum.DONE) {
+        const index = this.taskDone.indexOf(this.tasks[i])
+        this.taskDone.splice(index, 1)
+      }
+      if (itemStatus === TaskStatusEnum.INPROGRESS) {
+        const index = this.taskInprog.indexOf(this.tasks[i])
+        this.taskInprog.splice(index, 1)
       }
     },
-    setArrayByStatuses () {
+    onDrop (event, list) {
+      const itemId = +event.dataTransfer.getData('itemId')
+      const itemStatus = event.dataTransfer.getData('itemStatus')
       for (let i = 0; i < this.tasks.length; i++) {
-        if (this.tasks[i].status === TaskStatusEnum.INPROGRESS) {
-          const item = this.tasks[i]
-          this.taskInprog.push(item)
-        }
-        if (this.tasks[i].status === TaskStatusEnum.TODO) {
-          const item = this.tasks[i]
-          this.taskTodo.push(item)
-        }
-        if (this.tasks[i].status === TaskStatusEnum.DONE) {
-          const item = this.tasks[i]
-          this.taskDone.push(item)
+        if (!(this.tasks[i].status === TaskStatusEnum.DONE && list === TaskStatusEnum.TODO)) {
+          if (this.tasks[i].id === itemId && list === TaskStatusEnum.INPROGRESS) {
+            this.checkStatus(i, itemStatus)
+            this.taskInprog.push(this.tasks[i])
+            this.tasks[i].status = TaskStatusEnum.INPROGRESS
+          }
+          if (this.tasks[i].id === itemId && list === TaskStatusEnum.DONE) {
+            this.checkStatus(i, itemStatus)
+            this.taskDone.push(this.tasks[i])
+            this.tasks[i].status = TaskStatusEnum.DONE
+          }
+          if (this.tasks[i].id === itemId && list === TaskStatusEnum.TODO) {
+            this.checkStatus(i, itemStatus)
+            this.taskTodo.push(this.tasks[i])
+            this.tasks[i].status = TaskStatusEnum.TODO
+          }
         }
       }
     }
   },
   mounted () {
-    this.setArrayByStatuses()
+    emitter.on('save', task => {
+      const index = task as TaskInterface
+      this.tasks[index.id].name = index.name
+      this.tasks[index.id].description1 = index.description1
+      this.tasks[index.id].time = index.time
+      this.tasks[index.id].status = index.status
+      this.showDetailsModal = false
+    })
   }
 })
 </script>

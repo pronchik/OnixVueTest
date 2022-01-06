@@ -192,7 +192,8 @@ section .content .activity .pictures .picture:first-child{
    display: flex;
    align-items: center;
    justify-content: space-between;
-   padding-right: 50px;
+   padding-right: 40px;
+   padding-left: 35px;
    height: 100%;
 }
 .statuses:first-child{
@@ -201,6 +202,7 @@ section .content .activity .pictures .picture:first-child{
 .statuses span{
    font: 16px/20px Helvetica;
    color: black;
+   margin-left: 45px;
 }
 .statuses .todo{
    height: 500px;
@@ -214,12 +216,15 @@ section .content .activity .pictures .picture:first-child{
    height: 500px;
    width: 200px;
 }
+.numberOfTasks{
+   margin-left: 55px;
+}
 
 .card{
    margin-top: 15px;
-   background-color: #CEF9C6;
    border-radius: 15px;
    height: 60px;
+   background-color: #CEF9C6
 }
 .card .name{
    padding-left: 10px;
@@ -228,6 +233,10 @@ section .content .activity .pictures .picture:first-child{
 .card .deadline{
    padding-left: 10px;
    padding-top: 5px;
+   display: flex;
+}
+.imgStatus{
+   margin-left: 75px;
 }
 .calendar{
    display: block;
@@ -494,7 +503,55 @@ section .content .tasks .nadesti .nades span:last-child{
    section .content .tasks .nadesti .nades span:last-child{
       padding-left: 20px;
    }
+   .statuses{
+      display: flex;
+      align-items: center;
+      height: 100%;
+      padding: 0;
+   }
+   .statuses:first-child{
+      padding-left: 15px;
+   }
+   .statuses span{
+      font: 12px/16px Helvetica;
+      color: black;
+      margin-left: 15px;
+   }
+   .statuses .todo{
+      height: 300px;
+      width: 100px;
+   }
+   .statuses .inprogress{
+      height: 300px;
+      width: 100px;
+   }
+   .statuses .done{
+      height: 300px;
+      width: 100px;
+   }
+   .numberOfTasks{
+      margin-left: 25px;
+   }
    
+   .card{
+      margin-top: 15px;
+      border-radius: 15px;
+      height: 60px;
+      background-color: #CEF9C6;
+      margin-left: 5px;
+   }
+   .card .name{
+      padding-left: 10px;
+      padding-top: 5px;
+   }
+   .card .deadline{
+      padding-left: 10px;
+      padding-top: 5px;
+      display: block;
+   }
+   .imgStatus{
+      margin: 0;
+   }
 }
 
 

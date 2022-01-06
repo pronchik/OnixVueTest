@@ -1,12 +1,10 @@
 <template lang="pug">
-.asd(v-if="Object.keys(this.task).length !== 0" :v-if="showDetailsModal === 'block'")
-  task-details-modal(:showDetailsModal = 'showDetailsModal' :task = 'task')
+.numberOfTasks()
+  |{{numberOfTasks}}
+.asd(v-if="Object.keys(this.task).length !== 0 && showDetailsModal === true")
+  task-details-modal(:showDetailsModal = 'showDetailsModal' :task = 'task' v-if="showDetailsModal === true")
 .task(v-for='(task, index) in tasks' :key='task.index'  class="list-item" draggable="true" @dragstart="startDrag($event, task)" @click="openModal(index)")
-      .card()
-        .name()
-          | {{task.name}}
-        .deadline
-          | {{task.time}}
+      TaskCard(:task='task')
 </template>
 
 <script lang="ts">
@@ -14,43 +12,52 @@ import { defineComponent } from 'vue'
 import { TaskStatusEnum } from './../enums/TaskStatusEnum'
 import TaskDetailsModal from '@/components/TaskDetailsModal.vue'
 import { emitter } from '../main'
+import { TaskInterface } from '@/types/task.interface'
+import TaskCard from '@/components/TaskCard.vue'
 
 export default defineComponent({
   name: 'tasks-order-by-status',
   props: ['tasks'],
+
   components: {
-    TaskDetailsModal
+    TaskDetailsModal,
+    TaskCard
   },
   data () {
     return {
       TaskStatusEnum,
-      showDetailsModal: 'none',
-      task: {}
+      showDetailsModal: false,
+      task: {} as TaskInterface,
+      search: ''
+    }
+  },
+  computed: {
+    numberOfTasks () {
+      return this.tasks.length
     }
   },
   methods: {
-    openModal (index) {
-      this.showDetailsModal = 'block'
+    openModal (index:number) {
       this.task = this.tasks[index]
+      if (this.task.status !== TaskStatusEnum.DONE) {
+        this.showDetailsModal = true
+      } else {
+        alert('You can`t edit this task')
+      }
     },
-    startDrag (event, item) {
+    startDrag (event, item:TaskInterface) {
       event.dataTransfer.dropEffect = 'move'
       event.dataTransfer.effectAllowed = 'move'
-      event.dataTransfer.setData('itemName', item.name)
+      event.dataTransfer.setData('itemId', item.id)
       event.dataTransfer.setData('itemStatus', item.status)
     }
   },
   mounted () {
-    emitter.on('close', task => {
-      this.showDetailsModal = 'none'
-      // eslint-disable-next-line vue/no-mutating-props
-      // this.task = task as TaskInterface
+    emitter.on('close', () => {
+      this.showDetailsModal = false
     })
-    emitter.on('save', task => {
-      // eslint-disable-next-line vue/no-mutating-props
-      this.task = task as string
-      this.showDetailsModal = 'none'
-      console.log(this.tasks[0])
+    emitter.on('save', () => {
+      this.showDetailsModal = false
     })
   }
 
