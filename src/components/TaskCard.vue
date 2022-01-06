@@ -26,8 +26,8 @@ export default defineComponent({
       return this.task.time
     },
     isFailDeadline () {
-      const timeOftask = +moment(this.task.time)
-      const currentTime = +moment()
+      const timeOftask = +new Date(this.task.time)
+      const currentTime = +new Date()
       var milliseconds = timeOftask - currentTime
       var seconds = milliseconds / 1000
       var minutes = seconds / 60
@@ -36,8 +36,8 @@ export default defineComponent({
       return days < -1
     },
     isSoon () {
-      const timeOftask = +moment(this.task.time)
-      const currentTime = +moment()
+      const timeOftask = +new Date(this.task.time)
+      const currentTime = +new Date()
       var milliseconds = timeOftask - currentTime
       var seconds = milliseconds / 1000
       var minutes = seconds / 60
@@ -49,19 +49,13 @@ export default defineComponent({
       return moment(this.task.time).isAfter(moment())
     },
     isStatusInprogress () {
-      if (this.task.status === TaskStatusEnum.INPROGRESS) {
-        return true
-      } else { return false }
+      return this.task.status === TaskStatusEnum.INPROGRESS
     },
     isStatusDone () {
-      if (this.task.status === TaskStatusEnum.DONE) {
-        return true
-      } else { return false }
+      return this.task.status === TaskStatusEnum.DONE
     },
     isStatusTodo () {
-      if (this.task.status === TaskStatusEnum.TODO) {
-        return true
-      } else { return false }
+      return this.task.status === TaskStatusEnum.TODO
     }
   }
 })

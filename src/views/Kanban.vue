@@ -28,7 +28,6 @@ import TasksOrderByStatus from '@/components/TasksOrderByStatus.vue'
 import { useStore } from 'vuex'
 import { emitter } from '../main'
 import { TaskInterface } from '@/types/task.interface'
-import moment from 'moment'
 export default defineComponent({
   setup () {
     const store = useStore()
@@ -53,73 +52,57 @@ export default defineComponent({
   computed: {
     taskTodo () {
       return useStore().state.tasks.filter(task => {
-        return task.name.toLowerCase().includes(this.search.toLowerCase()) && task.status.includes(TaskStatusEnum.TODO) &&
-         (+moment(task.time) - +moment(this.timefirst) >= 0 || isNaN(+moment(task.time) - +moment(this.timefirst))) &&
-          (+moment(task.time) - +moment(this.timesecond) <= 0 || isNaN(+moment(task.time) - +moment(this.timesecond)))
+        return this.filterByStatus(task, TaskStatusEnum.TODO)
       })
     },
     taskDone () {
       return useStore().state.tasks.filter(task => {
-        return task.name.toLowerCase().includes(this.search.toLowerCase()) && task.status.includes(TaskStatusEnum.DONE) &&
-         (+moment(task.time) - +moment(this.timefirst) >= 0 || isNaN(+moment(task.time) - +moment(this.timefirst))) &&
-         (+moment(task.time) - +moment(this.timesecond) <= 0 || isNaN(+moment(task.time) - +moment(this.timesecond)))
+        return this.filterByStatus(task, TaskStatusEnum.DONE)
       })
     },
     taskInprog () {
       return useStore().state.tasks.filter(task => {
-        return task.name.toLowerCase().includes(this.search.toLowerCase()) && task.status.includes(TaskStatusEnum.INPROGRESS) &&
-         (+moment(task.time) - +moment(this.timefirst) >= 0 || isNaN(+moment(task.time) - +moment(this.timefirst))) &&
-          (+moment(task.time) - +moment(this.timesecond) <= 0 || isNaN(+moment(task.time) - +moment(this.timesecond)))
+        return this.filterByStatus(task, TaskStatusEnum.INPROGRESS)
       })
     }
   },
   methods: {
+    filterByStatus (task:TaskInterface, status) {
+      return task.name.toLowerCase().includes(this.search.toLowerCase()) && task.status.includes(status) &&
+         (+new Date(task.time) - +new Date(this.timefirst) >= 0 || isNaN(+new Date(task.time) - +new Date(this.timefirst))) &&
+          (+new Date(task.time) - +new Date(this.timesecond) <= 0 || isNaN(+new Date(task.time) - +new Date(this.timesecond)))
+    },
+    checkStatus (i:number, itemStatus:TaskStatusEnum) {
+      if (itemStatus === TaskStatusEnum.TODO) {
+        const index = this.taskTodo.indexOf(this.tasks[i])
+        this.taskTodo.splice(index, 1)
+      }
+      if (itemStatus === TaskStatusEnum.DONE) {
+        const index = this.taskDone.indexOf(this.tasks[i])
+        this.taskDone.splice(index, 1)
+      }
+      if (itemStatus === TaskStatusEnum.INPROGRESS) {
+        const index = this.taskInprog.indexOf(this.tasks[i])
+        this.taskInprog.splice(index, 1)
+      }
+    },
     onDrop (event, list) {
       const itemId = +event.dataTransfer.getData('itemId')
       const itemStatus = event.dataTransfer.getData('itemStatus')
       for (let i = 0; i < this.tasks.length; i++) {
         if (!(this.tasks[i].status === TaskStatusEnum.DONE && list === TaskStatusEnum.TODO)) {
           if (this.tasks[i].id === itemId && list === TaskStatusEnum.INPROGRESS) {
-            if (itemStatus === TaskStatusEnum.TODO) {
-              const index = this.taskTodo.indexOf(this.tasks[i])
-              this.taskTodo.splice(index, 1)
-            }
-            if (itemStatus === TaskStatusEnum.DONE) {
-              const index = this.taskDone.indexOf(this.tasks[i])
-              this.taskDone.splice(index, 1)
-            }
-            if (itemStatus === TaskStatusEnum.INPROGRESS) {
-              const index = this.taskInprog.indexOf(this.tasks[i])
-              this.taskInprog.splice(index, 1)
-            }
+            this.checkStatus(i, itemStatus)
             this.taskInprog.push(this.tasks[i])
             this.tasks[i].status = TaskStatusEnum.INPROGRESS
           }
           if (this.tasks[i].id === itemId && list === TaskStatusEnum.DONE) {
-            if (itemStatus === TaskStatusEnum.TODO) {
-              const index = this.taskTodo.indexOf(this.tasks[i])
-              this.taskTodo.splice(index, 1)
-            }
-            if (itemStatus === TaskStatusEnum.INPROGRESS) {
-              const index = this.taskInprog.indexOf(this.tasks[i])
-              this.taskInprog.splice(index, 1)
-            }
-            if (itemStatus === TaskStatusEnum.DONE) {
-              const index = this.taskDone.indexOf(this.tasks[i])
-              this.taskDone.splice(index, 1)
-            }
+            this.checkStatus(i, itemStatus)
             this.taskDone.push(this.tasks[i])
             this.tasks[i].status = TaskStatusEnum.DONE
           }
           if (this.tasks[i].id === itemId && list === TaskStatusEnum.TODO) {
-            if (itemStatus === TaskStatusEnum.INPROGRESS) {
-              const index = this.taskInprog.indexOf(this.tasks[i])
-              this.taskInprog.splice(index, 1)
-            }
-            if (itemStatus === TaskStatusEnum.TODO) {
-              const index = this.taskTodo.indexOf(this.tasks[i])
-              this.taskTodo.splice(index, 1)
-            }
+            this.checkStatus(i, itemStatus)
             this.taskTodo.push(this.tasks[i])
             this.tasks[i].status = TaskStatusEnum.TODO
           }

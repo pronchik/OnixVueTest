@@ -1,7 +1,7 @@
 <template lang="pug">
 .numberOfTasks()
   |{{numberOfTasks}}
-.asd(v-if="Object.keys(this.task).length !== 0" :v-if="showDetailsModal === true")
+.asd(v-if="Object.keys(this.task).length !== 0 && showDetailsModal === true")
   task-details-modal(:showDetailsModal = 'showDetailsModal' :task = 'task' v-if="showDetailsModal === true")
 .task(v-for='(task, index) in tasks' :key='task.index'  class="list-item" draggable="true" @dragstart="startDrag($event, task)" @click="openModal(index)")
       TaskCard(:task='task')
@@ -37,7 +37,7 @@ export default defineComponent({
     }
   },
   methods: {
-    openModal (index) {
+    openModal (index:number) {
       this.task = this.tasks[index]
       if (this.task.status !== TaskStatusEnum.DONE) {
         this.showDetailsModal = true
@@ -45,7 +45,7 @@ export default defineComponent({
         alert('You can`t edit this task')
       }
     },
-    startDrag (event, item) {
+    startDrag (event, item:TaskInterface) {
       event.dataTransfer.dropEffect = 'move'
       event.dataTransfer.effectAllowed = 'move'
       event.dataTransfer.setData('itemId', item.id)

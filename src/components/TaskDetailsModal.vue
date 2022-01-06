@@ -70,7 +70,6 @@ export default defineComponent({
   },
   created () {
     this.updatedTask = JSON.parse(JSON.stringify(this.task))
-    // console.log(this.updatedTask)
   }
 })
 </script>
