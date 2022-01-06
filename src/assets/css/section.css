@@ -224,7 +224,7 @@ section .content .activity .pictures .picture:first-child{
    margin-top: 15px;
    border-radius: 15px;
    height: 60px;
-   background-color: LightGreen
+   background-color: #CEF9C6
 }
 .card .name{
    padding-left: 10px;
@@ -537,7 +537,7 @@ section .content .tasks .nadesti .nades span:last-child{
       margin-top: 15px;
       border-radius: 15px;
       height: 60px;
-      background-color: LightGreen;
+      background-color: #CEF9C6;
       margin-left: 5px;
    }
    .card .name{

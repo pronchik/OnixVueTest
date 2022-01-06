@@ -12,7 +12,7 @@
             span Name
             span Description
           span Deadline
-        .task(v-for='(task, index) in tasks' :key='task.index' :ref="`task${index}`" class="list-item" )
+        .task(v-for='(task, index) in tasks' :key='task.index' :ref="setItemRef" class="list-item" )
           .name(@click="taskModal(index)")
             | {{task.name}}
           .description(@click="taskModal(index)")
@@ -23,7 +23,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
+import { computed, defineComponent, onBeforeMount, onMounted } from 'vue'
 import { TaskInterface } from '@/types/task.interface'
 import useValidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
@@ -36,8 +36,32 @@ export default defineComponent({
   setup () {
     const store = useStore()
     const tasks = computed(() => store.state.tasks)
+    let itemRefs = []
+    const setItemRef = (el: never) => {
+      if (el) {
+        itemRefs.push(el)
+      }
+    }
+    onBeforeMount(() => {
+      itemRefs = []
+    })
+    onMounted(() => {
+      for (let i = 0; i < itemRefs.length; i++) {
+        setTimeout(() => {
+          if (itemRefs[i]) {
+            (itemRefs[i] as HTMLElement).classList.add('increase')
+          }
+        }, 2000 * i)
+        setTimeout(() => {
+          if (itemRefs[i]) {
+            (itemRefs[i] as HTMLElement).classList.remove('increase')
+          }
+        }, 2000 * Object.values(itemRefs).length)
+      }
+    })
     return {
-      tasks
+      tasks,
+      setItemRef
     }
   },
   components: {
@@ -75,20 +99,6 @@ export default defineComponent({
     openModal () {
       this.showModal = 'block'
     },
-    blink () {
-      for (let i = 0; i < Object.values(this.$refs).length; i++) {
-        setTimeout(() => {
-          if (Object.values(this.$refs as unknown as HTMLElement)[i]) {
-            Object.values(this.$refs as unknown as HTMLElement)[i].classList.add('increase')
-          }
-        }, 2000 * i)
-        setTimeout(() => {
-          if (Object.values(this.$refs as unknown as HTMLElement)[i]) {
-            Object.values(this.$refs as unknown as HTMLElement)[i].classList.remove('increase')
-          }
-        }, 2000 * Object.values(this.$refs).length)
-      }
-    },
     deleteCart (task) {
       this.tasks.splice(task, 1)
       emitter.emit('changeNumber', this.tasks.length)
@@ -104,8 +114,8 @@ export default defineComponent({
         })
         this.showModal = 'none'
         emitter.emit('changeNumber', this.tasks.length)
-        const element = Object.values(this.$refs as unknown as HTMLElement)[Object.values(this.$refs).length - 1]
         this.$nextTick(() => {
+          const element = Object.values(this.$refs as unknown as HTMLElement)[Object.values(this.$refs).length - 1]
           element.classList.add('blink')
           setTimeout(() => {
             if (element) {
@@ -117,7 +127,6 @@ export default defineComponent({
     }
   },
   mounted () {
-    this.blink()
     emitter.on('removeLastElementFromTaskArray', () => {
       this.tasks = this.tasks.splice(1)
     })

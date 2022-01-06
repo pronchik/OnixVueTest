@@ -8,7 +8,7 @@ export default createStore({
         id: 0,
         name: 'Create app',
         description1: 'Use smth',
-        time: '2022-07-04',
+        time: '2022-01-06',
         status: TaskStatusEnum.TODO
       },
       {
@@ -24,6 +24,13 @@ export default createStore({
         description1: 'Fix all bugs',
         time: '2021-02-17',
         status: TaskStatusEnum.DONE
+      },
+      {
+        id: 4,
+        name: 'Create app',
+        description1: 'Use smth',
+        time: '2022-01-05',
+        status: TaskStatusEnum.TODO
       }
     ]
   },

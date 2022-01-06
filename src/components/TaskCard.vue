@@ -33,7 +33,7 @@ export default defineComponent({
       var minutes = seconds / 60
       var hours = minutes / 60
       var days = hours / 24
-      return days < 0
+      return days < -1
     },
     isSoon () {
       const timeOftask = +moment(this.task.time)
@@ -43,7 +43,7 @@ export default defineComponent({
       var minutes = seconds / 60
       var hours = minutes / 60
       var days = hours / 24
-      return days <= 1
+      return days <= 1 && days >= -1
     },
     isFuture () {
       return moment(this.task.time).isAfter(moment())
