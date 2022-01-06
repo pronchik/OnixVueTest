@@ -23,7 +23,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onBeforeMount, onMounted } from 'vue'
+import { computed, defineComponent } from 'vue'
 import { TaskInterface } from '@/types/task.interface'
 import useValidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
@@ -36,32 +36,8 @@ export default defineComponent({
   setup () {
     const store = useStore()
     const tasks = computed(() => store.state.tasks)
-    let itemRefs = []
-    const setItemRef = (el: never) => {
-      if (el) {
-        itemRefs.push(el)
-      }
-    }
-    onBeforeMount(() => {
-      itemRefs = []
-    })
-    onMounted(() => {
-      for (let i = 0; i < itemRefs.length; i++) {
-        setTimeout(() => {
-          if (itemRefs[i]) {
-            (itemRefs[i] as HTMLElement).classList.add('increase')
-          }
-        }, 2000 * i)
-        setTimeout(() => {
-          if (itemRefs[i]) {
-            (itemRefs[i] as HTMLElement).classList.remove('increase')
-          }
-        }, 2000 * Object.values(itemRefs).length)
-      }
-    })
     return {
-      tasks,
-      setItemRef
+      tasks
     }
   },
   components: {
@@ -78,7 +54,8 @@ export default defineComponent({
       TaskStatusEnum,
       showModal: 'none',
       showDetailsModal: false,
-      task: ''
+      task: '',
+      itemRefs: []
     }
   },
   validations: {
@@ -115,7 +92,7 @@ export default defineComponent({
         this.showModal = 'none'
         emitter.emit('changeNumber', this.tasks.length)
         this.$nextTick(() => {
-          const element = Object.values(this.$refs as unknown as HTMLElement)[Object.values(this.$refs).length - 1]
+          const element = (this.itemRefs as unknown as HTMLElement)[this.itemRefs.length - 1]
           element.classList.add('blink')
           setTimeout(() => {
             if (element) {
@@ -124,9 +101,29 @@ export default defineComponent({
           }, 4000)
         })
       })
+    },
+    setItemRef (el: never) {
+      if (el) {
+        this.itemRefs.push(el)
+      }
+    },
+    blink () {
+      for (let i = 0; i < this.itemRefs.length; i++) {
+        setTimeout(() => {
+          if (this.itemRefs[i]) {
+            (this.itemRefs as unknown as HTMLElement)[i].classList.add('increase')
+          }
+        }, 2000 * i)
+        setTimeout(() => {
+          if ((this.itemRefs as unknown as HTMLElement)[i]) {
+            (this.itemRefs as unknown as HTMLElement)[i].classList.remove('increase')
+          }
+        }, 2000 * this.itemRefs.length)
+      }
     }
   },
   mounted () {
+    this.blink()
     emitter.on('removeLastElementFromTaskArray', () => {
       this.tasks = this.tasks.splice(1)
     })
