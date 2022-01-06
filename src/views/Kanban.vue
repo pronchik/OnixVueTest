@@ -1,5 +1,8 @@
 <template lang="pug">
 .kanban
+  input(type='text' v-model='search' placeholder='Search name..')
+  input( type='date' v-model="timefirst" class='input-name')
+  input( type='date' v-model="timesecond" class='input-name')
   .statuses
     .todo(@drop="onDrop($event,'todo')"
     @dragenter.prevent
@@ -25,6 +28,7 @@ import TasksOrderByStatus from '@/components/TasksOrderByStatus.vue'
 import { useStore } from 'vuex'
 import { emitter } from '../main'
 import { TaskInterface } from '@/types/task.interface'
+import moment from 'moment'
 export default defineComponent({
   setup () {
     const store = useStore()
@@ -41,9 +45,32 @@ export default defineComponent({
       TaskStatusEnum,
       showDetailsModal: false,
       task: '',
-      taskTodo: [] as TaskInterface[],
-      taskInprog: [] as TaskInterface[],
-      taskDone: [] as TaskInterface[]
+      search: '',
+      timefirst: '',
+      timesecond: ''
+    }
+  },
+  computed: {
+    taskTodo () {
+      return useStore().state.tasks.filter(task => {
+        return task.name.toLowerCase().includes(this.search.toLowerCase()) && task.status.includes(TaskStatusEnum.TODO) &&
+         (+moment(task.time) - +moment(this.timefirst) >= 0 || isNaN(+moment(task.time) - +moment(this.timefirst))) &&
+          (+moment(task.time) - +moment(this.timesecond) <= 0 || isNaN(+moment(task.time) - +moment(this.timesecond)))
+      })
+    },
+    taskDone () {
+      return useStore().state.tasks.filter(task => {
+        return task.name.toLowerCase().includes(this.search.toLowerCase()) && task.status.includes(TaskStatusEnum.DONE) &&
+         (+moment(task.time) - +moment(this.timefirst) >= 0 || isNaN(+moment(task.time) - +moment(this.timefirst))) &&
+         (+moment(task.time) - +moment(this.timesecond) <= 0 || isNaN(+moment(task.time) - +moment(this.timesecond)))
+      })
+    },
+    taskInprog () {
+      return useStore().state.tasks.filter(task => {
+        return task.name.toLowerCase().includes(this.search.toLowerCase()) && task.status.includes(TaskStatusEnum.INPROGRESS) &&
+         (+moment(task.time) - +moment(this.timefirst) >= 0 || isNaN(+moment(task.time) - +moment(this.timefirst))) &&
+          (+moment(task.time) - +moment(this.timesecond) <= 0 || isNaN(+moment(task.time) - +moment(this.timesecond)))
+      })
     }
   },
   methods: {
@@ -98,26 +125,9 @@ export default defineComponent({
           }
         }
       }
-    },
-    setArrayByStatuses () {
-      for (let i = 0; i < this.tasks.length; i++) {
-        if (this.tasks[i].status === TaskStatusEnum.INPROGRESS) {
-          const item = this.tasks[i]
-          this.taskInprog.push(item)
-        }
-        if (this.tasks[i].status === TaskStatusEnum.TODO) {
-          const item = this.tasks[i]
-          this.taskTodo.push(item)
-        }
-        if (this.tasks[i].status === TaskStatusEnum.DONE) {
-          const item = this.tasks[i]
-          this.taskDone.push(item)
-        }
-      }
     }
   },
   mounted () {
-    this.setArrayByStatuses()
     emitter.on('save', task => {
       const index = task as TaskInterface
       this.tasks[index.id].name = index.name

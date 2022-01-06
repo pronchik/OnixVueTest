@@ -12,12 +12,12 @@
             span Name
             span Description
           span Deadline
-        .task(v-for='(task, index) in tasks' :key='task.index' :ref="`task${index}`" class="list-item" @click="taskModal(index)")
-          .name
+        .task(v-for='(task, index) in tasks' :key='task.index' :ref="setItemRef" class="list-item" )
+          .name(@click="taskModal(index)")
             | {{task.name}}
-          .description
+          .description(@click="taskModal(index)")
             | {{task.description1}}
-          .time
+          .time(@click="taskModal(index)")
             | {{task.time}}
           button(class='delete-task' @click="deleteCart(index)") -
 </template>
@@ -54,7 +54,8 @@ export default defineComponent({
       TaskStatusEnum,
       showModal: 'none',
       showDetailsModal: false,
-      task: ''
+      task: '',
+      itemRefs: []
     }
   },
   validations: {
@@ -75,16 +76,6 @@ export default defineComponent({
     openModal () {
       this.showModal = 'block'
     },
-    blink () {
-      for (let i = 0; i < Object.values(this.$refs).length; i++) {
-        setTimeout(() => {
-          Object.values(this.$refs as unknown as HTMLElement)[i].classList.add('increase')
-        }, 2000 * i)
-        setTimeout(() => {
-          Object.values(this.$refs as unknown as HTMLElement)[i].classList.remove('increase')
-        }, 2000 * Object.values(this.$refs).length)
-      }
-    },
     deleteCart (task) {
       this.tasks.splice(task, 1)
       emitter.emit('changeNumber', this.tasks.length)
@@ -101,12 +92,34 @@ export default defineComponent({
         this.showModal = 'none'
         emitter.emit('changeNumber', this.tasks.length)
         this.$nextTick(() => {
-          Object.values(this.$refs as unknown as HTMLElement)[Object.values(this.$refs).length - 1].classList.add('blink')
+          const element = (this.itemRefs as unknown as HTMLElement)[this.itemRefs.length - 1]
+          element.classList.add('blink')
           setTimeout(() => {
-            Object.values(this.$refs as unknown as HTMLElement)[Object.values(this.$refs).length - 1].classList.remove('blink')
+            if (element) {
+              element.classList.remove('blink')
+            }
           }, 4000)
         })
       })
+    },
+    setItemRef (el: never) {
+      if (el) {
+        this.itemRefs.push(el)
+      }
+    },
+    blink () {
+      for (let i = 0; i < this.itemRefs.length; i++) {
+        setTimeout(() => {
+          if (this.itemRefs[i]) {
+            (this.itemRefs as unknown as HTMLElement)[i].classList.add('increase')
+          }
+        }, 2000 * i)
+        setTimeout(() => {
+          if ((this.itemRefs as unknown as HTMLElement)[i]) {
+            (this.itemRefs as unknown as HTMLElement)[i].classList.remove('increase')
+          }
+        }, 2000 * this.itemRefs.length)
+      }
     }
   },
   mounted () {

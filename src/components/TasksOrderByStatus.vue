@@ -1,12 +1,10 @@
 <template lang="pug">
+.numberOfTasks()
+  |{{numberOfTasks}}
 .asd(v-if="Object.keys(this.task).length !== 0" :v-if="showDetailsModal === true")
   task-details-modal(:showDetailsModal = 'showDetailsModal' :task = 'task' v-if="showDetailsModal === true")
 .task(v-for='(task, index) in tasks' :key='task.index'  class="list-item" draggable="true" @dragstart="startDrag($event, task)" @click="openModal(index)")
-      .card()
-        .name()
-          | {{task.name}}
-        .deadline
-          | {{task.time}}
+      TaskCard(:task='task')
 </template>
 
 <script lang="ts">
@@ -15,19 +13,27 @@ import { TaskStatusEnum } from './../enums/TaskStatusEnum'
 import TaskDetailsModal from '@/components/TaskDetailsModal.vue'
 import { emitter } from '../main'
 import { TaskInterface } from '@/types/task.interface'
+import TaskCard from '@/components/TaskCard.vue'
 
 export default defineComponent({
   name: 'tasks-order-by-status',
   props: ['tasks'],
 
   components: {
-    TaskDetailsModal
+    TaskDetailsModal,
+    TaskCard
   },
   data () {
     return {
       TaskStatusEnum,
       showDetailsModal: false,
-      task: {} as TaskInterface
+      task: {} as TaskInterface,
+      search: ''
+    }
+  },
+  computed: {
+    numberOfTasks () {
+      return this.tasks.length
     }
   },
   methods: {
