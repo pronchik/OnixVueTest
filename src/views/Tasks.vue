@@ -125,7 +125,7 @@ export default defineComponent({
   mounted () {
     this.blink()
     emitter.on('removeLastElementFromTaskArray', () => {
-      this.tasks = this.tasks.splice(1)
+      this.tasks.pop()
     })
     this.takeTask()
     emitter.on('save', task => {

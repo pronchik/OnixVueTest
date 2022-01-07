@@ -67,7 +67,7 @@ export default defineComponent({
     }
   },
   methods: {
-    filterByStatus (task:TaskInterface, status) {
+    filterByStatus (task:TaskInterface, status:TaskStatusEnum) {
       return task.name.toLowerCase().includes(this.search.toLowerCase()) && task.status.includes(status) &&
          (+new Date(task.time) - +new Date(this.timefirst) >= 0 || isNaN(+new Date(task.time) - +new Date(this.timefirst))) &&
           (+new Date(task.time) - +new Date(this.timesecond) <= 0 || isNaN(+new Date(task.time) - +new Date(this.timesecond)))
