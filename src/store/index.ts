@@ -26,7 +26,7 @@ export default createStore({
         status: TaskStatusEnum.DONE
       },
       {
-        id: 4,
+        id: 3,
         name: 'Create app',
         description1: 'Use smth',
         time: '2022-01-05',

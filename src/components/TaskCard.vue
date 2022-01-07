@@ -26,23 +26,14 @@ export default defineComponent({
       return this.task.time
     },
     isFailDeadline () {
-      const timeOftask = +new Date(this.task.time)
-      const currentTime = +new Date()
-      var milliseconds = timeOftask - currentTime
-      var seconds = milliseconds / 1000
-      var minutes = seconds / 60
-      var hours = minutes / 60
-      var days = hours / 24
-      return days < -1
+      const currentDate = Date.now()
+      const taskDate = Date.parse(this.task.time)
+      return (taskDate - currentDate) / 86400000 < -1
     },
     isSoon () {
-      const timeOftask = +new Date(this.task.time)
-      const currentTime = +new Date()
-      var milliseconds = timeOftask - currentTime
-      var seconds = milliseconds / 1000
-      var minutes = seconds / 60
-      var hours = minutes / 60
-      var days = hours / 24
+      const currentDate = Date.now()
+      const taskDate = Date.parse(this.task.time)
+      const days = (taskDate - currentDate) / 86400000
       return days <= 0 && days >= -1
     },
     isFuture () {
