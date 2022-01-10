@@ -18,8 +18,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { emitter } from '../main'
-import { mapState } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 export default defineComponent({
   data () {
     return {
@@ -30,8 +29,9 @@ export default defineComponent({
     ...mapState(['messages'])
   },
   methods: {
+    ...mapMutations(['changeNotification']),
     selectImg (index: number) {
-      emitter.emit('change', index)
+      this.changeNotification(index)
     }
   }
 })

@@ -31,7 +31,7 @@ aside(ref='aside' :class='{ active: showMobileMenu }')
       li
         router-link(:to="{ name: 'cooming-soon'}") Notification
         .notifications
-          span {{notifications}}
+          span {{notification}}
   .img-menu
     router-link(:to="{path: '/activity'}")
       img(src='../assets//home.png' alt='' :class='{ active: showMobileMenu }')
@@ -44,9 +44,9 @@ aside(ref='aside' :class='{ active: showMobileMenu }')
 <script lang="ts">
 
 import { defineComponent } from 'vue'
-import { emitter } from '../main'
 import Profile from '@/components/Profile.vue'
 import AppModal from '@/components/AppModal.vue'
+import { mapState } from 'vuex'
 export default defineComponent({
   name: 'app-sidebar',
   components: {
@@ -58,11 +58,13 @@ export default defineComponent({
       msg: 'PROJECTUS',
       numberOfOpenTasks: 2,
       numberOfCompletedTasks: 256,
-      display: 'none',
-      notifications: 3 as number
+      display: 'none'
     }
   },
   props: ['showMobileMenu'],
+  computed: {
+    ...mapState(['notification'])
+  },
   methods: {
     click () {
       this.$emit('update:showMobileMenu', !this.showMobileMenu)
@@ -74,11 +76,6 @@ export default defineComponent({
         alert('You haven`t open tasks!')
       }
     }
-  },
-  mounted () {
-    emitter.on('change', notifications => {
-      this.notifications = notifications as number
-    })
   }
 })
 </script>

@@ -9,22 +9,11 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 export default defineComponent({
   computed: {
     ...mapState(['messages']),
-    files () {
-      const imges = []
-      for (let i = 0; i < this.messages.length; i++) {
-        const img = this.messages[i].pictures
-        if (img !== undefined) {
-          for (let j = 0; j < img.length; j++) {
-            imges.push(img[j].img.split('.')[0] as never)
-          }
-        }
-      }
-      return imges
-    }
+    ...mapGetters(['files'])
   }
 })
 </script>

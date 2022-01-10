@@ -2,6 +2,7 @@ import { createStore } from 'vuex'
 import { TaskStatusEnum } from './../enums/TaskStatusEnum'
 
 const tasks = window.localStorage.getItem('tasks')
+const notification = window.localStorage.getItem('notification')
 export default createStore({
   state: {
     tasks: tasks ? JSON.parse(tasks) : [
@@ -9,7 +10,7 @@ export default createStore({
         id: 0,
         title: 'Create app',
         description1: 'Use smth',
-        time: '2022-01-06',
+        time: '2022-01-12',
         status: TaskStatusEnum.TODO,
         start: '2022-01-05',
         end: '2022-01-05'
@@ -18,7 +19,25 @@ export default createStore({
         id: 1,
         title: 'Fix bugs',
         description1: 'Fix all bugs',
-        time: '2021-12-12',
+        time: '2022-01-13',
+        status: TaskStatusEnum.INPROGRESS,
+        start: '2021-12-11',
+        end: '2021-12-11'
+      },
+      {
+        id: 2,
+        title: 'Fix bugs',
+        description1: 'Fix all bugs',
+        time: '2022-01-10',
+        status: TaskStatusEnum.INPROGRESS,
+        start: '2021-12-11',
+        end: '2021-12-11'
+      },
+      {
+        id: 3,
+        title: 'Fix bugs',
+        description1: 'Fix all bugs',
+        time: '2022-01-09',
         status: TaskStatusEnum.INPROGRESS,
         start: '2021-12-11',
         end: '2021-12-11'
@@ -55,7 +74,8 @@ export default createStore({
           }
         ]
       }
-    ]
+    ],
+    notification: notification ? JSON.parse(notification) : 2
   },
   mutations: {
     appendNewTask (state, task) {
@@ -70,6 +90,10 @@ export default createStore({
     deleteTask (state, task) {
       state.tasks.splice(task, 1)
       window.localStorage.setItem('tasks', JSON.stringify(state.tasks))
+    },
+    changeNotification (state, index) {
+      state.notification = index
+      window.localStorage.setItem('notification', JSON.stringify(state.notification))
     }
   },
   actions: {
@@ -79,6 +103,21 @@ export default createStore({
   getters: {
     tasks (state) {
       return state.tasks
+    },
+    notification (state) {
+      return state.notification
+    },
+    files (state) {
+      const imges = []
+      for (let i = 0; i < state.messages.length; i++) {
+        const img = state.messages[i].pictures
+        if (img !== undefined) {
+          for (let j = 0; j < img.length; j++) {
+            imges.push(img[j].img.split('.')[0] as never)
+          }
+        }
+      }
+      return imges
     }
   }
 })
