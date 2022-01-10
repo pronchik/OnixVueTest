@@ -2,7 +2,7 @@
 .card(:class="{future: isFuture, failDeadline: isFailDeadline }")
     .point(:class="{soon: isSoon, }")
     .name
-        | {{task.name}}
+        | {{task.title}}
     .deadline
         | {{time}}
         .imgStatus(v-if="isStatusInprogress")

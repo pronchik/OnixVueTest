@@ -22,20 +22,12 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
+import { defineComponent } from 'vue'
 import { TaskStatusEnum } from './../enums/TaskStatusEnum'
 import TasksOrderByStatus from '@/components/TasksOrderByStatus.vue'
-import { useStore } from 'vuex'
-import { emitter } from '../main'
+import { mapState, useStore } from 'vuex'
 import { TaskInterface } from '@/types/task.interface'
 export default defineComponent({
-  setup () {
-    const store = useStore()
-    const tasks = computed(() => store.state.tasks)
-    return {
-      tasks
-    }
-  },
   components: {
     TasksOrderByStatus
   },
@@ -50,6 +42,7 @@ export default defineComponent({
     }
   },
   computed: {
+    ...mapState(['tasks']),
     taskTodo () {
       return useStore().state.tasks.filter(task => {
         return this.filterByStatus(task, TaskStatusEnum.TODO)
@@ -68,7 +61,7 @@ export default defineComponent({
   },
   methods: {
     filterByStatus (task:TaskInterface, status) {
-      return task.name.toLowerCase().includes(this.search.toLowerCase()) && task.status.includes(status) &&
+      return task.title.toLowerCase().includes(this.search.toLowerCase()) && task.status.includes(status) &&
          (+new Date(task.time) - +new Date(this.timefirst) >= 0 || isNaN(+new Date(task.time) - +new Date(this.timefirst))) &&
           (+new Date(task.time) - +new Date(this.timesecond) <= 0 || isNaN(+new Date(task.time) - +new Date(this.timesecond)))
     },
@@ -109,16 +102,6 @@ export default defineComponent({
         }
       }
     }
-  },
-  mounted () {
-    emitter.on('save', task => {
-      const index = task as TaskInterface
-      this.tasks[index.id].name = index.name
-      this.tasks[index.id].description1 = index.description1
-      this.tasks[index.id].time = index.time
-      this.tasks[index.id].status = index.status
-      this.showDetailsModal = false
-    })
   }
 })
 </script>

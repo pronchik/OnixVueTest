@@ -4,8 +4,7 @@ aside(ref='aside' :class='{ active: showMobileMenu }')
     :numberOfOpenTasks = 'numberOfOpenTasks'
     :numberOfCompletedTasks = 'numberOfCompletedTasks'
     @incr-tasks="numberOfCompletedTasks += $event; numberOfOpenTasks -= $event"
-    @close-modal="display = $event"
-    @click="someFunc()")
+    @close-modal="display = $event")
   .project-logo
     a(href='#' @click="$emit('update:showMobileMenu', !this.showMobileMenu)")
       img#project-logo(src='../assets/Logo@3x.svg' alt='logo' :class='{ active: showMobileMenu }')
@@ -68,9 +67,6 @@ export default defineComponent({
     click () {
       this.$emit('update:showMobileMenu', !this.showMobileMenu)
     },
-    someFunc () {
-      emitter.emit('removeLastElementFromTaskArray')
-    },
     showModal () {
       if (this.numberOfOpenTasks > 0) {
         this.display = 'block'
@@ -82,9 +78,6 @@ export default defineComponent({
   mounted () {
     emitter.on('change', notifications => {
       this.notifications = notifications as number
-    })
-    emitter.on('changeNumber', numberOfOpenTasks => {
-      this.numberOfOpenTasks = numberOfOpenTasks as number
     })
   }
 })

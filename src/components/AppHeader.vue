@@ -45,7 +45,6 @@ nav
 import { defineComponent } from 'vue'
 export default defineComponent({
   name: 'app-header',
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   data () {
     return {
       currentTab: 'tasks',

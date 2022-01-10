@@ -2,6 +2,8 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import Activity from '../views/Activity.vue'
 import Tasks from '../views/Tasks.vue'
 import Kanban from '../views/Kanban.vue'
+import Files from '../views/Files.vue'
+import Calendar from '../views/Calendar.vue'
 import PageNotFound from '../views/PageNotFound.vue'
 import ComingSoon from '../views/ComingSoon.vue'
 
@@ -9,7 +11,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/files',
     name: 'files',
-    component: ComingSoon
+    component: Files
   },
   {
     path: '/activity',
@@ -33,7 +35,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/calendar',
     name: 'calendar',
-    component: ComingSoon
+    component: Calendar
   },
   {
     path: '/notification',

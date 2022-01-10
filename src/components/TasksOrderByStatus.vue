@@ -2,7 +2,7 @@
 .numberOfTasks()
   |{{numberOfTasks}}
 .asd(v-if="Object.keys(this.task).length !== 0 && showDetailsModal === true")
-  task-details-modal(:showDetailsModal = 'showDetailsModal' :task = 'task' v-if="showDetailsModal === true")
+  task-details-modal(:showDetailsModal = 'showDetailsModal' :showEditButton='showEditButton' :task = 'task' v-if="showDetailsModal === true")
 .task(v-for='(task, index) in tasks' :key='task.index'  class="list-item" draggable="true" @dragstart="startDrag($event, task)" @click="openModal(index)")
       TaskCard(:task='task')
 </template>
@@ -28,7 +28,8 @@ export default defineComponent({
       TaskStatusEnum,
       showDetailsModal: false,
       task: {} as TaskInterface,
-      search: ''
+      search: '',
+      showEditButton: true
     }
   },
   computed: {
