@@ -25,7 +25,7 @@
 import { defineComponent } from 'vue'
 import { TaskStatusEnum } from './../enums/TaskStatusEnum'
 import TasksOrderByStatus from '@/components/TasksOrderByStatus.vue'
-import { mapState, useStore } from 'vuex'
+import { mapState, useStore, mapMutations } from 'vuex'
 import { TaskInterface } from '@/types/task.interface'
 export default defineComponent({
   components: {
@@ -60,6 +60,7 @@ export default defineComponent({
     }
   },
   methods: {
+    ...mapMutations(['updateTask']),
     filterByStatus (task:TaskInterface, status) {
       return task.title.toLowerCase().includes(this.search.toLowerCase()) && task.status.includes(status) &&
          (+new Date(task.time) - +new Date(this.timefirst) >= 0 || isNaN(+new Date(task.time) - +new Date(this.timefirst))) &&
@@ -88,16 +89,19 @@ export default defineComponent({
             this.checkStatus(i, itemStatus)
             this.taskInprog.push(this.tasks[i])
             this.tasks[i].status = TaskStatusEnum.INPROGRESS
+            this.updateTask(this.tasks[i])
           }
           if (this.tasks[i].id === itemId && list === TaskStatusEnum.DONE) {
             this.checkStatus(i, itemStatus)
             this.taskDone.push(this.tasks[i])
             this.tasks[i].status = TaskStatusEnum.DONE
+            this.updateTask(this.tasks[i])
           }
           if (this.tasks[i].id === itemId && list === TaskStatusEnum.TODO) {
             this.checkStatus(i, itemStatus)
             this.taskTodo.push(this.tasks[i])
             this.tasks[i].status = TaskStatusEnum.TODO
+            this.updateTask(this.tasks[i])
           }
         }
       }
