@@ -111,7 +111,7 @@ export default createStore({
       const imges = []
       for (let i = 0; i < state.messages.length; i++) {
         const img = state.messages[i].pictures
-        if (img !== undefined) {
+        if (img) {
           for (let j = 0; j < img.length; j++) {
             imges.push(img[j].img.split('.')[0] as never)
           }
