@@ -39,7 +39,6 @@ export default defineComponent({
       var hours = minutes / 60
       var days = hours / 24
       return days <= 1 && days >= -1
-
     },
     isFuture () {
       return moment(this.task.time).isAfter(moment())
