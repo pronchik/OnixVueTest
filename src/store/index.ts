@@ -1,19 +1,19 @@
 import { createStore } from 'vuex'
 import { TaskStatusEnum } from './../enums/TaskStatusEnum'
+import createPersistedState from 'vuex-persistedstate'
 
-const tasks = window.localStorage.getItem('tasks')
-const notification = window.localStorage.getItem('notification')
 export default createStore({
+  plugins: [createPersistedState()],
   state: {
-    tasks: tasks ? JSON.parse(tasks) : [
+    tasks: [
       {
         id: 0,
         title: 'Create app',
         description1: 'Use smth',
         time: '2022-01-12',
         status: TaskStatusEnum.TODO,
-        start: '2022-01-05',
-        end: '2022-01-05'
+        start: '2022-02-02',
+        end: '2022-02-02'
       },
       {
         id: 1,
@@ -75,25 +75,21 @@ export default createStore({
         ]
       }
     ],
-    notification: notification ? JSON.parse(notification) : 2
+    notification: 2
   },
   mutations: {
     appendNewTask (state, task) {
       state.tasks.push(task as never)
       console.log(task)
-      window.localStorage.setItem('tasks', JSON.stringify(state.tasks))
     },
     updateTask (state, task) {
       state.tasks[state.tasks.findIndex(taskId => taskId.id === task.id)] = task as never
-      window.localStorage.setItem('tasks', JSON.stringify(state.tasks))
     },
     deleteTask (state, task) {
       state.tasks.splice(task, 1)
-      window.localStorage.setItem('tasks', JSON.stringify(state.tasks))
     },
     changeNotification (state, index) {
       state.notification = index
-      window.localStorage.setItem('notification', JSON.stringify(state.notification))
     }
   },
   actions: {

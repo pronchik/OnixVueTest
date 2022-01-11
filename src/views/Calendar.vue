@@ -19,7 +19,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import VueCal from 'vue-cal'
-import 'vue-cal/dist/vuecal.css'
 import { mapState } from 'vuex'
 import TaskDetailsModal from '@/components/TaskDetailsModal.vue'
 import { emitter } from '../main'
