@@ -2,7 +2,7 @@
 .tasks
   .asd(v-if="Object.keys(this.task).length !== 0")
     task-details-modal(:showDetailsModal = 'showDetailsModal' :task = 'task' :showEditButton='showEditButton' v-if="showDetailsModal")
-  task-modal(:showModal = 'showModal' :tasks = 'tasks'
+  task-modal(:showModal = 'showModal' :tasks = 'tasks.tasks'
   @close-modal="showModal = $event")
   h2
       span Tasks
@@ -12,7 +12,7 @@
             span Name
             span Description
           span Deadline
-        .task(v-for='(task, index) in tasks' :key='task.index' :ref="setItemRef" class="list-item" )
+        .task(v-for='(task, index) in tasks.tasks' :key='task.index' :ref="setItemRef" class="list-item" )
           .name(@click="openTaskModal(index)")
             | {{task.title}}
           .description(@click="openTaskModal(index)")
@@ -67,7 +67,7 @@ export default defineComponent({
   methods: {
     ...mapMutations(['deleteTask']),
     openTaskModal (index:number) {
-      this.task = this.tasks[index]
+      this.task = this.tasks.tasks[index]
       this.showDetailsModal = true
     },
     openModal () {

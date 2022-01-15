@@ -10,7 +10,7 @@
     hide-weekends=false
     passive=true
     events-on-month-view="short"
-    :events="tasks"
+    :events="tasks.tasks"
     :on-event-click="onEventClick"
     style="height: 500px")
       template(v-slot:no-event=""  ) No event 👌
@@ -39,7 +39,7 @@ export default defineComponent({
   },
   methods: {
     onEventClick (e) {
-      this.task = this.tasks.find(task => task.id === e.id)
+      this.task = this.tasks.tasks.find(task => task.id === e.id)
       this.showDetailsModal = true
     }
   },

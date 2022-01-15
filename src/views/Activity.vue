@@ -2,7 +2,7 @@
 .activity
   h2
       span Today
-        .message(v-for='item1 in messages' :key='item1')
+        .message(v-for='item1 in activity.messages' :key='item1')
           .message1(style='display: flex')
             span
               img(:src='require(`../assets/${item1.img}`)' alt='checkmark')
@@ -26,7 +26,7 @@ export default defineComponent({
     }
   },
   computed: {
-    ...mapState(['messages'])
+    ...mapState(['activity'])
   },
   methods: {
     ...mapMutations(['changeNotification']),

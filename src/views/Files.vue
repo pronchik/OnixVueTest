@@ -9,10 +9,9 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { mapState, mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 export default defineComponent({
   computed: {
-    ...mapState(['messages']),
     ...mapGetters(['files'])
   }
 })

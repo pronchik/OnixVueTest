@@ -31,7 +31,7 @@ aside(ref='aside' :class='{ active: showMobileMenu }')
       li
         router-link(:to="{ name: 'cooming-soon'}") Notification
         .notifications
-          span {{notification}}
+          span {{activity.notification}}
   .img-menu
     router-link(:to="{path: '/activity'}")
       img(src='../assets//home.png' alt='' :class='{ active: showMobileMenu }')
@@ -63,7 +63,7 @@ export default defineComponent({
   },
   props: ['showMobileMenu'],
   computed: {
-    ...mapState(['notification'])
+    ...mapState(['activity'])
   },
   methods: {
     click () {
