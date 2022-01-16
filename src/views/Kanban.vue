@@ -42,7 +42,11 @@ export default defineComponent({
     }
   },
   computed: {
-    ...mapState(['tasks']),
+    ...mapState({
+      taskList: (state: any): any => {
+        return state.tasks.tasks
+      }
+    }),
     taskTodo () {
       return useStore().state.tasks.tasks.filter(task => {
         return this.filterByStatus(task, TaskStatusEnum.TODO)
@@ -68,40 +72,40 @@ export default defineComponent({
     },
     checkStatus (i:number, itemStatus:TaskStatusEnum) {
       if (itemStatus === TaskStatusEnum.TODO) {
-        const index = this.taskTodo.indexOf(this.tasks.tasks[i])
+        const index = this.taskTodo.indexOf(this.taskList[i])
         this.taskTodo.splice(index, 1)
       }
       if (itemStatus === TaskStatusEnum.DONE) {
-        const index = this.taskDone.indexOf(this.tasks.tasks[i])
+        const index = this.taskDone.indexOf(this.taskList[i])
         this.taskDone.splice(index, 1)
       }
       if (itemStatus === TaskStatusEnum.INPROGRESS) {
-        const index = this.taskInprog.indexOf(this.tasks.tasks[i])
+        const index = this.taskInprog.indexOf(this.taskList[i])
         this.taskInprog.splice(index, 1)
       }
     },
     onDrop (event, list) {
       const itemId = +event.dataTransfer.getData('itemId')
       const itemStatus = event.dataTransfer.getData('itemStatus')
-      for (let i = 0; i < this.tasks.tasks.length; i++) {
-        if (!(this.tasks.tasks[i].status === TaskStatusEnum.DONE && list === TaskStatusEnum.TODO)) {
-          if (this.tasks.tasks[i].id === itemId && list === TaskStatusEnum.INPROGRESS) {
+      for (let i = 0; i < this.taskList.length; i++) {
+        if (!(this.taskList[i].status === TaskStatusEnum.DONE && list === TaskStatusEnum.TODO)) {
+          if (this.taskList[i].id === itemId && list === TaskStatusEnum.INPROGRESS) {
             this.checkStatus(i, itemStatus)
-            this.taskInprog.push(this.tasks.tasks[i])
-            this.tasks.tasks[i].status = TaskStatusEnum.INPROGRESS
-            this.updateTask(this.tasks.tasks[i])
+            this.taskInprog.push(this.taskList[i])
+            this.taskList[i].status = TaskStatusEnum.INPROGRESS
+            this.updateTask(this.taskList[i])
           }
-          if (this.tasks.tasks[i].id === itemId && list === TaskStatusEnum.DONE) {
+          if (this.taskList[i].id === itemId && list === TaskStatusEnum.DONE) {
             this.checkStatus(i, itemStatus)
-            this.taskDone.push(this.tasks.tasks[i])
-            this.tasks.tasks[i].status = TaskStatusEnum.DONE
-            this.updateTask(this.tasks.tasks[i])
+            this.taskDone.push(this.taskList[i])
+            this.taskList[i].status = TaskStatusEnum.DONE
+            this.updateTask(this.taskList[i])
           }
-          if (this.tasks.tasks[i].id === itemId && list === TaskStatusEnum.TODO) {
+          if (this.taskList[i].id === itemId && list === TaskStatusEnum.TODO) {
             this.checkStatus(i, itemStatus)
-            this.taskTodo.push(this.tasks.tasks[i])
-            this.tasks.tasks[i].status = TaskStatusEnum.TODO
-            this.updateTask(this.tasks.tasks[i])
+            this.taskTodo.push(this.taskList[i])
+            this.taskList[i].status = TaskStatusEnum.TODO
+            this.updateTask(this.taskList[i])
           }
         }
       }
