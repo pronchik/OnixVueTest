@@ -1,48 +1,20 @@
 import { createStore } from 'vuex'
-import { TaskStatusEnum } from './../enums/TaskStatusEnum'
+import * as tasks from './modules/task'
+import * as activity from './modules/activity'
+import createPersistedState from 'vuex-persistedstate'
 
 export default createStore({
+  plugins: [createPersistedState()],
   state: {
-    tasks: [
-      {
-        id: 0,
-        name: 'Create app',
-        description1: 'Use smth',
-        time: '2022-01-06',
-        status: TaskStatusEnum.TODO
-      },
-      {
-        id: 1,
-        name: 'Fix bugs',
-        description1: 'Fix all bugs',
-        time: '2021-12-12',
-        status: TaskStatusEnum.INPROGRESS
-      },
-      {
-        id: 2,
-        name: 'Fixx bugs',
-        description1: 'Fix all bugs',
-        time: '2021-02-17',
-        status: TaskStatusEnum.DONE
-      },
-      {
-        id: 3,
-        name: 'Create app',
-        description1: 'Use smth',
-        time: '2022-01-05',
-        status: TaskStatusEnum.TODO
-      }
-    ]
   },
   mutations: {
   },
   actions: {
   },
   modules: {
+    tasks,
+    activity
   },
   getters: {
-    tasks (state) {
-      return state.tasks
-    }
   }
 })

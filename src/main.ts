@@ -7,6 +7,7 @@ import '@/assets/css/aside.css'
 import '@/assets/css/nav.css'
 import '@/assets/css/section.css'
 import '@/assets/css/style.css'
+import '@/assets/css/vuecal.css'
 
 import mitt from 'mitt'
 export const emitter = mitt()

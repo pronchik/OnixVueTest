@@ -4,8 +4,7 @@ aside(ref='aside' :class='{ active: showMobileMenu }')
     :numberOfOpenTasks = 'numberOfOpenTasks'
     :numberOfCompletedTasks = 'numberOfCompletedTasks'
     @incr-tasks="numberOfCompletedTasks += $event; numberOfOpenTasks -= $event"
-    @close-modal="display = $event"
-    @click="someFunc()")
+    @close-modal="display = $event")
   .project-logo
     a(href='#' @click="$emit('update:showMobileMenu', !this.showMobileMenu)")
       img#project-logo(src='../assets/Logo@3x.svg' alt='logo' :class='{ active: showMobileMenu }')
@@ -32,7 +31,7 @@ aside(ref='aside' :class='{ active: showMobileMenu }')
       li
         router-link(:to="{ name: 'cooming-soon'}") Notification
         .notifications
-          span {{notifications}}
+          span {{activity.notification}}
   .img-menu
     router-link(:to="{path: '/activity'}")
       img(src='../assets//home.png' alt='' :class='{ active: showMobileMenu }')
@@ -45,9 +44,9 @@ aside(ref='aside' :class='{ active: showMobileMenu }')
 <script lang="ts">
 
 import { defineComponent } from 'vue'
-import { emitter } from '../main'
 import Profile from '@/components/Profile.vue'
 import AppModal from '@/components/AppModal.vue'
+import { mapState } from 'vuex'
 export default defineComponent({
   name: 'app-sidebar',
   components: {
@@ -59,17 +58,16 @@ export default defineComponent({
       msg: 'PROJECTUS',
       numberOfOpenTasks: 2,
       numberOfCompletedTasks: 256,
-      display: 'none',
-      notifications: 3 as number
+      display: 'none'
     }
   },
   props: ['showMobileMenu'],
+  computed: {
+    ...mapState(['activity'])
+  },
   methods: {
     click () {
       this.$emit('update:showMobileMenu', !this.showMobileMenu)
-    },
-    someFunc () {
-      emitter.emit('removeLastElementFromTaskArray')
     },
     showModal () {
       if (this.numberOfOpenTasks > 0) {
@@ -78,14 +76,6 @@ export default defineComponent({
         alert('You haven`t open tasks!')
       }
     }
-  },
-  mounted () {
-    emitter.on('change', notifications => {
-      this.notifications = notifications as number
-    })
-    emitter.on('changeNumber', numberOfOpenTasks => {
-      this.numberOfOpenTasks = numberOfOpenTasks as number
-    })
   }
 })
 </script>

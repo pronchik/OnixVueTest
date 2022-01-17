@@ -22,20 +22,12 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
+import { defineComponent } from 'vue'
 import { TaskStatusEnum } from './../enums/TaskStatusEnum'
 import TasksOrderByStatus from '@/components/TasksOrderByStatus.vue'
-import { useStore } from 'vuex'
-import { emitter } from '../main'
+import { mapState, useStore, mapMutations } from 'vuex'
 import { TaskInterface } from '@/types/task.interface'
 export default defineComponent({
-  setup () {
-    const store = useStore()
-    const tasks = computed(() => store.state.tasks)
-    return {
-      tasks
-    }
-  },
   components: {
     TasksOrderByStatus
   },
@@ -50,75 +42,74 @@ export default defineComponent({
     }
   },
   computed: {
+    ...mapState({
+      taskList: (state: any): any => {
+        return state.tasks.tasks
+      }
+    }),
     taskTodo () {
-      return useStore().state.tasks.filter(task => {
+      return useStore().state.tasks.tasks.filter(task => {
         return this.filterByStatus(task, TaskStatusEnum.TODO)
       })
     },
     taskDone () {
-      return useStore().state.tasks.filter(task => {
+      return useStore().state.tasks.tasks.filter(task => {
         return this.filterByStatus(task, TaskStatusEnum.DONE)
       })
     },
     taskInprog () {
-      return useStore().state.tasks.filter(task => {
+      return useStore().state.tasks.tasks.filter(task => {
         return this.filterByStatus(task, TaskStatusEnum.INPROGRESS)
       })
     }
   },
   methods: {
-    filterByStatus (task:TaskInterface, status:TaskStatusEnum) {
-      return task.name.toLowerCase().includes(this.search.toLowerCase()) && task.status.includes(status) &&
+    ...mapMutations(['updateTask']),
+    filterByStatus (task:TaskInterface, status) {
+      return task.title.toLowerCase().includes(this.search.toLowerCase()) && task.status.includes(status) &&
          (+new Date(task.time) - +new Date(this.timefirst) >= 0 || isNaN(+new Date(task.time) - +new Date(this.timefirst))) &&
           (+new Date(task.time) - +new Date(this.timesecond) <= 0 || isNaN(+new Date(task.time) - +new Date(this.timesecond)))
     },
     checkStatus (i:number, itemStatus:TaskStatusEnum) {
       if (itemStatus === TaskStatusEnum.TODO) {
-        const index = this.taskTodo.indexOf(this.tasks[i])
+        const index = this.taskTodo.indexOf(this.taskList[i])
         this.taskTodo.splice(index, 1)
       }
       if (itemStatus === TaskStatusEnum.DONE) {
-        const index = this.taskDone.indexOf(this.tasks[i])
+        const index = this.taskDone.indexOf(this.taskList[i])
         this.taskDone.splice(index, 1)
       }
       if (itemStatus === TaskStatusEnum.INPROGRESS) {
-        const index = this.taskInprog.indexOf(this.tasks[i])
+        const index = this.taskInprog.indexOf(this.taskList[i])
         this.taskInprog.splice(index, 1)
       }
     },
     onDrop (event, list) {
       const itemId = +event.dataTransfer.getData('itemId')
       const itemStatus = event.dataTransfer.getData('itemStatus')
-      for (let i = 0; i < this.tasks.length; i++) {
-        if (!(this.tasks[i].status === TaskStatusEnum.DONE && list === TaskStatusEnum.TODO)) {
-          if (this.tasks[i].id === itemId && list === TaskStatusEnum.INPROGRESS) {
+      for (let i = 0; i < this.taskList.length; i++) {
+        if (!(this.taskList[i].status === TaskStatusEnum.DONE && list === TaskStatusEnum.TODO)) {
+          if (this.taskList[i].id === itemId && list === TaskStatusEnum.INPROGRESS) {
             this.checkStatus(i, itemStatus)
-            this.taskInprog.push(this.tasks[i])
-            this.tasks[i].status = TaskStatusEnum.INPROGRESS
+            this.taskInprog.push(this.taskList[i])
+            this.taskList[i].status = TaskStatusEnum.INPROGRESS
+            this.updateTask(this.taskList[i])
           }
-          if (this.tasks[i].id === itemId && list === TaskStatusEnum.DONE) {
+          if (this.taskList[i].id === itemId && list === TaskStatusEnum.DONE) {
             this.checkStatus(i, itemStatus)
-            this.taskDone.push(this.tasks[i])
-            this.tasks[i].status = TaskStatusEnum.DONE
+            this.taskDone.push(this.taskList[i])
+            this.taskList[i].status = TaskStatusEnum.DONE
+            this.updateTask(this.taskList[i])
           }
-          if (this.tasks[i].id === itemId && list === TaskStatusEnum.TODO) {
+          if (this.taskList[i].id === itemId && list === TaskStatusEnum.TODO) {
             this.checkStatus(i, itemStatus)
-            this.taskTodo.push(this.tasks[i])
-            this.tasks[i].status = TaskStatusEnum.TODO
+            this.taskTodo.push(this.taskList[i])
+            this.taskList[i].status = TaskStatusEnum.TODO
+            this.updateTask(this.taskList[i])
           }
         }
       }
     }
-  },
-  mounted () {
-    emitter.on('save', task => {
-      const index = task as TaskInterface
-      this.tasks[index.id].name = index.name
-      this.tasks[index.id].description1 = index.description1
-      this.tasks[index.id].time = index.time
-      this.tasks[index.id].status = index.status
-      this.showDetailsModal = false
-    })
   }
 })
 </script>

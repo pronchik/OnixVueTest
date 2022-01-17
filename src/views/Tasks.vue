@@ -1,8 +1,8 @@
 <template lang="pug">
 .tasks
   .asd(v-if="Object.keys(this.task).length !== 0")
-    task-details-modal(:showDetailsModal = 'showDetailsModal' :task = 'task' v-if="showDetailsModal === true")
-  task-modal(:showModal = 'showModal' :tasks = 'tasks'
+    task-details-modal(:showDetailsModal = 'showDetailsModal' :task = 'task' :showEditButton='showEditButton' v-if="showDetailsModal")
+  task-modal(:showModal = 'showModal' :tasks = 'taskList'
   @close-modal="showModal = $event")
   h2
       span Tasks
@@ -12,34 +12,26 @@
             span Name
             span Description
           span Deadline
-        .task(v-for='(task, index) in tasks' :key='task.index' :ref="setItemRef" class="list-item" )
-          .name(@click="taskModal(index)")
-            | {{task.name}}
-          .description(@click="taskModal(index)")
+        .task(v-for='(task, index) in taskList' :key='task.index' :ref="setItemRef" class="list-item" )
+          .name(@click="openTaskModal(index)")
+            | {{task.title}}
+          .description(@click="openTaskModal(index)")
             | {{task.description1}}
-          .time(@click="taskModal(index)")
+          .time(@click="openTaskModal(index)")
             | {{task.time}}
           button(class='delete-task' @click="deleteCart(index)") -
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
-import { TaskInterface } from '@/types/task.interface'
+import { defineComponent } from 'vue'
 import useValidate from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
 import { emitter } from '../main'
 import { TaskStatusEnum } from './../enums/TaskStatusEnum'
 import TaskModal from '@/components/TaskModal.vue'
 import TaskDetailsModal from '@/components/TaskDetailsModal.vue'
-import { useStore } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 export default defineComponent({
-  setup () {
-    const store = useStore()
-    const tasks = computed(() => store.state.tasks)
-    return {
-      tasks
-    }
-  },
   components: {
     TaskModal,
     TaskDetailsModal
@@ -55,8 +47,16 @@ export default defineComponent({
       showModal: 'none',
       showDetailsModal: false,
       task: '',
-      itemRefs: []
+      itemRefs: [],
+      showEditButton: true
     }
+  },
+  computed: {
+    ...mapState({
+      taskList: (state: any): any => {
+        return state.tasks.tasks
+      }
+    })
   },
   validations: {
     task_name: { required },
@@ -69,28 +69,20 @@ export default defineComponent({
     task_description: { required }
   },
   methods: {
-    taskModal (index) {
-      this.task = this.tasks[index]
+    ...mapMutations(['deleteTask']),
+    openTaskModal (index:number) {
+      this.task = this.taskList[index]
       this.showDetailsModal = true
     },
     openModal () {
       this.showModal = 'block'
     },
-    deleteCart (task) {
-      this.tasks.splice(task, 1)
-      emitter.emit('changeNumber', this.tasks.length)
+    deleteCart (index :number) {
+      this.deleteTask(index)
     },
     takeTask () {
-      emitter.on('task', task => {
-        this.tasks.push({
-          id: this.tasks.length,
-          name: Object.values(task as string)[0] as string,
-          description1: Object.values(task as string)[1] as string,
-          time: Object.values(task as string)[2] as string,
-          status: TaskStatusEnum.TODO
-        })
+      emitter.on('blinkLastTask', () => {
         this.showModal = 'none'
-        emitter.emit('changeNumber', this.tasks.length)
         this.$nextTick(() => {
           const element = (this.itemRefs as unknown as HTMLElement)[this.itemRefs.length - 1]
           element.classList.add('blink')
@@ -124,18 +116,7 @@ export default defineComponent({
   },
   mounted () {
     this.blink()
-    emitter.on('removeLastElementFromTaskArray', () => {
-      this.tasks.pop()
-    })
     this.takeTask()
-    emitter.on('save', task => {
-      const index = task as TaskInterface
-      this.tasks[index.id].name = index.name
-      this.tasks[index.id].description1 = index.description1
-      this.tasks[index.id].time = index.time
-      this.tasks[index.id].status = index.status
-      this.showDetailsModal = false
-    })
     emitter.on('close', () => {
       this.showDetailsModal = false
     })
