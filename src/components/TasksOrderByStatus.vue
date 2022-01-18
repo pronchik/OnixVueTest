@@ -43,18 +43,14 @@ export default defineComponent({
       event.dataTransfer.setData('itemId', item.id)
       event.dataTransfer.setData('itemStatus', item.status)
     }
-    const close = () => {
-      emitter.on('close', () => {
-        showDetailsModal.value = false
-      })
-    }
-    const save = () => {
+    onMounted(() => {
       emitter.on('save', () => {
         showDetailsModal.value = false
       })
-    }
-    onMounted(save)
-    onMounted(close)
+      emitter.on('close', () => {
+        showDetailsModal.value = false
+      })
+    })
     return {
       TaskStatusEnum,
       openModal,

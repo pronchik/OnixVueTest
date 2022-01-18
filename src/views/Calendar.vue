@@ -37,12 +37,11 @@ export default defineComponent({
       task.value = tasks.tasks.find(task => task.id === e.id)
       showDetailsModal.value = true
     }
-    const close = () => {
+    onMounted(() => {
       emitter.on('close', () => {
         showDetailsModal.value = false
       })
-    }
-    onMounted(close)
+    })
     return {
       showDetailsModal,
       task,

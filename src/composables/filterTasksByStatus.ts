@@ -2,7 +2,6 @@ import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import { TaskStatusEnum } from './../enums/TaskStatusEnum'
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export default function filterTasksByStatus () {
   const store = useStore()
   const taskList = store.state.tasks.tasks

@@ -48,34 +48,16 @@ export default defineComponent({
       task.value = taskList[index]
       showDetailsModal.value = true
     }
-    // deleteTask
     const deleteCart = index => {
       store.commit('deleteTask', index)
     }
-    // blink 3 tasks
     const itemRefs = ref([])
     const setItemRef = (el: never) => {
       if (el) {
         itemRefs.value.push(el)
       }
     }
-    const blink = () => {
-      for (let i = 0; i < itemRefs.value.length; i++) {
-        setTimeout(() => {
-          if (itemRefs.value[i]) {
-            (itemRefs.value as unknown as HTMLElement)[i].classList.add('increase')
-          }
-        }, 2000 * i)
-        setTimeout(() => {
-          if ((itemRefs.value as unknown as HTMLElement)[i]) {
-            (itemRefs.value as unknown as HTMLElement)[i].classList.remove('increase')
-          }
-        }, 2000 * itemRefs.value.length)
-      }
-    }
-    onMounted(blink)
-    // add task
-    const takeTask = () => {
+    onMounted(() => {
       emitter.on('blinkLastTask', () => {
         showModal.value = 'none'
         nextTick(() => {
@@ -88,14 +70,22 @@ export default defineComponent({
           }, 4000)
         })
       })
-    }
-    onMounted(takeTask)
-    const closeModal = () => {
       emitter.on('close', () => {
         showDetailsModal.value = false
       })
-    }
-    onMounted(closeModal)
+      for (let i = 0; i < itemRefs.value.length; i++) {
+        setTimeout(() => {
+          if (itemRefs.value[i]) {
+            (itemRefs.value as unknown as HTMLElement)[i].classList.add('increase')
+          }
+        }, 2000 * i)
+        setTimeout(() => {
+          if ((itemRefs.value as unknown as HTMLElement)[i]) {
+            (itemRefs.value as unknown as HTMLElement)[i].classList.remove('increase')
+          }
+        }, 2000 * itemRefs.value.length)
+      }
+    })
     return {
       taskList,
       openModal,
@@ -104,7 +94,6 @@ export default defineComponent({
       showDetailsModal,
       openTaskModal,
       deleteCart,
-      itemRefs,
       setItemRef,
       showEditButton
     }
