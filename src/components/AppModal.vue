@@ -12,13 +12,17 @@ import { defineComponent } from 'vue'
 export default defineComponent({
   name: 'app-modal',
   props: ['display', 'numberOfOpenTasks', 'numberOfCompletedTasks'],
-  methods: {
-    btnYes () {
-      this.$emit('incr-tasks', 1)
-      this.$emit('close-modal', 'none')
-    },
-    btnNo () {
-      this.$emit('close-modal', 'none')
+  setup (props, { emit }) {
+    const btnYes = () => {
+      emit('incr-tasks', 1)
+      emit('close-modal', 'none')
+    }
+    const btnNo = () => {
+      emit('close-modal', 'none')
+    }
+    return {
+      btnNo,
+      btnYes
     }
   }
 })

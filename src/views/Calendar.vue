@@ -17,9 +17,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, onMounted, ref } from 'vue'
 import VueCal from 'vue-cal'
-import { mapState } from 'vuex'
+import { useStore } from 'vuex'
 import TaskDetailsModal from '@/components/TaskDetailsModal.vue'
 import { emitter } from '../main'
 export default defineComponent({
@@ -28,25 +28,27 @@ export default defineComponent({
     VueCal,
     TaskDetailsModal
   },
-  data () {
+  setup () {
+    const showDetailsModal = ref(false)
+    const task = ref('')
+    const store = useStore()
+    const tasks = store.state.tasks
+    const onEventClick = e => {
+      task.value = tasks.tasks.find(task => task.id === e.id)
+      showDetailsModal.value = true
+    }
+    const close = () => {
+      emitter.on('close', () => {
+        showDetailsModal.value = false
+      })
+    }
+    onMounted(close)
     return {
-      showDetailsModal: false,
-      task: ''
+      showDetailsModal,
+      task,
+      tasks,
+      onEventClick
     }
-  },
-  computed: {
-    ...mapState(['tasks'])
-  },
-  methods: {
-    onEventClick (e) {
-      this.task = this.tasks.tasks.find(task => task.id === e.id)
-      this.showDetailsModal = true
-    }
-  },
-  mounted () {
-    emitter.on('close', () => {
-      this.showDetailsModal = false
-    })
   }
 })
 </script>

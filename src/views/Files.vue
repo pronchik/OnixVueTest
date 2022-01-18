@@ -8,11 +8,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import { mapGetters } from 'vuex'
+import { computed, defineComponent } from 'vue'
+import { useStore } from 'vuex'
 export default defineComponent({
-  computed: {
-    ...mapGetters(['files'])
+  setup () {
+    const store = useStore()
+    const files = computed(() => store.getters.files)
+    return {
+      files
+    }
   }
 })
 </script>

@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { computed, defineComponent, onMounted, ref } from 'vue'
 import { TaskStatusEnum } from './../enums/TaskStatusEnum'
 import TaskDetailsModal from '@/components/TaskDetailsModal.vue'
 import { emitter } from '../main'
@@ -18,49 +18,52 @@ import TaskCard from '@/components/TaskCard.vue'
 export default defineComponent({
   name: 'tasks-order-by-status',
   props: ['tasks'],
-
   components: {
     TaskDetailsModal,
     TaskCard
   },
-  data () {
-    return {
-      TaskStatusEnum,
-      showDetailsModal: false,
-      task: {} as TaskInterface,
-      search: '',
-      showEditButton: true
-    }
-  },
-  computed: {
-    numberOfTasks () {
-      return this.tasks.length
-    }
-  },
-  methods: {
-    openModal (index:number) {
-      this.task = this.tasks[index]
-      if (this.task.status !== TaskStatusEnum.DONE) {
-        this.showDetailsModal = true
+  setup (props) {
+    const showDetailsModal = ref(false)
+    const task = ref({}as TaskInterface)
+    const showEditButton = ref(true)
+    const numberOfTasks = computed(() => {
+      return props.tasks.length
+    })
+    const openModal = index => {
+      task.value = props.tasks[index]
+      if (task.value.status !== TaskStatusEnum.DONE) {
+        showDetailsModal.value = true
       } else {
         alert('You can`t edit this task')
       }
-    },
-    startDrag (event, item:TaskInterface) {
+    }
+    const startDrag = (event, item:TaskInterface) => {
       event.dataTransfer.dropEffect = 'move'
       event.dataTransfer.effectAllowed = 'move'
       event.dataTransfer.setData('itemId', item.id)
       event.dataTransfer.setData('itemStatus', item.status)
     }
-  },
-  mounted () {
-    emitter.on('close', () => {
-      this.showDetailsModal = false
-    })
-    emitter.on('save', () => {
-      this.showDetailsModal = false
-    })
+    const close = () => {
+      emitter.on('close', () => {
+        showDetailsModal.value = false
+      })
+    }
+    const save = () => {
+      emitter.on('save', () => {
+        showDetailsModal.value = false
+      })
+    }
+    onMounted(save)
+    onMounted(close)
+    return {
+      TaskStatusEnum,
+      openModal,
+      startDrag,
+      showEditButton,
+      numberOfTasks,
+      showDetailsModal,
+      task
+    }
   }
-
 })
 </script>

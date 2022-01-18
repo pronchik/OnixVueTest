@@ -43,38 +43,38 @@ aside(ref='aside' :class='{ active: showMobileMenu }')
 
 <script lang="ts">
 
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 import Profile from '@/components/Profile.vue'
 import AppModal from '@/components/AppModal.vue'
-import { mapState } from 'vuex'
+import { useStore } from 'vuex'
 export default defineComponent({
   name: 'app-sidebar',
   components: {
     Profile,
     AppModal
   },
-  data () {
-    return {
-      msg: 'PROJECTUS',
-      numberOfOpenTasks: 2,
-      numberOfCompletedTasks: 256,
-      display: 'none'
-    }
-  },
   props: ['showMobileMenu'],
-  computed: {
-    ...mapState(['activity'])
-  },
-  methods: {
-    click () {
-      this.$emit('update:showMobileMenu', !this.showMobileMenu)
-    },
-    showModal () {
-      if (this.numberOfOpenTasks > 0) {
-        this.display = 'block'
+  setup () {
+    const store = useStore()
+    const activity = store.state.activity
+    const msg = 'PROJECTUS'
+    const numberOfOpenTasks = ref(2)
+    const numberOfCompletedTasks = ref(256)
+    const display = ref('none')
+    const showModal = () => {
+      if (numberOfOpenTasks.value > 0) {
+        display.value = 'block'
       } else {
         alert('You haven`t open tasks!')
       }
+    }
+    return {
+      msg,
+      numberOfCompletedTasks,
+      numberOfOpenTasks,
+      display,
+      activity,
+      showModal
     }
   }
 })

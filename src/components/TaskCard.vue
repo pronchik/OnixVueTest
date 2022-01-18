@@ -15,23 +15,21 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { computed, defineComponent, ref } from 'vue'
 import moment from 'moment'
 import { TaskStatusEnum } from './../enums/TaskStatusEnum'
 export default defineComponent({
   name: 'TaskCard',
   props: ['task'],
-  computed: {
-    time () {
-      return this.task.time
-    },
-    isFailDeadline () {
+  setup (props) {
+    const time = ref(props.task.time)
+    const isFailDeadline = computed(() => {
       const currentDate = Date.now()
-      const taskDate = Date.parse(this.task.time)
+      const taskDate = Date.parse(props.task.time)
       return (taskDate - currentDate) / 86400000 < -1
-    },
-    isSoon () {
-      const timeOftask = +new Date(this.task.time)
+    })
+    const isSoon = computed(() => {
+      const timeOftask = +new Date(props.task.time)
       const currentTime = +new Date()
       var milliseconds = timeOftask - currentTime
       var seconds = milliseconds / 1000
@@ -39,18 +37,27 @@ export default defineComponent({
       var hours = minutes / 60
       var days = hours / 24
       return days <= 1 && days >= -1
-    },
-    isFuture () {
-      return moment(this.task.time).isAfter(moment())
-    },
-    isStatusInprogress () {
-      return this.task.status === TaskStatusEnum.INPROGRESS
-    },
-    isStatusDone () {
-      return this.task.status === TaskStatusEnum.DONE
-    },
-    isStatusTodo () {
-      return this.task.status === TaskStatusEnum.TODO
+    })
+    const isFuture = computed(() => {
+      return moment(props.task.time).isAfter(moment())
+    })
+    const isStatusInprogress = computed(() => {
+      return props.task.status === TaskStatusEnum.INPROGRESS
+    })
+    const isStatusTodo = computed(() => {
+      return props.task.status === TaskStatusEnum.TODO
+    })
+    const isStatusDone = computed(() => {
+      return props.task.status === TaskStatusEnum.DONE
+    })
+    return {
+      time,
+      isFailDeadline,
+      isSoon,
+      isFuture,
+      isStatusInprogress,
+      isStatusTodo,
+      isStatusDone
     }
   }
 })

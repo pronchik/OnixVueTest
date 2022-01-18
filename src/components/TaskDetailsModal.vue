@@ -30,50 +30,47 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 import { emitter } from '../main'
-import { mapMutations } from 'vuex'
+import { useStore } from 'vuex'
 import { TaskStatusEnum } from './../enums/TaskStatusEnum'
 
 export default defineComponent({
   name: 'task-details-modal',
   props: ['showDetailsModal', 'task', 'showEditButton'],
-  data () {
-    return {
-      show: true,
-      showSaveButton: false,
-      updatedTask: {
-        name: '',
-        description1: '',
-        time: '',
-        status: ''
-      },
-      TaskStatusEnum
+  setup (props) {
+    const store = useStore()
+    const show = ref(true)
+    const showSaveButton = ref(false)
+    const updatedTask = ref(JSON.parse(JSON.stringify(props.task)))
+    const cancleForm = () => {
+      show.value = true
+      showSaveButton.value = false
     }
-  },
-  methods: {
-    ...mapMutations(['updateTask']),
-    cancleForm () {
-      this.show = true
-      this.showSaveButton = false
-    },
-    close () {
+    const close = () => {
       emitter.emit('close')
-    },
-    saveTask () {
-      if (new Date(this.updatedTask.time) > new Date()) {
-        this.updateTask(this.updatedTask)
+    }
+    const saveTask = () => {
+      if (new Date(updatedTask.value.time) > new Date()) {
+        store.commit('updateTask', updatedTask.value)
         emitter.emit('close')
       } else {
         alert('Wrong date')
       }
-    },
-    handleChange () {
-      this.showSaveButton = true
     }
-  },
-  created () {
-    this.updatedTask = JSON.parse(JSON.stringify(this.task))
+    const handleChange = () => {
+      showSaveButton.value = true
+    }
+    return {
+      cancleForm,
+      close,
+      saveTask,
+      handleChange,
+      show,
+      showSaveButton,
+      updatedTask,
+      TaskStatusEnum
+    }
   }
 })
 </script>

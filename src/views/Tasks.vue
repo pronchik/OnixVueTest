@@ -23,68 +23,63 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import useValidate from '@vuelidate/core'
-import { required } from '@vuelidate/validators'
+import { defineComponent, ref, onMounted, nextTick } from 'vue'
 import { emitter } from '../main'
-import { TaskStatusEnum } from './../enums/TaskStatusEnum'
 import TaskModal from '@/components/TaskModal.vue'
 import TaskDetailsModal from '@/components/TaskDetailsModal.vue'
-import { mapMutations, mapState } from 'vuex'
+import { useStore } from 'vuex'
 export default defineComponent({
   components: {
     TaskModal,
     TaskDetailsModal
   },
-  data () {
-    return {
-      v$: useValidate(),
-      task_name: '',
-      task_deadline: '',
-      task_description: '',
-      task_status: '',
-      TaskStatusEnum,
-      showModal: 'none',
-      showDetailsModal: false,
-      task: '',
-      itemRefs: [],
-      showEditButton: true
+  setup () {
+    const store = useStore()
+    const taskList = store.state.tasks.tasks
+    const showModal = ref('none')
+    const task = ref('')
+    const showDetailsModal = ref(false)
+    const showEditButton = true
+
+    const openModal = () => {
+      showModal.value = 'block'
     }
-  },
-  computed: {
-    ...mapState({
-      taskList: (state: any): any => {
-        return state.tasks.tasks
+    const openTaskModal = (index) => {
+      task.value = taskList[index]
+      showDetailsModal.value = true
+    }
+    // deleteTask
+    const deleteCart = index => {
+      store.commit('deleteTask', index)
+    }
+    // blink 3 tasks
+    const itemRefs = ref([])
+    const setItemRef = (el: never) => {
+      if (el) {
+        itemRefs.value.push(el)
       }
-    })
-  },
-  validations: {
-    task_name: { required },
-    task_deadline: {
-      required,
-      minValue (val) {
-        return new Date(val) > new Date()
+    }
+    const blink = () => {
+      for (let i = 0; i < itemRefs.value.length; i++) {
+        setTimeout(() => {
+          if (itemRefs.value[i]) {
+            (itemRefs.value as unknown as HTMLElement)[i].classList.add('increase')
+          }
+        }, 2000 * i)
+        setTimeout(() => {
+          if ((itemRefs.value as unknown as HTMLElement)[i]) {
+            (itemRefs.value as unknown as HTMLElement)[i].classList.remove('increase')
+          }
+        }, 2000 * itemRefs.value.length)
       }
-    },
-    task_description: { required }
-  },
-  methods: {
-    ...mapMutations(['deleteTask']),
-    openTaskModal (index:number) {
-      this.task = this.taskList[index]
-      this.showDetailsModal = true
-    },
-    openModal () {
-      this.showModal = 'block'
-    },
-    deleteCart (index :number) {
-      this.deleteTask(index)
-    },
-    takeTask () {
+    }
+    onMounted(blink)
+    // add task
+    const takeTask = () => {
       emitter.on('blinkLastTask', () => {
-        this.showModal = 'none'
-        this.$nextTick(() => {
-          const element = (this.itemRefs as unknown as HTMLElement)[this.itemRefs.length - 1]
+        showModal.value = 'none'
+        nextTick(() => {
+          const element = (itemRefs.value as unknown as HTMLElement)[itemRefs.value.length - 1]
           element.classList.add('blink')
           setTimeout(() => {
             if (element) {
@@ -93,33 +88,26 @@ export default defineComponent({
           }, 4000)
         })
       })
-    },
-    setItemRef (el: never) {
-      if (el) {
-        this.itemRefs.push(el)
-      }
-    },
-    blink () {
-      for (let i = 0; i < this.itemRefs.length; i++) {
-        setTimeout(() => {
-          if (this.itemRefs[i]) {
-            (this.itemRefs as unknown as HTMLElement)[i].classList.add('increase')
-          }
-        }, 2000 * i)
-        setTimeout(() => {
-          if ((this.itemRefs as unknown as HTMLElement)[i]) {
-            (this.itemRefs as unknown as HTMLElement)[i].classList.remove('increase')
-          }
-        }, 2000 * this.itemRefs.length)
-      }
     }
-  },
-  mounted () {
-    this.blink()
-    this.takeTask()
-    emitter.on('close', () => {
-      this.showDetailsModal = false
-    })
+    onMounted(takeTask)
+    const closeModal = () => {
+      emitter.on('close', () => {
+        showDetailsModal.value = false
+      })
+    }
+    onMounted(closeModal)
+    return {
+      taskList,
+      openModal,
+      showModal,
+      task,
+      showDetailsModal,
+      openTaskModal,
+      deleteCart,
+      itemRefs,
+      setItemRef,
+      showEditButton
+    }
   }
 })
 </script>
