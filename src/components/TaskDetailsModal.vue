@@ -30,17 +30,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
-import { emitter } from '../main'
+import { defineComponent, inject, ref } from 'vue'
 import { useStore } from 'vuex'
 import { TaskStatusEnum } from './../enums/TaskStatusEnum'
 
 export default defineComponent({
   name: 'task-details-modal',
-  props: ['showDetailsModal', 'task', 'showEditButton'],
+  props: ['task', 'showEditButton'],
   setup (props) {
     const store = useStore()
     const show = ref(true)
+    const showDetailsModal = ref(inject('showDetailsModal'))
     const showSaveButton = ref(false)
     const updatedTask = ref(JSON.parse(JSON.stringify(props.task)))
     const cancleForm = () => {
@@ -48,12 +48,12 @@ export default defineComponent({
       showSaveButton.value = false
     }
     const close = () => {
-      emitter.emit('close')
+      showDetailsModal.value = false
     }
     const saveTask = () => {
       if (new Date(updatedTask.value.time) > new Date()) {
         store.commit('updateTask', updatedTask.value)
-        emitter.emit('close')
+        showDetailsModal.value = false
       } else {
         alert('Wrong date')
       }
@@ -62,6 +62,7 @@ export default defineComponent({
       showSaveButton.value = true
     }
     return {
+      showDetailsModal,
       cancleForm,
       close,
       saveTask,

@@ -8,10 +8,9 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, ref } from 'vue'
+import { computed, defineComponent, provide, ref } from 'vue'
 import { TaskStatusEnum } from './../enums/TaskStatusEnum'
 import TaskDetailsModal from '@/components/TaskDetailsModal.vue'
-import { emitter } from '../main'
 import { TaskInterface } from '@/types/task.interface'
 import TaskCard from '@/components/TaskCard.vue'
 
@@ -24,6 +23,7 @@ export default defineComponent({
   },
   setup (props) {
     const showDetailsModal = ref(false)
+    provide('showDetailsModal', showDetailsModal)
     const task = ref({}as TaskInterface)
     const showEditButton = ref(true)
     const numberOfTasks = computed(() => {
@@ -43,14 +43,6 @@ export default defineComponent({
       event.dataTransfer.setData('itemId', item.id)
       event.dataTransfer.setData('itemStatus', item.status)
     }
-    onMounted(() => {
-      emitter.on('save', () => {
-        showDetailsModal.value = false
-      })
-      emitter.on('close', () => {
-        showDetailsModal.value = false
-      })
-    })
     return {
       TaskStatusEnum,
       openModal,

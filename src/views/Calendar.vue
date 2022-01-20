@@ -1,6 +1,6 @@
 <template lang="pug">
 .asd()
-    task-details-modal(:showDetailsModal = 'showDetailsModal' :showEditButton = false :task='task' v-if="showDetailsModal === true")
+    task-details-modal(:showEditButton = false :task='task' v-if="showDetailsModal === true")
 .calendar
     VueCal.vuecal--blue-theme(
     selected-date=""
@@ -17,11 +17,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue'
+import { defineComponent, provide, ref } from 'vue'
 import VueCal from 'vue-cal'
 import { useStore } from 'vuex'
 import TaskDetailsModal from '@/components/TaskDetailsModal.vue'
-import { emitter } from '../main'
 export default defineComponent({
   name: 'calendar',
   components: {
@@ -30,6 +29,7 @@ export default defineComponent({
   },
   setup () {
     const showDetailsModal = ref(false)
+    provide('showDetailsModal', showDetailsModal)
     const task = ref('')
     const store = useStore()
     const tasks = store.state.tasks
@@ -37,11 +37,6 @@ export default defineComponent({
       task.value = tasks.tasks.find(task => task.id === e.id)
       showDetailsModal.value = true
     }
-    onMounted(() => {
-      emitter.on('close', () => {
-        showDetailsModal.value = false
-      })
-    })
     return {
       showDetailsModal,
       task,

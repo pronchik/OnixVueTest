@@ -1,7 +1,7 @@
 <template lang="pug">
 .tasks
   .asd(v-if="Object.keys(this.task).length !== 0")
-    task-details-modal(:showDetailsModal = 'showDetailsModal' :task = 'task' :showEditButton='showEditButton' v-if="showDetailsModal")
+    task-details-modal( :task = 'task' :showEditButton='showEditButton' v-if="showDetailsModal")
   task-modal(:showModal = 'showModal' :tasks = 'taskList'
   @close-modal="showModal = $event")
   h2
@@ -23,7 +23,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, nextTick } from 'vue'
+import { defineComponent, ref, onMounted, nextTick, provide } from 'vue'
 import { emitter } from '../main'
 import TaskModal from '@/components/TaskModal.vue'
 import TaskDetailsModal from '@/components/TaskDetailsModal.vue'
@@ -39,6 +39,7 @@ export default defineComponent({
     const showModal = ref('none')
     const task = ref('')
     const showDetailsModal = ref(false)
+    provide('showDetailsModal', showDetailsModal)
     const showEditButton = true
 
     const openModal = () => {
@@ -69,9 +70,6 @@ export default defineComponent({
             }
           }, 4000)
         })
-      })
-      emitter.on('close', () => {
-        showDetailsModal.value = false
       })
       for (let i = 0; i < itemRefs.value.length; i++) {
         setTimeout(() => {
