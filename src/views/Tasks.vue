@@ -23,31 +23,22 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, nextTick, provide } from 'vue'
+import { defineComponent, ref, onMounted, nextTick } from 'vue'
 import { emitter } from '../main'
 import TaskModal from '@/components/TaskModal.vue'
 import TaskDetailsModal from '@/components/TaskDetailsModal.vue'
-import { useStore } from 'vuex'
+import openTaskDescription from '@/composables/openTaskDescription'
 export default defineComponent({
   components: {
     TaskModal,
     TaskDetailsModal
   },
   setup () {
-    const store = useStore()
-    const taskList = store.state.tasks.tasks
+    const { store, taskList, task, showDetailsModal, openTaskModal } = openTaskDescription('')
     const showModal = ref('none')
-    const task = ref('')
-    const showDetailsModal = ref(false)
-    provide('showDetailsModal', showDetailsModal)
     const showEditButton = true
-
     const openModal = () => {
       showModal.value = 'block'
-    }
-    const openTaskModal = (index) => {
-      task.value = taskList[index]
-      showDetailsModal.value = true
     }
     const deleteCart = index => {
       store.commit('deleteTask', index)
