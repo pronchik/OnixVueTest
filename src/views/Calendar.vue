@@ -1,6 +1,6 @@
 <template lang="pug">
 .asd()
-    task-details-modal(:showDetailsModal = 'showDetailsModal' :showEditButton = false :task='task' v-if="showDetailsModal === true")
+    task-details-modal(:showEditButton = false :task='task' v-if="showDetailsModal === true")
 .calendar
     VueCal.vuecal--blue-theme(
     selected-date=""
@@ -10,7 +10,7 @@
     hide-weekends=false
     passive=true
     events-on-month-view="short"
-    :events="tasks.tasks"
+    :events="taskList"
     :on-event-click="onEventClick"
     style="height: 500px")
       template(v-slot:no-event=""  ) No event 👌
@@ -19,34 +19,26 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import VueCal from 'vue-cal'
-import { mapState } from 'vuex'
 import TaskDetailsModal from '@/components/TaskDetailsModal.vue'
-import { emitter } from '../main'
+import openTaskDescription from '@/composables/openTaskDescription'
 export default defineComponent({
   name: 'calendar',
   components: {
     VueCal,
     TaskDetailsModal
   },
-  data () {
+  setup () {
+    const { taskList, task, showDetailsModal } = openTaskDescription('')
+    const onEventClick = e => {
+      task.value = taskList.find(task => task.id === e.id)
+      showDetailsModal.value = true
+    }
     return {
-      showDetailsModal: false,
-      task: ''
+      showDetailsModal,
+      task,
+      taskList,
+      onEventClick
     }
-  },
-  computed: {
-    ...mapState(['tasks'])
-  },
-  methods: {
-    onEventClick (e) {
-      this.task = this.tasks.tasks.find(task => task.id === e.id)
-      this.showDetailsModal = true
-    }
-  },
-  mounted () {
-    emitter.on('close', () => {
-      this.showDetailsModal = false
-    })
   }
 })
 </script>

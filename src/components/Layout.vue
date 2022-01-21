@@ -7,15 +7,16 @@
 <script lang="ts">
 import AppSidebar from '@/components/AppSidebar.vue' // @ is an alias to /src
 import AppHeaderSection from '@/components/AppHeaderSection.vue' // @ is an alias to /src
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 export default defineComponent({
   components: {
     AppSidebar,
     AppHeaderSection
   },
-  data () {
+  setup () {
+    const showMobileMenu = ref(false)
     return {
-      showMobileMenu: false
+      showMobileMenu
     }
   }
 })

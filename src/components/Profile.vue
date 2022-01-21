@@ -17,13 +17,16 @@
 import { defineComponent } from 'vue'
 export default defineComponent({
   name: 'profile',
-  data () {
+  props: ['showMobileMenu'],
+  setup () {
+    const fullName = 'Maksym Pron'
+    const position = 'Developer'
+    const img = 'me.png'
     return {
-      fullName: 'Maksym Pron',
-      position: 'Devepoler',
-      img: 'me.png'
+      fullName,
+      position,
+      img
     }
-  },
-  props: ['showMobileMenu']
+  }
 })
 </script>

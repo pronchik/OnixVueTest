@@ -45,26 +45,20 @@ nav
 import { defineComponent } from 'vue'
 export default defineComponent({
   name: 'app-header',
-  data () {
+  setup () {
+    const users = [
+      {
+        img: 'me.png'
+      },
+      {
+        img: 'me.png'
+      },
+      {
+        img: 'me.png'
+      }
+    ]
     return {
-      currentTab: 'tasks',
-      users: [
-        {
-          img: 'me.png'
-        },
-        {
-          img: 'me.png'
-        },
-        {
-          img: 'me.png'
-        }
-      ]
-    }
-  },
-  methods: {
-    changeRoute (event) {
-      const path = event.target.value
-      this.$router.push({ path: `/${path}` })
+      users
     }
   }
 })

@@ -30,50 +30,48 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import { emitter } from '../main'
-import { mapMutations } from 'vuex'
+import { defineComponent, inject, ref } from 'vue'
+import { useStore } from 'vuex'
 import { TaskStatusEnum } from './../enums/TaskStatusEnum'
 
 export default defineComponent({
   name: 'task-details-modal',
-  props: ['showDetailsModal', 'task', 'showEditButton'],
-  data () {
-    return {
-      show: true,
-      showSaveButton: false,
-      updatedTask: {
-        name: '',
-        description1: '',
-        time: '',
-        status: ''
-      },
-      TaskStatusEnum
+  props: ['task', 'showEditButton'],
+  setup (props) {
+    const store = useStore()
+    const show = ref(true)
+    const showDetailsModal = ref(inject('showDetailsModal'))
+    const showSaveButton = ref(false)
+    const updatedTask = ref(JSON.parse(JSON.stringify(props.task)))
+    const cancleForm = () => {
+      show.value = true
+      showSaveButton.value = false
     }
-  },
-  methods: {
-    ...mapMutations(['updateTask']),
-    cancleForm () {
-      this.show = true
-      this.showSaveButton = false
-    },
-    close () {
-      emitter.emit('close')
-    },
-    saveTask () {
-      if (new Date(this.updatedTask.time) > new Date()) {
-        this.updateTask(this.updatedTask)
-        emitter.emit('close')
+    const close = () => {
+      showDetailsModal.value = false
+    }
+    const saveTask = () => {
+      if (new Date(updatedTask.value.time) > new Date()) {
+        store.commit('updateTask', updatedTask.value)
+        showDetailsModal.value = false
       } else {
         alert('Wrong date')
       }
-    },
-    handleChange () {
-      this.showSaveButton = true
     }
-  },
-  created () {
-    this.updatedTask = JSON.parse(JSON.stringify(this.task))
+    const handleChange = () => {
+      showSaveButton.value = true
+    }
+    return {
+      showDetailsModal,
+      cancleForm,
+      close,
+      saveTask,
+      handleChange,
+      show,
+      showSaveButton,
+      updatedTask,
+      TaskStatusEnum
+    }
   }
 })
 </script>

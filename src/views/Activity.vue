@@ -18,24 +18,17 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { mapMutations, mapState } from 'vuex'
+import { useStore } from 'vuex'
 export default defineComponent({
-  data () {
-    return {
-      changeTab: 'activity'
+  setup () {
+    const store = useStore()
+    const messageList = store.state.activity.messages
+    const selectImg = index => {
+      store.commit('changeNotification', index)
     }
-  },
-  computed: {
-    ...mapState({
-      messageList: (state: any): any => {
-        return state.activity.messages
-      }
-    })
-  },
-  methods: {
-    ...mapMutations(['changeNotification']),
-    selectImg (index: number) {
-      this.changeNotification(index)
+    return {
+      messageList,
+      selectImg
     }
   }
 })
