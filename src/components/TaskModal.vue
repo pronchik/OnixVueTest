@@ -52,7 +52,7 @@ export default defineComponent({
       v$.value.$validate()
       if (!v$.value.$error) {
         getId()
-        store.commit('appendNewTask', {
+        store.dispatch('appendNewTask', {
           id: id.value,
           title: state.task_name,
           description1: state.task_description,

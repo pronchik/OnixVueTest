@@ -1,16 +1,16 @@
-import { ref, provide } from 'vue'
+import { ref, provide, computed } from 'vue'
 import { useStore } from 'vuex'
 import { TaskStatusEnum } from './../enums/TaskStatusEnum'
 import { TaskInterface } from '@/types/task.interface'
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export default function openTaskDescription (props) {
   const store = useStore()
-  const taskList = store.state.tasks.tasks
+  const taskList = computed(() => store.state.tasks.tasks)
   const task = ref({}as TaskInterface)
   const showDetailsModal = ref(false)
   provide('showDetailsModal', showDetailsModal)
   const openTaskModal = (index) => {
-    task.value = taskList[index]
+    task.value = taskList.value[index]
     showDetailsModal.value = true
   }
   const openModalWithProps = index => {
