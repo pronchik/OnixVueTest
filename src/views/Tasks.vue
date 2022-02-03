@@ -19,11 +19,11 @@
             | {{task.description1}}
           .time(@click="openTaskModal(index)")
             | {{task.time}}
-          button(class='delete-task' @click="deleteCart(index)") -
+          button(class='delete-task' @click="deleteCart(task.id)") -
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, nextTick } from 'vue'
+import { defineComponent, ref, onMounted, nextTick, computed } from 'vue'
 import { emitter } from '../main'
 import TaskModal from '@/components/TaskModal.vue'
 import TaskDetailsModal from '@/components/TaskDetailsModal.vue'
@@ -41,9 +41,9 @@ export default defineComponent({
       showModal.value = 'block'
     }
     const deleteCart = index => {
-      store.commit('deleteTask', index)
+      store.dispatch('deleteTask', index)
     }
-    const itemRefs = ref([])
+    const itemRefs = ref(computed(() => []))
     const setItemRef = (el: never) => {
       if (el) {
         itemRefs.value.push(el)
@@ -62,6 +62,7 @@ export default defineComponent({
           }, 4000)
         })
       })
+
       for (let i = 0; i < itemRefs.value.length; i++) {
         setTimeout(() => {
           if (itemRefs.value[i]) {

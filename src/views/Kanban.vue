@@ -51,25 +51,25 @@ export default defineComponent({
     const onDrop = (event, list) => {
       const itemId = +event.dataTransfer.getData('itemId')
       const itemStatus = event.dataTransfer.getData('itemStatus')
-      for (let i = 0; i < taskList.length; i++) {
-        if (!(taskList[i].status === TaskStatusEnum.DONE && list === TaskStatusEnum.TODO)) {
-          if (taskList[i].id === itemId && list === TaskStatusEnum.INPROGRESS) {
+      for (let i = 0; i < taskList.value.length; i++) {
+        if (!(taskList.value[i].status === TaskStatusEnum.DONE && list === TaskStatusEnum.TODO)) {
+          if (taskList.value[i].id === itemId && list === TaskStatusEnum.INPROGRESS) {
             checkStatus(i, itemStatus)
-            taskInprog.value.push(taskList[i])
-            taskList[i].status = TaskStatusEnum.INPROGRESS
-            store.commit('updateTask', taskList[i])
+            taskInprog.value.push(taskList.value[i])
+            taskList.value[i].status = TaskStatusEnum.INPROGRESS
+            store.dispatch('updateTask', taskList.value[i])
           }
-          if (taskList[i].id === itemId && list === TaskStatusEnum.DONE) {
+          if (taskList.value[i].id === itemId && list === TaskStatusEnum.DONE) {
             checkStatus(i, itemStatus)
             taskDone.value.push(taskList[i])
-            taskList[i].status = TaskStatusEnum.DONE
-            store.commit('updateTask', taskList[i])
+            taskList.value[i].status = TaskStatusEnum.DONE
+            store.dispatch('updateTask', taskList.value[i])
           }
-          if (taskList[i].id === itemId && list === TaskStatusEnum.TODO) {
+          if (taskList.value[i].id === itemId && list === TaskStatusEnum.TODO) {
             checkStatus(i, itemStatus)
             taskTodo.value.push(taskList[i])
-            taskList[i].status = TaskStatusEnum.TODO
-            store.commit('updateTask', taskList[i])
+            taskList.value[i].status = TaskStatusEnum.TODO
+            store.dispatch('updateTask', taskList.value[i])
           }
         }
       }

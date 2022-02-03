@@ -52,7 +52,7 @@ export default defineComponent({
     }
     const saveTask = () => {
       if (new Date(updatedTask.value.time) > new Date()) {
-        store.commit('updateTask', updatedTask.value)
+        store.dispatch('updateTask', updatedTask.value)
         showDetailsModal.value = false
       } else {
         alert('Wrong date')

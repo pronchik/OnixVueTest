@@ -4,7 +4,8 @@ import { TaskStatusEnum } from './../enums/TaskStatusEnum'
 
 export default function filterTasksByStatus () {
   const store = useStore()
-  const taskList = store.state.tasks.tasks
+  store.dispatch('SET_TASKS_TO_STATE')
+  const taskList = computed(() => store.state.tasks.tasks)
   const task = ref('')
   const search = ref('')
   const timefirst = ref('')
@@ -16,17 +17,17 @@ export default function filterTasksByStatus () {
         (+new Date(task.time) - +new Date(timesecond.value) <= 0 || isNaN(+new Date(task.time) - +new Date(timesecond.value)))
   }
   const taskTodo = computed(() => {
-    return taskList.filter(task => {
+    return taskList.value.filter(task => {
       return filter(task, TaskStatusEnum.TODO)
     })
   })
   const taskDone = computed(() => {
-    return taskList.filter(task => {
+    return taskList.value.filter(task => {
       return filter(task, TaskStatusEnum.DONE)
     })
   })
   const taskInprog = computed(() => {
-    return taskList.filter(task => {
+    return taskList.value.filter(task => {
       return filter(task, TaskStatusEnum.INPROGRESS)
     })
   })

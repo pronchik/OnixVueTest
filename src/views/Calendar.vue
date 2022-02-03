@@ -30,7 +30,7 @@ export default defineComponent({
   setup () {
     const { taskList, task, showDetailsModal } = openTaskDescription('')
     const onEventClick = e => {
-      task.value = taskList.find(task => task.id === e.id)
+      task.value = taskList.value.find(task => task.id === e.id)
       showDetailsModal.value = true
     }
     return {

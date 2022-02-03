@@ -1,58 +1,57 @@
-import { TaskStatusEnum } from './../../enums/TaskStatusEnum'
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { TaskInterface } from '@/types/task.interface'
+import {
+  getTasks,
+  postTask,
+  deleteTask,
+  updateTask
+} from '@/services/tasksApi'
 export const state = {
-  tasks: [
-    {
-      id: 0,
-      title: 'Create app',
-      description1: 'Use smth',
-      time: '2022-01-12',
-      status: TaskStatusEnum.TODO,
-      start: '2022-02-02',
-      end: '2022-02-02'
-    },
-    {
-      id: 1,
-      title: 'Fix bugs',
-      description1: 'Fix all bugs',
-      time: '2022-01-13',
-      status: TaskStatusEnum.INPROGRESS,
-      start: '2021-12-11',
-      end: '2021-12-11'
-    },
-    {
-      id: 2,
-      title: 'Fix bugs',
-      description1: 'Fix all bugs',
-      time: '2022-01-10',
-      status: TaskStatusEnum.INPROGRESS,
-      start: '2021-12-11',
-      end: '2021-12-11'
-    },
-    {
-      id: 3,
-      title: 'Fix bugs',
-      description1: 'Fix all bugs',
-      time: '2022-01-09',
-      status: TaskStatusEnum.INPROGRESS,
-      start: '2021-12-11',
-      end: '2021-12-11'
-    }
-  ]
+  tasks: [] as TaskInterface[]
 }
 export const mutations = {
-  appendNewTask (state, task: TaskInterface):void {
-    state.tasks.push(task as never)
-  },
-  updateTask (state, task: TaskInterface):void {
-    state.tasks[state.tasks.findIndex(taskId => taskId.id === task.id)] = task as never
-  },
-  deleteTask (state, task:TaskInterface):void {
-    state.tasks.splice(task, 1)
+  SET_TASKS_TO_STATE: (state, response: TaskInterface[]) => {
+    state.tasks = response
   }
 }
 export const actions = {
+  SET_TASKS_TO_STATE ({ commit }) {
+    getTasks()
+      .then(function (response) {
+        commit('SET_TASKS_TO_STATE', response.data)
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+  },
 
+  appendNewTask ({ dispatch }, newCard: TaskInterface) {
+    postTask(newCard)
+      .then(function () {
+        dispatch('SET_TASKS_TO_STATE')
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+  },
+  deleteTask ({ dispatch }, id: number) {
+    deleteTask(id)
+      .then(function () {
+        dispatch('SET_TASKS_TO_STATE')
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+  },
+  updateTask ({ dispatch }, changedTask: TaskInterface) {
+    updateTask(changedTask)
+      .then(function () {
+        dispatch('SET_TASKS_TO_STATE')
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+  }
 }
 export const getters = {
   tasks (state):void {
